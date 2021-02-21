@@ -6,9 +6,6 @@
 /public/bundles/
 /var/
 /vendor/
-/public/bundles
-/public/uploads
-/public/sitemap*.xml
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -26,3 +23,6 @@
 
 ### Other
 .php_cs.cache
+
+### Composer
+/composer.lock
