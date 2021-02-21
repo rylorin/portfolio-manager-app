@@ -52,4 +52,6 @@ class Comment extends BaseComment
     {
         return $this->id;
     }
+
+    protected $category;
 }
