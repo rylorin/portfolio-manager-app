@@ -26,3 +26,7 @@
 
 ### Composer
 /composer.lock
+
+# RYL
+.DS_Store
+/.ansible/
