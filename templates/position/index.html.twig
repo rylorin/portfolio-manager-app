@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Portfolio {{ portfolio.name }} ({{ portfolio.account|masq }}-{{ portfolio.baseCurrency }}){% endblock %}
+
+{% block body %}
+  <h2>Positions ({{ positions|length }})</h2>
+  {% include('position/_positions_table.html.twig') %}
+{% endblock %}

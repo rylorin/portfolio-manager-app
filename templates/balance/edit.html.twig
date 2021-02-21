@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit {{ balance.currency }} Balance{% endblock title %}
+
+{% block body %}
+<div class="row">
+  {% set item_size='col-sm-6' %}
+  <div class="{{ item_size }}">
+    {{ include('balance/_form.html.twig', {'button_label': 'Update'}) }}
+    <a href="{{ path('portfolio_balance_show', {'id': balance.id}) }}"><span data-feather="arrow-left"></span></a>
+    <a href="#" onclick="click_button('save')"><span data-feather="save"></span></a>
+    {{ include('balance/_delete_form.html.twig') }}
+  </div>
+</div>
+{% endblock body %}

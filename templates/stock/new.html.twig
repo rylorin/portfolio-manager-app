@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Stock{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <h1 class="h2">Create new Stock {{ stock.id }}</h1>
+</div>
+<div class="row">
+  {% set item_size='col-sm-6' %}
+  <div class="{{ col_style }}">
+    {{ include('stock/_form.html.twig') }}
+    <a href="{{ path('repository_stock_index') }}"><span data-feather="arrow-left"></span></a>
+    <a href="#" onclick="click_button('save')"><span data-feather="save"></span></a>
+  </div>
+</div>
+{% endblock body %}

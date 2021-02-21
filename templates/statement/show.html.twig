@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statement {{ statement.id }}{% endblock %}
+
+{% block body %}
+<div class="row">
+  <div class="col-6">
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ statement.id }}</td>
+            </tr>
+            <tr>
+                <th>Statement Type</th>
+                <td>{{ statement.statementType }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ statement.date ? statement.date|date('d-m-Y H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Currency</th>
+                <td>{{ statement.currency }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ statement.amount|my_decimal_format }}</td>
+            </tr>
+            <tr>
+                <th>Stock</th>
+                <td>
+                  {% if portfolio is defined %}
+                    <a href="{{ path('portfolio_stock_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id}) }}">
+                      {{ statement.stock }}
+                    </a>
+                  {% else %}
+                    {{ statement.stock }}
+                  {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Trade Unit</th>
+                <td>
+                {% if (statement.TradeUnit is not null) and (statement.TradeUnit.Id > 0) %}
+                  <a href="{{ path('portfolio_tradeunit_show', {'tradeunit': statement.TradeUnit.Id }) }}">{{ statement.TradeUnit.Id }}</a>
+                  <a href="{{ path('portfolio_statement_unlinktradeunit', {'id': statement.id}) }}"><span data-feather='trash-2' ></span></a>
+                {% else %}
+                  <a href="{{ path('portfolio_statement_createtradeunit', {'id': statement.id}) }}"><span data-feather="plus-square"></span></a>
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ statement.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <nav><ul class="pagination">
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_statements_index', {'id': statement.portfolio.id}) }}"><span data-feather="arrow-left"></span></a></li>
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_statement_edit', {'id': statement.id}) }}"><span data-feather="edit-2"></span></a></li>
+        <li class="page-item">{{ include('statement/_delete_form.html.twig') }}</li>
+    </ul></nav>
+  </div>
+  <div class="col-6">
+    <table class="table">
+        <tbody>
+          {% if (statement.statementType == 'Tax') or (statement.statementType == 'Dividend') %}
+          <tr>
+              <th>Country</th>
+              <td>{{ statement.country }}</td>
+          </tr>
+          {% endif %}
+          {% if (statement.statementType == 'TradeOption') %}
+          <tr>
+              <th>Contract</th>
+              <td>{{ statement.contract }}</td>
+          </tr>
+          {% endif %}
+          {% if (statement.statementType == 'Trade') or (statement.statementType == 'TradeOption') %}
+            <tr>
+                <th>Quantity</th>
+                <td>{{ statement.quantity|my_integer_format }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ statement.price|my_decimal_format }}</td>
+            </tr>
+            <tr>
+                <th>Proceeds</th>
+                <td>{{ statement.proceeds|my_decimal_format }}</td>
+            </tr>
+            <tr>
+                <th>Fees</th>
+                <td>{{ statement.fees|my_decimal_format }}</td>
+            </tr>
+            <tr>
+                <th>Realized PNL</th>
+                <td>{{ statement.realizedPNL|my_decimal_format }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ statement.comment }}</td>
+            </tr>
+          {% endif %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock body %}

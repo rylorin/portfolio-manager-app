@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Currencies index ({{ currencies|length }}){% endblock %}
+
+{% block body %}
+<div class="table-responsive">
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+      <th>Id</th>
+      <th>Base</th>
+      <th>Currency</th>
+      <th>Rate</th>
+      <th>actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for currency in currencies %}
+        <tr>
+            <td>{{ currency.id }}</td>
+            <td><a href="{{ path('repository_currency_show', {'id': currency.id}) }}">{{ currency.base }}</a></td>
+            <td>{{ currency.currency }}</td>
+            <td>{{ currency.rate }}</td>
+            <td>
+                <a href="{{ path('repository_currency_show', {'id': currency.id}) }}"><span data-feather="search"></span></a>
+                <a href="{{ path('repository_currency_edit', {'id': currency.id}) }}"><span data-feather="edit-2"></span></a>
+                <form class="form-inline" id="row{{currency.id}}" method="post" action="{{ path('repository_currency_delete', {'id': currency.id}) }}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ currency.id) }}">
+                    <a href="#" onclick="delete_item('row{{currency.id}}')"><span data-feather='trash-2' ></span></a>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+<a href="{{ path('repository_currency_new') }}"><span data-feather="plus-square"></span></a>
+{% endblock %}

@@ -1,0 +1,71 @@
+<h4>Option {{ option.id }}</h4>
+{# code shared between option/_option_contract.html.twig and portfolio/show_options.html.twig #}
+{% if option.daysToMaturity < 1 %}
+  {% set date_style = '' %}
+{% elseif option.daysToMaturity < 8 %}
+  {% set date_style = 'color:red;' %}
+{% elseif option.daysToMaturity < 15 %}
+  {% set date_style = 'color:DarkOrange;' %}
+{% else %}
+  {% set date_style = 'color:green;' %}
+{% endif %}
+
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Symbol</th>
+            <td class="text-center">{{ option.stock.symbol }}</td>
+        </tr>
+        <tr>
+            <th>Last Trade Date</th>
+            <td class="text-right" style="{{ date_style }}">{{ option.lastTradeDate|format_date('dd-MM-y') }}</td>
+        </tr>
+        <tr>
+            <th>Strike</th>
+            <td class="text-right">{{ option.strike }}</td>
+        </tr>
+        <tr>
+            <th>Days to expiration</th>
+            <td class="text-right" style="{{ date_style }}">{{ option.daysToMaturity }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td class="text-right">{% if option.type == 'P' %}Put{% elseif option.type == 'C' %}Call{%else %}N/A{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Exchange</th>
+            <td class="text-right">{{ option.exchange }}</td>
+        </tr>
+        <tr>
+            <th>Currency</th>
+            <td class="text-right">{{ option.currency }}</td>
+        </tr>
+        <tr>
+            <th>Multiplier</th>
+            <td class="text-right">{{ option.multiplier|my_integer_format }}</td>
+        </tr>
+        <tr>
+          <th>{{ option.moneyLongLabel }} ({{ option.moneyShortLabel }})</th>
+          <td class="text-right">
+            {{ option.moneyDepth|my_decimal_format }}
+            ({{ (option.moneyDepth / option.strike)|my_percent_format }})
+          </td>
+        <tr>
+        <tr>
+            <th>Ask</th>
+            <td class="text-right">{{ option.ask|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>Premium</th>
+            <td class="text-right font-weight-bold">{{ option.price|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>Bid</th>
+            <td class="text-right">{{ option.bid|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>Yield (bid) to maturity</th>
+            <td class="text-right">{{ (option.bidYieldToMaturity)|my_percent_format }}</td>
+        </tr>
+    </tbody>
+</table>

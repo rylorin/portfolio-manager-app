@@ -1,0 +1,69 @@
+<h4>Stock {{ stock.id }}</h4>
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Symbol</th>
+            <td class="text-center">{{ stock.symbol }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ stock.name }}</td>
+        </tr>
+        <tr>
+            <th>Exchange</th>
+            <td class="text-right">{{ stock.exchange }}</td>
+        </tr>
+        <tr>
+            <th>Currency</th>
+            <td class="text-right">{{ stock.currency }}</td>
+        </tr>
+        <tr>
+            <th>Ask</th>
+            <td class="text-right">{{ stock.ask|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td class="{{ stock.changePercent|my_number_class_2colors }} font-weight-bold">{{ stock.price|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>Bid</th>
+            <td class="text-right">{{ stock.bid|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>Previous close</th>
+            <td class="text-right">{{ stock.previousClosePrice|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>% change</th>
+            <td class="{{ stock.changePercent|my_number_class_2colors }}">{{ stock.changePercent|my_percent_format }}</td>
+        </tr>
+        <tr>
+            <th>52 week high</th>
+            <td class="text-right">{{ stock.fiftyTwoWeekHigh|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>52 week low</th>
+            <td class="text-right">{{ stock.fiftyTwoWeekLow|my_decimal_format }}</td>
+        </tr>
+        <tr>
+            <th>TTM dividend</th>
+            <td class="text-right">{{ stock.dividendTTM }}</td>
+        </tr>
+        <tr>
+            <th>Dividend yield</th>
+            <td class="text-right">{{ stock.dividendYield|my_percent_format }}</td>
+        </tr>
+        <tr>
+            <th>TTM EPS</th>
+            <td class="text-right">{{ stock.epsTTM }}</td>
+        </tr>
+        <tr>
+            <th>Forward EPS</th>
+            <td class="text-right">{{ stock.epsForward }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ stock.description }}</td>
+        </tr>
+    </tbody>
+</table>

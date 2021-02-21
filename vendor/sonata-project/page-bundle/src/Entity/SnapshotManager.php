@@ -229,7 +229,7 @@ class SnapshotManager extends BaseEntityManager implements SnapshotManagerInterf
         $tableName = $this->getTableName();
         $platform = $this->getConnection()->getDatabasePlatform()->getName();
 
-        if (('mysql' === $platform) || ('sqlite' === $platform)) {
+        if (('mysql' === $platform) || ('sqlite' === $platform)) {  // RYL
             return $this->getConnection()->exec(sprintf(
                 'DELETE FROM %s
                 WHERE

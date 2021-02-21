@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ position.contract.symbol }}{% endblock %}
+
+{% block body %}
+  <div class="row">
+  <!-- TradingView Widget BEGIN -->
+  <div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
+    {
+    "symbol": "{{ stock.marketPlace }}:{{ stock.symbol|to_tws_symbol }}",
+    "width": "100%",
+    "locale": "en",
+    "colorTheme": "light",
+    "isTransparent": true
+    }
+    </script>
+  </div>
+  <!-- TradingView Widget END -->
+    {% if type == 'Stock' %}
+      {% set item_size='col-12 col-sm-6' %}
+    {% else %}
+      {% set item_size='col-12 col-sm-6 col-lg-4' %}
+    {% endif %}
+  	<div class="{{ item_size }}">
+    	{% if type == 'Stock' %}
+			  {{ include('position/_stock_position.html.twig') }}
+    	{% elseif type == 'Option' %}
+			  {{ include('position/_option_position.html.twig') }}
+    	{% else %}
+        Contract type {{ type }} not supported
+      {% endif %}
+
+      <nav><ul class="pagination">
+          <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_positions_index', {'id': position.portfolio.id}) }}"><span data-feather="arrow-left"></span></a></li>
+          <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_position_edit', {'id': position.id}) }}"><span data-feather="edit-2"></span></a></li>
+          <li class="page-item">{{ include('position/_delete_form.html.twig') }}</li>
+      </ul></nav>
+  	</div>
+    {% if type == 'Option' %}
+      <div class="{{ item_size }}">
+  		{{ include('option/_option_contract.html.twig') }}
+
+        <nav><ul class="pagination">
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_option_show', {'id': option.id}) }}"><span data-feather="search"></span></a></li>
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_option_edit', {'id': option.id}) }}"><span data-feather="edit-2"></span></a></li>
+        </ul></nav>
+      </div>
+    {% endif %}
+    <div class="{{ item_size }}">
+		{{ include('stock/_stock_contract.html.twig') }}
+        <nav><ul class="pagination">
+            <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_stock_show', {'id': stock.id}) }}"><span data-feather="search"></span></a></li>
+            <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_stock_edit', {'id': stock.id}) }}"><span data-feather="edit-2"></span></a></li>
+        </ul></nav>
+  	</div>
+  </div>
+{% endblock %}

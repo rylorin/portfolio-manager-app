@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create new Portfolio{% endblock %}
+
+{% block body %}
+<div class="row">
+  {% set item_size='col-sm-6' %}
+  <div class="{{ item_size }}">
+    {{ include('portfolio/_form.html.twig') }}
+    <a href="{{ path('portfolio_index') }}"><span data-feather="arrow-left"></span></a>
+    <a href="#" onclick="click_button('save')"><span data-feather="save"></span></a>
+  </div>
+</div>
+{% endblock body %}

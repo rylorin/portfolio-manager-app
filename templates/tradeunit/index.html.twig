@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Portfolio {{ portfolio.name }} ({{ portfolio.account|masq }}-{{ portfolio.baseCurrency }}){% endblock %}
+
+{% block body %}
+  <h2>Trades statistics</h2>
+  <div id="canvas-holder" class="my-4 col-12 col-lg-8">
+    <canvas class="w-100" id="myChart"></canvas>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      {% set total_trades_count = 0 %}
+      {% set total_trades_pnl = 0 %}
+      {% set total_trades_closed = 0 %}
+      {% set total_trades_won = 0 %}
+      <thead>
+          <tr class="text-center">
+            <th>#</th>
+            <th>Strategy</th>
+            <th>Closed #</th>
+            <th>Success</th>
+            <th>Average</th>
+            <th>PnL</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for key, stat in stats %}
+          <tr>
+            <td>
+              {{ stat.count }}
+              {% set total_trades_count = total_trades_count + stat.count %}
+            </td>
+            <td>
+              {{ key }}
+            </td>
+            <td>
+              {{ stat.closed }}
+              {% set total_trades_closed = total_trades_closed + stat.closed %}
+            </td>
+            <td class="text-right">
+              {% if stat.closed > 0 %}
+                {{ (stat.win / stat.closed) | my_percent_format }}
+                {% set total_trades_won = total_trades_won + stat.win %}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td class="{{ stat.pnl|my_number_class_2colors }}">
+              {% if stat.closed > 0 %}
+                {{ (stat.pnl / stat.closed) | my_decimal_format }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td class="{{ stat.pnl|my_number_class_2colors }}">
+              {{ stat.pnl|my_decimal_format }}
+              {% set total_trades_pnl = total_trades_pnl + stat.pnl %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot class="font-weight-bold">
+      	<tr>
+          <td>{{ total_trades_count }}</td>
+          <td>Total</td>
+          <td>{{ total_trades_closed }}</td>
+          <td class="text-right">
+            {{ (total_trades_won / total_trades_closed) | my_percent_format }}
+          </td>
+          <td class="{{ total_trades_pnl|my_number_class_2colors }}">
+            {{ (total_trades_pnl / total_trades_closed) | my_integer_format }}
+          </td>
+      		<td class="{{ total_trades_pnl|my_number_class_2colors }}">
+            {{ total_trades_pnl|my_integer_format }}
+          </td>
+      	</tr>
+      </tfoot>
+    </table>
+  </div>
+  <canvas class="my-4 w-100" id="myChart2" width="900" height="380"></canvas>
+  <h2>All Trades ({{ trades|length }})</h2>
+  {% include('tradeunit/_tradeunits_table.html.twig') %}
+
+  <script>
+      var chartColors = {
+      	red: 'rgb(255, 99, 132)',
+      	orange: 'rgb(255, 159, 64)',
+      	yellow: 'rgb(255, 205, 86)',
+      	green: 'rgb(75, 192, 192)',
+      	blue: 'rgb(54, 162, 235)',
+      	purple: 'rgb(153, 102, 255)',
+      	grey: 'rgb(201, 203, 207)'
+      };
+
+      var barChartData = {
+      		labels: [
+                  {% for key in stats|keys %}
+                      '{{ key }}',
+                  {% endfor %}
+          ],
+          datasets: [
+                  {
+                      label: 'P/L',
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                      borderColor: window.chartColors.blue,
+                      borderWidth: 1,
+                      data: [
+                          {% for key in stats|keys %}
+                              '{{ stats[key]['pnl']|round }}',
+                          {% endfor %}
+                      ]
+            			}
+          ]
+    	};
+
+      var barChartOptions = {
+  				title: {
+  					display: false,
+  					text: 'Strategy Performance'
+  				},
+  				tooltips: {
+  					mode: 'index',
+  					intersect: false
+  				},
+  				responsive: true,
+  				scales: {
+  					xAxes: [{
+  						stacked: true,
+  					}],
+  					yAxes: [{
+  						stacked: true,
+              gridLines: {
+                color: 'rgba(201, 203, 207, 0.2)',
+                zeroLineColor: 'rgba(201, 203, 207, 0.8)',
+              }
+  					}],
+  				},
+  		};
+
+      var pieChartData = {
+  				datasets: [{
+  					data: [
+              {% for key in stats|keys %}
+                  '{{ stats[key]['count'] }}',
+              {% endfor %}
+  					],
+  					backgroundColor: [
+  						window.chartColors.red,
+  						window.chartColors.orange,
+  						window.chartColors.yellow,
+  						window.chartColors.green,
+  						window.chartColors.blue,
+              window.chartColors.purple,
+              window.chartColors.grey,
+  					],
+  					label: 'Dataset 1'
+  				}],
+  				labels: [
+            {% for key in stats|keys %}
+                '{{ key }}',
+            {% endfor %}
+  				]
+  		};
+
+      var pieChartOptions = {
+  				responsive: true
+  		};
+
+      var graphs = [
+        {context: 'myChart', type: 'doughnut', data: pieChartData, options: pieChartOptions},
+        {context: 'myChart2', type: 'bar', data: barChartData, options: barChartOptions},
+      ];
+  </script>
+{% endblock %}

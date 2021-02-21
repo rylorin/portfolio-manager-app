@@ -1,0 +1,58 @@
+{% extends 'app_base_layout.html.twig' %}
+
+{% block sonata_page_container %}
+<div class="container-fluid">
+  {% block sonata_page_breadcrumb %}
+  {#
+    <div class="row">
+        {{ sonata_block_render_event('breadcrumb', { 'context': 'page', 'current_uri': app.request.requestUri }) }}
+    </div>
+  #}
+  {% endblock %}
+  <div class="row page-header">
+    <div class="col-12">{{ sonata_page_render_container('header', 'global') }}</div>
+  </div>
+
+  {% if page is defined %}
+    <div class="row page-top">
+      <div class="col-12">{{ sonata_page_render_container('content_top', page) }}</div>
+    </div>
+  {% endif %}
+
+  {% block page_content %}
+      {% if content is defined %}
+          {{ content|raw }}
+      {% else %}
+        <div class="row page-content">
+          {% set content = block('content') is defined ? block('content') : '' %}
+          {% if content|length > 0 %}
+              {{ content|raw }}
+          {% elseif page is defined %}
+              {{ sonata_page_render_container('content', page) }}
+          {% endif %}
+        </div>
+      {% endif %}
+  {% endblock %}
+
+  {% if page is defined %}
+      <div class="row page-bottom">
+          {{ sonata_page_render_container('content_bottom', page) }}
+      </div>
+  {% endif %}
+
+  <footer class="row page-footer">
+    <div class="col-md-3 col-lg-2 d-lg-block">{{page.id}} {{page.name}} {{app.request.attributes.get('_route')}}</div>
+    <div class="col-xs-12 col-lg-10">
+      {{ sonata_page_render_container('footer', 'global') }}
+    </div>
+  </footer>
+</div>
+{% endblock %}
+
+{% block unused %}
+    {% verbatim %}
+    <div id="vueApp">
+      {{message}}  <App/>
+    </div>
+    {% endverbatim %}
+{% endblock %}

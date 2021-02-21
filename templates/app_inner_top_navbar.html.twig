@@ -1,0 +1,107 @@
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-dark flex-lg-nowrap p-0 shadow" {% if sonata_page.isEditor and sonata_page.isInlineEditionOn %}
+data-page-editor='{{ {
+          url: {
+              block_save_position: sonata_admin.objectUrl('sonata.page.admin.page', 'edit', page),
+              block_edit:          sonata_admin.url('sonata.page.admin.page|sonata.page.admin.block', 'edit', {'id': 'BLOCK_ID'})
+          }
+      }|json_encode()|raw }}' {% endif %}>
+  <a class="navbar-brand col-10 col-md-3 col-lg-2 mr-0 px-3 h-auto" href="/{{ page.site.relativePath }}">{% if page.site.title %}{{ page.site.title }}{% else %}{{ page.site.name }}{% endif %}</a>
+  <button id="menuToggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse ml-3" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item {% if page.name == 'Homepage' %}active{% endif %}">
+        <a class="nav-link" href="/{{ page.site.relativePath }}"><span data-feather="home"></span> Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item {% if app.request.attributes.get('_route') starts with 'sonata_news' %}active{% endif %}">
+        <a class="nav-link" href="{{ path('sonata_news_home') }}"><span data-feather="file-text"></span> Blog</a>
+      </li>
+      <li class="nav-item {% if app.request.attributes.get('_route') starts with 'portfolio' %}active{% endif %}">
+        <a class="nav-link" href="{{ path('portfolio_index') }}"><span data-feather="activity"></span> Portfolios</a>
+      </li>
+      {% if app.user and is_granted('ROLE_PREVIOUS_ADMIN') %}
+        <li class="nav-item {% if app.request.attributes.get('_route') starts with 'repository' %}active{% endif %}">
+          <a class="nav-link" href="{{ path('repository_currency_index') }}"><span data-feather="database"></span> Repository</a>
+        </li>
+      {% endif %}
+      {% if sonata_page.isEditor or ( app.user and is_granted('ROLE_PREVIOUS_ADMIN') ) %}
+        {% if sonata_page.isEditor and sonata_page.isInlineEditionOn %}
+            {# RYL: je vois mal comment le code ci-dessous peut fonctionner du fait des quotes simples dans des quotes simples #}
+            <!-- CMS specific variables -->
+            <script>
+                jQuery(document).ready(function() {
+                    Sonata.Page.init({
+                        url: {
+                            block_save_position: '{{ sonata_admin.objectUrl('sonata.page.admin.page', 'edit', page) }}',
+                            block_edit:          '{{ sonata_admin.url('sonata.page.admin.page|sonata.page.admin.block', 'edit', {'id': page.id , 'childId': 'BLOCK_ID'}) }}'
+                        }
+                    });
+                });
+            </script>
+        {% endif %}
+        {% if app.user and is_granted('ROLE_SONATA_ADMIN') %}
+          <li class="nav-item"><a class="nav-link" href="{{ path('sonata_admin_dashboard') }}">{{ "header.sonata_admin_dashboard"|trans({}, 'SonataPageBundle') }}</a></li>
+        {% endif %}
+
+        {% if sonata_page.isEditor %}
+          {% set sites = sonata_page.siteavailables %}
+
+          {% if sites|length > 1 and site is defined %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">{{ site.name }} <span class="caret"></span></a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% for site in sites %}
+              <a class="dropdown-item" href="{{ site.url }}">{{ site.name }}</a>
+              {% endfor %}
+            </div>
+          </li>
+          {% endif %}
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Page <span class="caret"></span></a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% if page is defined %}
+              <a class="dropdown-item" href="{{ sonata_admin.objectUrl('sonata.page.admin.page', 'edit', page) }}">{{ "header.edit_page"|trans({}, 'SonataPageBundle') }}</a>
+              <a class="dropdown-item" href="{{ sonata_admin.objectUrl('sonata.page.admin.page|sonata.page.admin.snapshot', 'list', page) }}">{{ "header.create_snapshot"|trans({}, 'SonataPageBundle') }}</a>
+              <hr>
+              {% endif %}
+
+              <a class="dropdown-item" href="{{ sonata_admin.url('sonata.page.admin.page', 'list') }}">{{ "header.view_all_pages"|trans({}, 'SonataPageBundle') }}</a>
+
+              {% if error_codes is defined and error_codes|length %}
+              <hr>
+              <a class="dropdown-item" href="{{ path('sonata_page_exceptions_list') }}">{{ "header.view_all_exceptions"|trans({}, 'SonataPageBundle') }}</a>
+              {% endif %}
+            </div>
+          </li>
+
+          {% if page is defined %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ sonata_admin.url('sonata.page.admin.page', 'compose', {'id': page.id}) }}">
+                <span data-feather="edit-2"></span>
+                {{ 'header.compose_page'|trans({}, 'SonataPageBundle')}}
+              </a>
+            </li>
+          {% endif %}
+
+          {% if page is defined and not page.enabled %}
+            <li class="nav-item"><span style="padding-left: 20px; background: red;"><strong><em>{{ 'header.page_is_disabled'|trans([], 'SonataPageBundle') }}</em></strong></span></li>
+          {% endif %}
+
+          {% if sonata_page.isInlineEditionOn and page is defined %}
+            <li class="nav-item">
+              <form class="form-inline" style="margin: 0px">
+                <label class="checkbox inline" for="page-action-enabled-edit"><input type="checkbox" id="page-action-enabled-edit">{{ 'header.show_zone'|trans({}, 'SonataPageBundle') }}</label>
+                <input type="submit" class="btn" value="{{ 'btn_save_position'|trans({}, 'SonataPageBundle') }}" id="page-action-save-position">
+              </form>
+            </li>
+          {% endif %}
+        {% endif %}
+        {% if app.user and is_granted('ROLE_PREVIOUS_ADMIN') %}
+          <li class="nav-item"><a class="nav-link" href="{{ url('homepage', {'_switch_user': '_exit'}) }}">{{ "header.switch_user_exit"|trans({}, 'SonataPageBundle')}}</a></li>
+        {% endif %}
+      {% endif %}{# if sonata_page.isEditor or ( app.user and is_granted('ROLE_PREVIOUS_ADMIN') ) #}
+      </ul>
+    </div>
+</nav>

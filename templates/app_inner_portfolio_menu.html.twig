@@ -1,0 +1,56 @@
+{% if (portfolio is defined) and (portfolio is not null) and (portfolio.id > 0) %}
+<h6 class="sidebar-heading d-flex align-items-center px-3 pt-3 mb-1 text-muted">
+  <span data-feather="database"></span>
+  <span class="ml-2">{{ portfolio.name }}</span>
+</h6>
+<ul class="nav flex-column Xborder-bottom pb-2">
+  <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_show' %}active{% endif %}" href="{{ path('portfolio_show', { 'id': portfolio.id }) }}">
+      <span data-feather="activity"></span>
+      Dashboard <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_symbols' %}active{% endif %}" href="{{ path('portfolio_symbols', { 'id': portfolio.id }) }}">
+    <span data-feather="bar-chart"></span>
+      Symbols
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_position' %}active{% endif %}" href="{{ path('portfolio_positions_index', { 'id': portfolio.id }) }}">
+      <span data-feather="bar-chart-2"></span>
+      Positions
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_option' %}active{% endif %}" href="{{ path('portfolio_options_index', { 'id': portfolio.id }) }}">
+      <span data-feather="bar-chart-2"></span>
+      Options
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_balance' %}active{% endif %}" href="{{ path('portfolio_balances_index', { 'id': portfolio.id }) }}">
+      <span data-feather="dollar-sign"></span>
+      Cash
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_statement' %}active{% endif %}" href="{{ path('portfolio_statements_index', { 'id': portfolio.id }) }}">
+      <span data-feather="file-text"></span>
+      Statements
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_trades' %}active{% endif %}" href="{{ path('portfolio_trades_index', { 'id': portfolio.id }) }}">
+      <span data-feather="bar-chart-2"></span>
+      Trades
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_tools' %}active{% endif %}" href="{{ path('portfolio_tools_upload', { 'id': portfolio.id }) }}">
+      <span data-feather="layers"></span>
+      Tools
+    </a>
+  </li>
+</ul>
+{% endif %}

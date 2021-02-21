@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Portfolio {{ portfolio.name }} ({{ portfolio.account|masq }}-{{ portfolio.baseCurrency }}){% endblock %}
+
+{% block body %}
+    <h2>Statements ({{ statements|length }})</h2>
+    {% include('statement/_statements_table.html.twig') %}
+    <a href="{{ path('statement_new') }}">Create new</a>
+{% endblock %}
