@@ -17,7 +17,7 @@ sonata_page:
         page: App\Entity\Page\Page
         block: App\Entity\Page\Block
 
-    multisite: host_with_path # host
+    multisite:             host # host_with_path
     use_streamed_response: false # set the value to false in debug mode or if the reverse proxy does not handle streamed response
 
     ignore_uri_patterns:
@@ -55,24 +55,24 @@ sonata_page:
         #    - assetic/sonata_front_js.js
 
         stylesheets:
-            - 'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css'
-            - 'bundles/sonatacore/vendor/select2/select2.css'
-            - 'bundles/mopabootstrap/css/datepicker.css'
-            - 'bundles/sonatademo/css/demo.css'
-            -
+# RYL            - 'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css'
+# RYL            - 'bundles/sonatacore/vendor/select2/select2.css'
+# RYL            - 'bundles/mopabootstrap/css/datepicker.css'
+# RYL            - 'bundles/sonatademo/css/demo.css'
+            - 'assets/app/app.css'
         javascripts:
-            - 'bundles/sonataproduct/js/product.js'
-            - 'bundles/sonatacore/js/base.js'
-            - 'bundles/sonatademo/js/demo.js'
-            - 'bundles/sonatapage/sonata-page.front.js'
-            - 'bundles/sonatacore/vendor/jquery/dist/jquery.js'
-            - 'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.js'
-            - 'bundles/sonatacore/vendor/select2/select2.min.js'
-            -
-    default_template: default
+# RYL            - 'bundles/sonataproduct/js/product.js'
+# RYL            - 'bundles/sonatacore/js/base.js'
+# RYL            - 'bundles/sonatademo/js/demo.js'
+# RYL            - 'bundles/sonatapage/sonata-page.front.js'
+# RYL            - 'bundles/sonatacore/vendor/jquery/dist/jquery.js'
+# RYL            - 'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.js'
+# RYL            - 'bundles/sonatacore/vendor/select2/select2.min.js'
+            - 'assets/app/app.js'
+    default_template: portfoliomanager_default
     templates:
-        default:
-            path: 'demo_layout.html.twig'
+        'default':
+            path: '@App/demo_layout.html.twig'
             name: 'default'
             containers:
                 header:
@@ -103,7 +103,7 @@ sonata_page:
                     F: footer
 
         2columns:
-            path: 'demo_2columns_layout.html.twig'
+            path: '@App/demo_2columns_layout.html.twig'
             name: '2 columns layout'
             containers:
                 header:
@@ -133,6 +133,27 @@ sonata_page:
                     R: right_col
                     B: content_bottom
                     F: footer
+
+        # RYL
+        portfoliomanager_default:
+            path: 'app_layout.html.twig'
+            name: 'Portfolio Manager Standard'
+            containers:
+                 content_top:
+                     name: Top content
+                 content:
+                     name: Main content
+                 content_bottom:
+                     name: Bottom content
+            matrix:
+                 layout: |
+                     TTTTTTTT
+                     CCCCCCCC
+                     BBBBBBBB
+                 mapping:
+                     T: content_top
+                     C: content
+                     B: content_bottom
 
     page_defaults:
         homepage: { decorate: false, enabled: true }

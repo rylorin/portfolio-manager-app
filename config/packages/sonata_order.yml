@@ -1,13 +1,13 @@
-# Enable Doctrine to map the provided entities
-sonata_order:
-    class:
-        order: App\Entity\Commerce\Order
-        order_element: App\Entity\Commerce\OrderElement
-        customer: App\Entity\Commerce\Customer
-
-doctrine:
-    orm:
-        entity_managers:
-            default:
-                mappings:
-                    SonataOrderBundle: ~
+## Enable Doctrine to map the provided entities
+#sonata_order:
+#    class:
+#        order: App\Entity\Commerce\Order
+#        order_element: App\Entity\Commerce\OrderElement
+#        customer: App\Entity\Commerce\Customer
+#
+#doctrine:
+#    orm:
+#        entity_managers:
+#            default:
+#                mappings:
+#                    SonataOrderBundle: ~
