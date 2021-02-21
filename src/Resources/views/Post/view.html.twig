@@ -1,0 +1,60 @@
+{#
+
+/*
+ * This file is part of the Sonata package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+#}
+
+{% sonata_template_box 'This is the post template. Feel free to override it.' %}
+
+{% block sonata_page_breadcrumb %}
+    <div class="row-fluid clearfix" id=breadcrumbvalue style="display: none;">
+        {{ sonata_block_render_event('breadcrumb', { 'context': 'news_post', 'post': post, 'current_uri': app.request.requestUri }) }}
+    </div>
+    <script>$("#breadcrumb").html($("#breadcrumbvalue").html());</script>
+{% endblock %}
+
+<div class="row blog-post">
+	<div class=col-md-12>
+            <div class=featured-image>
+               {% media post.image, 'wide' with {'class': 'img-responsive'} %}
+            </div>
+            <h2 class=post-title><a href={{ path('sonata_news_view', { 'permalink': sonata_news_permalink(post) }) }}>{{ post.title }}</a></h2>
+            <!-- hack because invalid page title tag and can't understand why -->
+            <script>$("title").text("{{ post.title|raw }}"); $("#title").text("{{ post.title|raw }}");</script>
+            <div class=post-meta><a href=#>{{ 'archive_author'|trans({'%author%': post.author }, 'SonataNewsBundle') }}</a>
+              <span>|</span> {{ post.publicationDateStart | format_date }}
+              <span>|</span> {{ 'comments_count'|trans({'%comments_count%': post.commentsCount }, 'SonataNewsBundle') }}
+              <span>|</span> {{ 'published_under'|transchoice(post.tags|length, {}, 'SonataNewsBundle') }}
+                {% for tag in post.tags %}
+                  <a href="{{ path('sonata_news_tag', { 'tag': tag.slug } ) }}">{{ tag.name }}</a>{% if not loop.last %},{% endif %}
+                {% endfor %}
+			</div>
+            <div class=post-content>
+              <p>{{ post.abstract }}</p>
+	          {{ post.content|raw }}
+            </div>
+
+	        <div id="comments">{% render(controller('SonataNewsBundle:Post:comments', {'postId': post.id})) %}</div>
+
+		    {% if post.iscommentable %}
+		    	<div>
+		        {% render(controller('SonataNewsBundle:Post:addCommentForm', {
+		            'postId': post.id,
+		            'form': form
+		        })) %}
+		        </div>
+		    {% else %}
+		        <div>
+		            {{ 'message_comments_are_closed'|trans({}, 'SonataNewsBundle') }}
+		        </div>
+		    {% endif %}
+
+	</div>
+</div>

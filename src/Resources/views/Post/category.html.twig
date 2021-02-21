@@ -1,0 +1,41 @@
+{% sonata_template_box 'This is the category template. Feel free to override it.' %}
+<!-- hack because invalid page title tag and can't understand why -->
+<script>
+	$("title").text("{{ category.description|raw }}");
+	$("#title").text("{{ category.description|raw }}");
+</script>
+<style>
+	.inline-bg-img {
+		background-image: url({{ mediasrc }});
+	}
+</style>
+		
+{% block sonata_page_breadcrumb %}
+<script>$("#breadcrumb").text("");</script>
+{% endblock %}
+
+{% for post in pager.getResults() %}
+<div class="blog-post">
+	<div class=col-md-12>
+		<h2 class=post-title>
+			<a
+				href={{ path('sonata_news_view', { 'permalink': sonata_news_permalink(post) }) }}>{{ post.title }}</a>
+		</h2>
+		<p>
+			<strong>{{ post.abstract|raw }}</strong>
+		</p>
+	</div>
+	<div class="col-md-6">
+		<div class="featured-image">
+			{% media post.image, 'reference' with {'class': 'img-responsive center-block'} %}
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class=post-content>
+			{{ post.content|raw }}
+		</div>
+	</div>
+</div>
+{% else %}
+    {{ 'no_post_found'|trans({}, 'SonataNewsBundle') }}
+{% endfor %}

@@ -1,0 +1,22 @@
+{% extends '@App/reign_base_layout.html.twig' %}
+
+  {% block reign_page_content %}  
+
+    {% block page_content_top %}
+      {{ parent() }}
+    {% endblock %}
+
+    {% block page_content %}
+  <section id=blog-single class="section blog blog-standard">
+    <div class=container>
+      <div class=row>
+        <div class="col-md-8 col-md-offset-2">
+          {{ parent() }}
+        </div>
+      </div>
+    </div>
+  </section>
+    {% endblock %}
+
+  {% endblock %}
+

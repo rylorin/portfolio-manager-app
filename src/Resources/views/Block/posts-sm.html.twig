@@ -1,0 +1,17 @@
+<div class="col-md-3 col-sm-6">
+	<div class="content-wrap widget-recent-posts">
+            <h4>{{ settings.title }}</h4>
+            <ul>
+            {% for post in pager.getResults() %}
+                <li>
+                <a class="post-title" href="{{ path('sonata_news_view', { 'permalink': sonata_news_permalink(post) }) }}">{{ post.title }}</a>
+				{% if post.author|length > 0 %}
+                	<a href=# class=author>{{ 'archive_author'|trans({'%author%': post.author }, 'SonataNewsBundle') }}</a>
+				{% endif %}
+                </li>
+            {% else %}
+                <li><p>{{ 'no_post_found'|trans({}, 'SonataNewsBundle') }}</p></li>
+            {% endfor %}
+            </ul>
+	</div>
+</div>

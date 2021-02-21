@@ -1,0 +1,33 @@
+<section id=about-us class="section about-us">
+    <div class=container>
+      <header class=section-heading>
+        <h2>{{ settings.title }}</h2>
+        <span>{{ settings.subtitle }}</span>
+      </header>
+      <div class=section-content>
+        <div class=row>
+          <div class=col-sm-4>
+            <div class="about-content left">
+              <h4>{{ settings.subtitleleft }}</h4>
+              <p>{{ settings.textleft|raw }}</p>
+            </div>
+          </div>
+          <div class=col-sm-4>
+            <figure class="about-content center">
+              {% if media and settings.format%}
+                {% media media, settings.format with {'class': 'img-responsive center-block'} %}
+              {% else %}
+                {# no media selected or format defined... #}
+              {% endif %}
+            </figure>
+          </div>
+          <div class=col-sm-4>
+            <div class="about-content right">
+              <h4>{{ settings.subtitleright }}</h4>
+              <p>{{ settings.textright|raw }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

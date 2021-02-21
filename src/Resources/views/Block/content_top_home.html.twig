@@ -1,0 +1,17 @@
+<header id=header
+	class="header-wrapper home-parallax home-fade dark-bg header-classic {{ settings.class }}">
+	<div class=color-overlay></div>
+	<div class=header-wrapper-inner>
+		<div class=container>
+			{% for child in block.children %}
+			{% block block_child_render %}
+			{{ sonata_block_render(child) }}
+			{% endblock %}
+			{% endfor %}
+		</div>
+		<div class="arrow-down">
+			<a href="#about-us" class="onPageNav"><i
+				class="ion-ios-arrow-down"></i></a>
+		</div>
+	</div>
+</header>

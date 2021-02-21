@@ -1,0 +1,28 @@
+<nav id=fixedTopNav class="navbar navbar-fixed-top main-navigation navbar-inverse{% if settings.class %} {{ settings.class }}{% endif %}" itemscope itemtype=https://schema.org/SiteNavigationElement role=navigation>
+  <div class="container">
+    <div class=navbar-header>
+      <button type=button class="navbar-toggle collapsed" data-toggle=collapse data-target=#main-nav-collapse>
+        <span class=sr-only>Toggle navigation</span>
+        <span class=ion-drag></span>
+      </button>
+      <div class=navbar-brand itemscope itemtype=https://schema.org/Organization>
+        <span itemprop=name class=sr-only>unused?</span><a itemprop=url href=/>
+        <em id=site_name>Re!gn</em>
+      </a>
+    </div>
+  </div>
+  <div class="collapse navbar-collapse" id="main-nav-collapse">
+    <ul class="nav navbar-nav navbar-right" role=menu>
+      {% for child in block.children %}
+    		{% if child.enabled %}
+            {% block block_child_render %}
+              {{ sonata_block_render(child) }}
+            {% endblock %}
+        {% else %}
+	        <!-- RYL block {{ child.name }} disabled -->
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+</nav>

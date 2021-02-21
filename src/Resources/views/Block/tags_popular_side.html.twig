@@ -1,0 +1,12 @@
+<div class="widget popular-tags">
+	<div class=widget-title>
+    	<h4>{{ settings.title }}</h4>
+    </div>
+    <div class=widget-content>
+        {% for tag in pager.getResults() %}
+            <a href={{ path('sonata_news_tag', { 'tag': tag.slug }) }} class="btn btn-dark">{{ tag.name }}</a> 
+        {% else %}
+        	<p>{{ 'no_tag_found'|trans({}, 'SonataNewsBundle') }}</p>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,28 @@
+{% extends '@App/reign_base_layout.html.twig' %}
+
+{#  {% block reign_page_content %}  
+
+    {% block page_content_top %}
+      {{ parent() }}
+    {% endblock %}
+#}
+    {% block page_content %}
+  <section id=blog-standard class="section blog-standard">
+    <div class=container>
+      <div class=col-md-8>
+      {{ parent() }}
+      </div>
+      {% block side_bar %}
+      <div class="col-md-4 col-md-offset-0">
+        <div class="sidebar hidden-sm hidden-xs">
+        <!-- right side menu -->
+    	{{ sonata_page_render_container('right_col', 'global') }}
+    	</div>
+      </div>
+      {% endblock %}
+    </div>
+  </section>
+    {% endblock %}
+{#
+  {% endblock %}
+#}

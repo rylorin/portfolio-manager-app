@@ -1,0 +1,20 @@
+<section id=about-us class="section about-us">
+    <div class=container>
+      <div class=section-content>
+        <div class=row>
+          <div class=col-sm-12>
+			<figure class="about-content center" >
+				{% if media and settings.format %}
+					{% media media, settings.format with {'class': 'img-responsive center-block'} %}
+				{% else %}
+					{# no media selected or format defined... #}
+				{% endif %}
+				{% if settings.title %}
+					<figcaption>{{ settings.title }}</figcaption>
+				{% endif %}
+			</figure>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>

@@ -1,0 +1,19 @@
+<div class="col-md-3 col-sm-6">
+<div class="content-wrap widget-contact">
+            <h4>{{ settings.title }}</h4>
+            <ul>
+{% if settings.home|length > 0 %}
+              <li><i class=ion-home></i> <a href={% if settings.url %}"{{ settings.url }}"{% else %}"http://{{ settings.home }}"{% endif %}>{{ settings.home }}</a></li>
+{% endif %}
+{% if settings.call|length > 0 %}
+              <li><i class=ion-android-call></i> <a href="tel:{{ settings.call }}">{{ settings.call }}</a></li>
+{% endif %}
+{% if settings.email|length > 0 %}
+              <li><i class=ion-email></i> <a href="mailto:{{ settings.email }}">{{ settings.email }}</a></li>
+{% endif %}
+{% if settings.location|length > 0 %}
+              <li><i class=ion-ios-location></i> {{ settings.location }}</li>
+{% endif %}
+            </ul>
+          </div>
+</div>

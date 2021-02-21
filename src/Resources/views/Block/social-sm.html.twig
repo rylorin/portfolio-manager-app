@@ -1,0 +1,16 @@
+<div class="col-md-5 col-sm-4">
+	<ul class=footer-social-block>
+		{% if settings.facebook|length > 0 %}
+            <li><a href={{ settings.facebook }}><i class="fa fa-facebook"></i></a></li>
+		{% endif %}
+		{% if settings.twitter|length > 0 %}
+            <li><a href={{ settings.twitter }}><i class="fa fa-twitter"></i></a></li>
+		{% endif %}
+		{% if settings.pinterest|length > 0 %}
+            <li><a href={{ settings.pinterest }}><i class="fa fa-pinterest-p"></i></a></li>
+		{% endif %}
+		{% if settings.linkedin|length > 0 %}
+            <li><a href={{ settings.linkedin }}><i class="fa fa-linkedin"></i></a></li>
+		{% endif %}
+    </ul>
+</div>
