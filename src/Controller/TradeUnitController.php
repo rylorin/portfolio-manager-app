@@ -108,7 +108,7 @@ class TradeUnitController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="portfolio_tradeunit_delete", methods={"DELETE"})
+     * @Route("/{id}", name="tradeunit_delete", methods={"DELETE"})
      */
     public function delete(Request $request, TradeUnit $tradeunit): Response
     {

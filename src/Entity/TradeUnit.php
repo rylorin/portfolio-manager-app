@@ -369,12 +369,16 @@ class TradeUnit
 
     public function getRoR(): ?float
     {
-      return $this->PnL / $this->risk;
+      return ($this->risk ? $this->PnL / $this->risk : null);
     }
 
     public function getAnnualRoR(): ?float
     {
-      return ($this->getDuration() < 7 ? $this->PnL / $this->risk * 250 : $this->PnL / $this->risk * 360);
+      if ($this->risk) {
+        return ($this->getDuration() < 7 ? $this->PnL / $this->risk / $this->getDuration() * 250 : $this->PnL / $this->risk / $this->getDuration() * 360);
+      } else {
+        return null;
+      }
     }
 
 }
