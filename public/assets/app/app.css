@@ -23,17 +23,32 @@
     color: DarkOrange!important;
 }
 */
-.form-inline {
-    display: inline;
-}
 
-a, a:visited {
-  color: #007bff;
+/*
+ * select2
+ */
+.select2-search {
+  background-color: var(--white);
+}
+.select2-search input {
+  background-color: var(--dark);
+  color: var(--white);
+}
+.select2-results {
+  background-color: var(--green);
 }
 
 /*
  * Other styles
  */
+
+ .form-inline {
+     display: inline;
+ }
+
+ a, a:visited {
+   color: #007bff;
+ }
 
 .table-subtotal, .table-subtotal>td, .table-subtotal>th {
     background-color: Gainsboro;
@@ -135,7 +150,7 @@ body {
   top: .25rem;
   right: 1rem;
 }
-/*
+/* not used
 .navbar .form-control {
   padding: .75rem 1rem;
   border-width: 0;

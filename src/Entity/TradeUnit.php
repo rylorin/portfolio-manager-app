@@ -18,17 +18,19 @@ class TradeUnit
     // statuses
     public const OPEN_STATUS = 1;
     public const CLOSE_STATUS = 2;
-    // strategies
+    // stock strategies
     public const LONG_STOCK = 1;
     public const SHORT_STOCK = 2;
+    // options strategies
     public const LONG_CALL = 3;
     public const SHORT_CALL = 4;
-    public const COVERED_CALL = 7;
     public const LONG_PUT = 5;
     public const SHORT_PUT = 6;
+    public const COVERED_CALL = 7;
     public const THE_WHEEL = 8;
     public const RISK_REVERSAL = 9;
     public const BULL_SPREAD = 10;
+    public const SHORT_STRANGLE = 11;
 
     /**
      * @ORM\Id
@@ -202,6 +204,8 @@ class TradeUnit
           return 'risk reversal';
         } elseif ($this->strategy == TradeUnit::BULL_SPREAD) {
           return 'bull spread';
+        } elseif ($this->strategy == TradeUnit::SHORT_STRANGLE) {
+          return 'short strangle';
         } else {
           return strval($this->strategy);
         }

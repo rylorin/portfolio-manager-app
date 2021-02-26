@@ -31,7 +31,7 @@
               {% set total_trades_count = total_trades_count + stat.count %}
             </td>
             <td>
-              {{ key }}
+              {{ stat.strategy }}
             </td>
             <td>
               {{ stat.closed }}
@@ -94,29 +94,29 @@
 
       var barChartData = {
       		labels: [
-                  {% for key in stats|keys %}
-                      '{{ key }}',
-                  {% endfor %}
+              {% for key, stat in stats %}
+                  '{{ stat.strategy }}',
+              {% endfor %}
           ],
           datasets: [
-                  {
-                      label: 'P/L',
-                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                      borderColor: window.chartColors.blue,
-                      borderWidth: 1,
-                      data: [
-                          {% for key in stats|keys %}
-                              '{{ stats[key]['pnl']|round }}',
-                          {% endfor %}
-                      ]
-            			}
+              {
+                  label: 'P/L',
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: window.chartColors.blue,
+                  borderWidth: 1,
+                  data: [
+                      {% for key in stats|keys %}
+                          '{{ stats[key]['pnl']|round }}',
+                      {% endfor %}
+                  ]
+        			}
           ]
     	};
 
       var barChartOptions = {
   				title: {
-  					display: false,
-  					text: 'Strategy Performance'
+  					display: true,
+  					text: 'P/L / strategy'
   				},
   				tooltips: {
   					mode: 'index',
@@ -138,6 +138,11 @@
   		};
 
       var pieChartData = {
+          labels: [
+            {% for key, stat in stats %}
+                '{{ stat.strategy }}',
+            {% endfor %}
+          ],
   				datasets: [{
   					data: [
               {% for key in stats|keys %}
@@ -155,15 +160,18 @@
   					],
   					label: 'Dataset 1'
   				}],
-  				labels: [
-            {% for key in stats|keys %}
-                '{{ key }}',
-            {% endfor %}
-  				]
   		};
 
       var pieChartOptions = {
-  				responsive: true
+        title: {
+          display: true,
+          text: '# trades / strategy'
+        },
+				responsive: true,
+				animation: {
+					animateRotate: false,
+					animateScale: true
+				}
   		};
 
       var graphs = [

@@ -38,13 +38,14 @@ class TradeUnitController extends AbstractController
       );
       $stats = [];
       foreach ($trades as $key => $trade) {
-        $strategy = $trade->getStrategyName();
+        $strategy = $trade->getStrategy();
         if (!array_key_exists($strategy, $stats)) {
           $stats[$strategy]['count'] = 0;
           $stats[$strategy]['closed'] = 0;
           $stats[$strategy]['pnl'] = 0.0;
           $stats[$strategy]['win'] = 0;
           $stats[$strategy]['lost'] = 0;
+          $stats[$strategy]['strategy'] = $trade->getStrategyName();
         }
         $stats[$strategy]['count']++;
         if ($trade->getStatus() == TradeUnit::CLOSE_STATUS) {
@@ -57,6 +58,10 @@ class TradeUnitController extends AbstractController
           }
         }
       }
+
+      usort($stats, function($a, $b) {
+        return $b['count'] - $a['count'];
+      });
 
       return $this->render('tradeunit/index.html.twig', [
           'portfolio' => $portfolio,

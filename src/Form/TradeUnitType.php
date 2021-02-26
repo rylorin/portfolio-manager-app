@@ -40,6 +40,7 @@ class TradeUnitType extends AbstractType
             'the wheel' => TradeUnit::THE_WHEEL,
             'risk reversal' => TradeUnit::RISK_REVERSAL,
             'bull spread' => TradeUnit::BULL_SPREAD,
+            'short strangle' => TradeUnit::SHORT_STRANGLE,
             ]])
           ->add('openingDate', DateTimeType::class, [
                 'html5' => true,
