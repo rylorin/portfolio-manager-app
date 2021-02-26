@@ -5092,16 +5092,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.89.1",
+            "version": "3.90.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "b1e0ff836342cf2695da6a0e52c979792864081d"
+                "reference": "6caae26d4682500d52ed6fbd955a3c09d925142b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/b1e0ff836342cf2695da6a0e52c979792864081d",
-                "reference": "b1e0ff836342cf2695da6a0e52c979792864081d",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/6caae26d4682500d52ed6fbd955a3c09d925142b",
+                "reference": "6caae26d4682500d52ed6fbd955a3c09d925142b",
                 "shasum": ""
             },
             "require": {
@@ -5213,7 +5213,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/SonataAdminBundle/issues",
-                "source": "https://github.com/sonata-project/SonataAdminBundle/tree/3.89.1"
+                "source": "https://github.com/sonata-project/SonataAdminBundle/tree/3.90.0"
             },
             "funding": [
                 {
@@ -5233,7 +5233,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-02-16T13:40:21+00:00"
+            "time": "2021-02-25T14:41:43+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -5886,24 +5886,24 @@
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
-            "version": "3.29.0",
+            "version": "3.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "6df5cec1ceb029132e5690c368623ab712bf8041"
+                "reference": "71ea5138cfc443a42aa0b8c692b98bee11001743"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/6df5cec1ceb029132e5690c368623ab712bf8041",
-                "reference": "6df5cec1ceb029132e5690c368623ab712bf8041",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/71ea5138cfc443a42aa0b8c692b98bee11001743",
+                "reference": "71ea5138cfc443a42aa0b8c692b98bee11001743",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^1.8 || ^2.0",
                 "doctrine/orm": "^2.5",
                 "doctrine/persistence": "^1.3.4 || ^2.0",
-                "php": "^7.3",
-                "sonata-project/admin-bundle": "^3.87",
+                "php": "^7.3 || ^8.0",
+                "sonata-project/admin-bundle": "^3.88",
                 "sonata-project/exporter": "^1.11.0 || ^2.0",
                 "sonata-project/form-extensions": "^0.1 || ^1.4",
                 "symfony/config": "^4.4",
@@ -5983,7 +5983,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/issues",
-                "source": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/tree/3.29.0"
+                "source": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/tree/3.30.0"
             },
             "funding": [
                 {
@@ -6003,7 +6003,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-02-08T16:55:19+00:00"
+            "time": "2021-02-24T12:41:43+00:00"
         },
         {
             "name": "sonata-project/easy-extends-bundle",
@@ -9138,21 +9138,22 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v4.4.19",
+            "version": "v5.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "066402a1894fcaef22cbff1591c8a0bdf7f66e9b"
+                "reference": "7bf30a4e29887110f8bd1882ccc82ee63c8a5133"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/066402a1894fcaef22cbff1591c8a0bdf7f66e9b",
-                "reference": "066402a1894fcaef22cbff1591c8a0bdf7f66e9b",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/7bf30a4e29887110f8bd1882ccc82ee63c8a5133",
+                "reference": "7bf30a4e29887110f8bd1882ccc82ee63c8a5133",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3",
-                "symfony/cache": "^3.4|^4.0|^5.0",
+                "php": ">=7.2.5",
+                "symfony/cache": "^4.4|^5.0",
+                "symfony/polyfill-php80": "^1.15",
                 "symfony/service-contracts": "^1.1|^2"
             },
             "type": "library",
@@ -9181,7 +9182,7 @@
             "description": "Provides an engine that can compile and evaluate expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/expression-language/tree/v4.4.19"
+                "source": "https://github.com/symfony/expression-language/tree/v5.2.3"
             },
             "funding": [
                 {
@@ -9197,7 +9198,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-27T09:09:26+00:00"
+            "time": "2021-01-27T10:15:41+00:00"
         },
         {
             "name": "symfony/filesystem",
