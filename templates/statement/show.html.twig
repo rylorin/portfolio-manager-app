@@ -31,7 +31,7 @@
                 <th>Stock</th>
                 <td>
                   {% if portfolio is defined %}
-                    <a href="{{ path('portfolio_stock_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id}) }}">
+                    <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id}) }}">
                       {{ statement.stock }}
                     </a>
                   {% else %}

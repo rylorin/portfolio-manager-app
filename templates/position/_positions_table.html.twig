@@ -31,9 +31,9 @@
             <td class="text-right">{{ position.quantity|my_integer_format }}</td>
             <td class=" {% if position.contract.secType == 'OPT' %}font-italic{% endif %}">
               {% if position.contract.secType == 'OPT' %}
-                <a href="{{ path('portfolio_stock_dashboard', {'portfolio': position.portfolio.id, 'stock': position.contract.stock.id}) }}">
+                <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': position.portfolio.id, 'stock': position.contract.stock.id}) }}">
               {% else %}
-                <a href="{{ path('portfolio_stock_dashboard', {'portfolio': position.portfolio.id, 'stock': position.contract.id}) }}">
+                <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': position.portfolio.id, 'stock': position.contract.id}) }}">
               {% endif %}
                   {{ position.contract.symbol }}
               </a>
@@ -43,7 +43,7 @@
             </td>
             <td>{{ position.contract.currency }}</td>
             <td class="{{ (position.contract.changePercent * position.quantity)|my_number_class_2colors }}">{{ position.contract.changePercent|my_percent_format }}</td>
-            <td class="{{ (position.contract.changePercent * position.quantity)|my_number_class_2colors }}">{{ position.contract.price|my_decimal_format }}</td>
+            <td class="text-right">{{ position.contract.price|my_decimal_format }}</td>
             <td class="text-right" >{{ position_value|my_integer_format }}</td>
             <td class="text-right">{{ position.PRU|my_decimal_format }}</td>
             <td class="text-right">{{ position.cost|my_integer_format }}</td>

@@ -16,7 +16,7 @@
         <tr>
           <td class="text-right">{{ symbol.count }}</td>
           <td>
-              <a href="{{ path('portfolio_stock_dashboard', {'portfolio': portfolio.id, 'stock': symbol['stockId']}) }}">
+              <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': symbol['stockId']}) }}">
                 {{ symbol.symbol }}
               </a>
           </td>

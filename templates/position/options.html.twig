@@ -88,11 +88,6 @@
             {% set strike_class = 'text-warning' %}
             {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier %}
           {% endif %}
-          {#
-          {% if strike_class == 'text-success' %}
-            {% set strike_class = '' %}
-          {% endif %}
-          #}
 
           {% set position_engaged = -position.quantity * position.contract.strike * position.contract.multiplier %}
           {% set maturity = position.contract.daysToMaturity %}
@@ -130,7 +125,7 @@
           <tr>
             <td class="text-right" >{{ position.quantity|my_integer_format }}</td>
             <td>
-              <a href="{{ path('portfolio_stock_dashboard', {'portfolio': portfolio.id, 'stock': position.contract.stock.id}) }}">
+              <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': position.contract.stock.id}) }}">
                 {{ position.contract.stock.symbol }}
               </a>
             </td>
@@ -144,7 +139,7 @@
             <td class="{{ position_pnl|my_number_class }}">{{ position_pnl|my_decimal_format }}</td>
             <td class="text-right">{{ position.yield|my_percent_format }}</td>
             <td class="text-right">{{ position_engaged|my_integer_format }}</td>
-            <td class="{{ (position.quantity * position_assignable)|my_number_class }}">{{ position_assignable|my_integer_format }}</td>
+            <td class="{{ strike_class }}">{{ position_assignable|my_integer_format }}</td>
             <td>
               <a href="{{ path('portfolio_position_show', {'id': position.id}) }}"><span data-feather="search"></span></a>
               {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}

@@ -11,7 +11,7 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_symbols' %}active{% endif %}" href="{{ path('portfolio_symbols', { 'id': portfolio.id }) }}">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_symbol' %}active{% endif %}" href="{{ path('portfolio_symbols', { 'id': portfolio.id }) }}">
     <span data-feather="bar-chart"></span>
       Symbols
     </a>
