@@ -15,7 +15,7 @@ use App\Entity\Portfolio;
 use App\Entity\Currency;
 use App\Entity\Statement;
 use App\Entity\StockTradeStatement;
-use App\Entity\TradeOptionStatement;
+use App\Entity\OptionTradeStatement;
 use App\Entity\TaxStatement;
 use App\Entity\DividendStatement;
 use App\Entity\InterestStatement;
@@ -410,12 +410,12 @@ class ImporterIB
         print($currency);
         */
         $description = self::getOperation($codes) . $quantity . ' ' . $option . '@' . $price . $currency;
-        $statement = $this->em->getRepository('App:TradeOptionStatement')->findOneBy(
+        $statement = $this->em->getRepository('App:OptionTradeStatement')->findOneBy(
           [ 'contract' => $option->getId(), 'portfolio' => $portfolio, 'date' => $date ]);
         if (!$statement) {
             $stock = $this->findOrCreateStock($ticker['symbol']);
             if ($stock->getCurrency() <> $currency) $stock->setCurrency($currency);
-        	  $statement = (new TradeOptionStatement())
+        	  $statement = (new OptionTradeStatement())
                 ->setPortfolio($portfolio)
                 ->setDate($date)
                 ->setStock($stock)

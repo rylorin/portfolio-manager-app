@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=TradeOptionRepository::class)
  * @ORM\Table(name="trade_option")
  */
-class TradeOptionStatement extends Statement
+class OptionTradeStatement extends Statement
 {
     // statuses
     public const OPEN_STATUS = 1;

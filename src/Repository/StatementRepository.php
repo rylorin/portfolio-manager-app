@@ -10,7 +10,7 @@ use \Doctrine\ORM\Query\Expr\Join;
 use App\Entity\Statement;
 use App\Entity\Stock;
 use App\Entity\StockTradeStatement;
-use App\Entity\TradeOptionStatement;
+use App\Entity\OptionTradeStatement;
 use App\Entity\Dividend;
 use App\Entity\TaxStatement;
 
@@ -50,7 +50,7 @@ $query =  $this->createQueryBuilder('q')
     ->leftJoin(StockTradeStatement::class, 't', Join::WITH, 'q.id = t.id')
 //            ->addSelect('t')
 //            ->addSelect('SUM(t.realizedPNL) AS stockPNL')
-    ->leftJoin(TradeOptionStatement::class, 'o', Join::WITH, 'q.id = o.id')
+    ->leftJoin(OptionTradeStatement::class, 'o', Join::WITH, 'q.id = o.id')
 //            ->addSelect('o')
 //        ->addSelect('SUM(o.realizedPNL) AS optionPNL')
     ->leftJoin(Dividend::class, 'd', Join::WITH, 'q.id = d.id')

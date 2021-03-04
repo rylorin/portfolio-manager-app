@@ -13,7 +13,7 @@ use App\Repository\StatementRepository;
  * @ORM\DiscriminatorColumn(name="statement_type", type="string", length=4)
  * @ORM\DiscriminatorMap({
  *     "Trade"="StockTradeStatement",
- *     "TradeOption"="TradeOptionStatement",
+ *     "TradeOption"="OptionTradeStatement",
  *     "Dividend"="DividendStatement",
  *     "Tax"="TaxStatement",
  *     "Interest"="InterestStatement",

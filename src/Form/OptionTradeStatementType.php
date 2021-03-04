@@ -6,7 +6,7 @@ namespace App\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\TradeOptionStatement;
+use App\Entity\OptionTradeStatement;
 
 class OptionTradeStatementType extends StatementType
 {
@@ -20,7 +20,7 @@ class OptionTradeStatementType extends StatementType
     public function configureOptions(OptionsResolver $resolver)
     {
       $resolver->setDefaults([
-          'data_class' => TradeOptionStatement::class,
+          'data_class' => OptionTradeStatement::class,
       ]);
     }
 }
