@@ -180,7 +180,7 @@ class StatementController extends AbstractController
       if ($statement->getStatementType() == Statement::TYPE_TRADE) {
         $form = $this->createForm(TradeStatementType::class, $statement);
       } elseif ($statement->getStatementType() == Statement::TYPE_TRADE_OPTION) {
-          $form = $this->createForm(OptionTradeStatementType::class, $statement);
+        $form = $this->createForm(OptionTradeStatementType::class, $statement);
       } else {
         $form = $this->createForm(StatementType::class, $statement);
       }

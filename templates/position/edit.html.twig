@@ -4,7 +4,7 @@
 
 {% block body %}
   <div class="row">
-    {% set item_size='col-sm-6' %}
+    {% set item_size='col-12 col-sm-6' %}
   	<div class="{{ item_size }}">
         {{ include('position/_form.html.twig', {'button_label': 'Update'}) }}
         <a href="{{ path('portfolio_position_show', {'id': position.id}) }}"><span data-feather="arrow-left"></span></a>

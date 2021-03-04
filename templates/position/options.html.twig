@@ -32,7 +32,7 @@
               <th>Yield</th>
               <th>Engaged</th>
               <th>At risk</th>
-              <th>actions</th>
+              <th></th>
           </tr>
       </thead>
       <tbody>
@@ -139,7 +139,7 @@
             <td class="{{ position_pnl|my_number_class }}">{{ position_pnl|my_decimal_format }}</td>
             <td class="text-right">{{ position.yield|my_percent_format }}</td>
             <td class="text-right">{{ position_engaged|my_integer_format }}</td>
-            <td class="{{ strike_class }}">{{ position_assignable|my_integer_format }}</td>
+            <td class="text-right {{ strike_class }}">{{ position_assignable|my_integer_format }}</td>
             <td>
               <a href="{{ path('portfolio_position_show', {'id': position.id}) }}"><span data-feather="search"></span></a>
               {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}

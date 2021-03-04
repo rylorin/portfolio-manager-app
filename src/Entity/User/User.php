@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace App\Entity\User;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Portfolio;
@@ -40,6 +42,17 @@ class User extends BaseUser
     protected $customers;
 
     /**
+     * @ORM\OneToMany(targetEntity=Portfolio::class, mappedBy="owner")
+     */
+    private $portfolios;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->portfolios = new ArrayCollection();
+    }
+
+    /**
      * Get id.
      *
      * @return int $id
@@ -56,6 +69,36 @@ class User extends BaseUser
      */
     public function isOwner(Portfolio $portfolio): bool
     {
-        return false;
+        return $portfolio->getOwner()->getId() == $this->getId();
+    }
+
+    /**
+     * @return Collection|Portfolio[]
+     */
+    public function getPortfolios(): Collection
+    {
+        return $this->portfolios;
+    }
+
+    public function addPortfolio(Portfolio $portfolio): self
+    {
+        if (!$this->portfolios->contains($portfolio)) {
+            $this->portfolios[] = $portfolio;
+            $portfolio->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removePortfolio(Portfolio $portfolio): self
+    {
+        if ($this->portfolios->removeElement($portfolio)) {
+            // set the owning side to null (unless already changed)
+            if ($portfolio->getOwner() === $this) {
+                $portfolio->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }

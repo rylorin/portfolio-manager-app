@@ -106,7 +106,11 @@
                   borderWidth: 1,
                   data: [
                       {% for key in stats|keys %}
-                          '{{ stats[key]['pnl']|round }}',
+                        {% if stats[key]['closed'] > 0 %}
+                          '{{ (stats[key]['pnl'] / stats[key]['closed'])|round }}',
+                        {% else %}
+                          '-',
+                        {% endif %}
                       {% endfor %}
                   ]
         			}
@@ -116,7 +120,7 @@
       var barChartOptions = {
   				title: {
   					display: true,
-  					text: 'P/L / strategy'
+  					text: 'Average P/L / strategy'
   				},
   				tooltips: {
   					mode: 'index',

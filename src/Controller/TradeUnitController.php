@@ -123,7 +123,7 @@ class TradeUnitController extends AbstractController
 
             $statements = $tradeunit->getOpeningTrades();
             foreach ($statements as $statement) {
-              $statement->setTrade(null);
+              $statement->setTradeUnit(null);
             }
             // Should remove option contracts definitions too?
             $entityManager->remove($tradeunit);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\User\User;
 use App\Repository\PortfolioRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -55,6 +56,11 @@ class Portfolio
      * @ORM\OneToMany(targetEntity=TradeUnit::class, mappedBy="portfolio")
      */
     private $tradeUnits;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="portfolios")
+     */
+    private $owner;
 
     public function __construct()
     {
@@ -241,6 +247,18 @@ class Portfolio
                 $tradeUnit->setPortfolio(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }
