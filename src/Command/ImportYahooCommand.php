@@ -84,11 +84,11 @@ class ImportYahooCommand extends Command
             }
             */
         	if ($quote && ($contract->getCurrency() == 'USD' || $contract->getExchange())) {
-        		if ($quote->getCurrency() == 'GBp') {
-                    $contract->setCurrency('GBP');
-        		} elseif ($quote->getCurrency()) {
-                    $contract->setCurrency($quote->getCurrency());
-        		}
+            		if ($quote->getCurrency() == 'GBp') {
+                        $contract->setCurrency('GBP');
+            		} elseif ($quote->getCurrency()) {
+                        $contract->setCurrency($quote->getCurrency());
+            		}
                 $contract->setPrice(self::getYahooPrice($quote));
                 $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
                 $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
