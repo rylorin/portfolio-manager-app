@@ -40,6 +40,7 @@ class TradeUnitController extends AbstractController
       foreach ($trades as $key => $trade) {
         $strategy = $trade->getStrategy();
         if (!array_key_exists($strategy, $stats)) {
+          $stats[$strategy]['id'] = $strategy;
           $stats[$strategy]['count'] = 0;
           $stats[$strategy]['closed'] = 0;
           $stats[$strategy]['pnl'] = 0.0;
@@ -70,6 +71,59 @@ class TradeUnitController extends AbstractController
           'stats' => $stats,
       ]);
     }
+
+    /**
+     * @Route("/portfolio/{portfolio}/strategy/{strategy}", name="portfolio_trades_strategy", methods={"GET"})
+     */
+      public function strategy(TradeUnitRepository $repository, Portfolio $portfolio, int $strategy): Response
+      {
+        $entityManager = $this->getDoctrine()->getManager();
+        $currencies = $entityManager->getRepository('App:Currency')->findByBase($portfolio->getBaseCurrency());
+        $baserate['N/A'] = 0;
+        $baserate[$portfolio->getBaseCurrency()] = 1;
+        foreach ($currencies as $currency) {
+            $baserate[$currency->getCurrency()] = 1.0 / $currency->getRate();
+        }
+        $trades = $entityManager->getRepository('App:TradeUnit')->findTradeUnits(
+          [ 'q.portfolio' => $portfolio, 'q.strategy' => $strategy ],
+          [ 'q.openingDate' => 'DESC' ]
+        );
+        // Warning: same code as index
+        $stats = [];
+        foreach ($trades as $key => $trade) {
+          $strategy = $trade->getStrategy();
+          if (!array_key_exists($strategy, $stats)) {
+            $stats[$strategy]['id'] = $strategy;
+            $stats[$strategy]['count'] = 0;
+            $stats[$strategy]['closed'] = 0;
+            $stats[$strategy]['pnl'] = 0.0;
+            $stats[$strategy]['win'] = 0;
+            $stats[$strategy]['lost'] = 0;
+            $stats[$strategy]['strategy'] = $trade->getStrategyName();
+          }
+          $stats[$strategy]['count']++;
+          if ($trade->getStatus() == TradeUnit::CLOSE_STATUS) {
+            $stats[$strategy]['closed']++;
+            $stats[$strategy]['pnl'] += $trade->getPnL() * $baserate[$trade->getCurrency()];
+            if ($trade->getPnL() > 0) {
+              $stats[$strategy]['win']++;
+            } else {
+              $stats[$strategy]['lost']++;
+            }
+          }
+        }
+
+        usort($stats, function($a, $b) {
+          return $b['count'] - $a['count'];
+        });
+
+        return $this->render('tradeunit/strategy.html.twig', [
+            'portfolio' => $portfolio,
+            'currencies' => $baserate,
+            'trades' => $trades,
+            'stats' => $stats,
+        ]);
+      }
 
     /**
      * @Route("/{tradeunit<\d+>}", name="portfolio_tradeunit_show", methods={"GET"})

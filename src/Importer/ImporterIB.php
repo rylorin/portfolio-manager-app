@@ -224,10 +224,10 @@ class ImporterIB
             $pnl = floatval($record[12]);
             $codes = explode(';', $record[14]);
         } elseif (sizeof($record) == 16) {
-              $proceeds = floatval($record[10]);
-              $fees = floatval($record[11]);
-              $pnl = floatval($record[13]);
-              $codes = explode(';', $record[15]);
+            $proceeds = floatval($record[10]);
+            $fees = floatval($record[11]);
+            $pnl = floatval($record[13]);
+            $codes = explode(';', $record[15]);
         } elseif (sizeof($record) == 17) {
             $proceeds = floatval($record[10]);
             $fees = floatval($record[11]);
@@ -252,13 +252,13 @@ class ImporterIB
                 ->setStock($stock)
                 ->setDate($date)
                 ;
-            if (array_search('A', $codes) >= 0) {
+            if (in_array('A', $codes)) {
                   $statement->setStatus(Statement::ASSIGNED_STATUS);
-            } elseif (array_search('Ep', $codes) >= 0) {
+            } elseif (in_array('Ep', $codes)) {
                 $statement->setStatus(Statement::EXPIRED_STATUS);
-            } elseif (array_search('C', $codes) >= 0) {
+            } elseif (in_array('C', $codes)) {
                 $statement->setStatus(Statement::CLOSE_STATUS);
-            } elseif (array_search('O', $codes) >= 0) {
+            } elseif (in_array('O', $codes)) {
                 $statement->setStatus(Statement::OPEN_STATUS);
             } else {
                 print_r($codes);
@@ -421,13 +421,13 @@ class ImporterIB
                 ->setStock($stock)
                 ->setContract($option)
                 ;
-            if (array_search('A', $codes) >= 0) {
+            if (in_array('A', $codes)) {
                   $statement->setStatus(Statement::ASSIGNED_STATUS);
-            } elseif (array_search('Ep', $codes) >= 0) {
+            } elseif (in_array('Ep', $codes)) {
                 $statement->setStatus(Statement::EXPIRED_STATUS);
-            } elseif (array_search('C', $codes) >= 0) {
+            } elseif (in_array('C', $codes)) {
                 $statement->setStatus(Statement::CLOSE_STATUS);
-            } elseif (array_search('O', $codes) >= 0) {
+            } elseif (in_array('O', $codes)) {
                 $statement->setStatus(Statement::OPEN_STATUS);
             } else {
                 print_r($codes);

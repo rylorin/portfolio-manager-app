@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Portfolio {{ portfolio.name }} ({{ portfolio.account|masq }}-{{ portfolio.baseCurrency }}){% endblock %}
-
+{# Warning: almost (parts of) the same template as index #}
 {% block body %}
   <h2>Trades statistics</h2>
   <div id="canvas-holder" class="my-4 col-12 col-lg-8">
@@ -27,7 +27,9 @@
         {% for key, stat in stats %}
           <tr>
             <td>
-              {{ stat.count }}
+              <a href="{{ path('portfolio_trades_strategy', { 'portfolio': portfolio.id, 'strategy': stat.id }) }}">
+                {{ stat.count }}
+              </a>
               {% set total_trades_count = total_trades_count + stat.count %}
             </td>
             <td>

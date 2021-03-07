@@ -17,10 +17,11 @@ class TradeStatementType extends StatementType
       parent::buildForm($builder, $options);
       $builder
       ->add('status', ChoiceType::class, [ 'choices' => [
-        'Open' => Statement::OPEN_STATUS,
-        'Closed' => Statement::CLOSED_STATUS,
+        'Opening' => Statement::OPEN_STATUS,
+        'Closing' => Statement::CLOSE_STATUS,
         'Expired' => Statement::EXPIRED_STATUS,
         'Assigned' => Statement::ASSIGNED_STATUS,
+        'Exercised' => Statement::EXERCISED_STATUS,
         ]])
         ->add('quantity')
         ->add('price')

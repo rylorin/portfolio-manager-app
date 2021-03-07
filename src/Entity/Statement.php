@@ -31,9 +31,10 @@ abstract class Statement
 
     // trades statuses
     public const OPEN_STATUS = 1;
-    public const CLOSED_STATUS = 2;
+    public const CLOSE_STATUS = 2;
     public const EXPIRED_STATUS = 3;
     public const ASSIGNED_STATUS = 4;
+    public const EXERCISED_STATUS = 5;
 
     /**
      * @ORM\Id()
