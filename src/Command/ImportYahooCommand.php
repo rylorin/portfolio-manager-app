@@ -65,81 +65,78 @@ class ImportYahooCommand extends Command
         print_r($quote);
         */
 
+        $query = [];
         foreach ($currencies as $currency) {
-        	$rate = $client->getExchangeRate($currency->getBase(), $currency->getCurrency());
-        	if ($rate) {
-        		$currency->setRate($rate->getRegularMarketPrice());
-        	} else {
-        		$io->note(sprintf("Unknown currency: %s.%s\n", $currency->getBase(), $currency->getCurrency()));
-        	}
-        	$io->progressAdvance();
+          $query[] = [$currency->getBase(), $currency->getCurrency()];
         }
-
-        foreach ($stocks as $key => $contract) {
-        	$ticker = $contract->getYahooTicker();
-        	$quote = $client->getQuote($ticker);
-            /*
-            if ($contract->getSymbol() == 'AMZN') {
-                print_r($quote);
+        $result = $client->getExchangeRates($query);
+        foreach ($result as $rate) {
+          foreach ($currencies as $currency) {
+            if ($rate->getShortName() == ($currency->getBase() . '/' . $currency->getCurrency())) {
+              $currency->setRate($rate->getRegularMarketPrice());
+              break;
             }
-            */
-        	if ($quote && ($contract->getCurrency() == 'USD' || $contract->getExchange())) {
-            		if ($quote->getCurrency() == 'GBp') {
-                        $contract->setCurrency('GBP');
-            		} elseif ($quote->getCurrency()) {
-                        $contract->setCurrency($quote->getCurrency());
-            		}
-                $contract->setPrice(self::getYahooPrice($quote));
-                $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
-                $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
-                $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
-                /*
-                if ($ticker == 'AMZN') {
-                  print_r($quote);
-                  printf("%s: %f %f %f\n", $ticker, self::getYahooPrice($quote), $quote->getAsk(), $quote->getBid());
-                  printf("%s: %f %f %f\n", $ticker, $contract->getPrice(), $contract->getAsk(), $contract->getBid());
-                }
-                */
-                $contract->setName($quote->getLongName());
-                $contract->setDividendTTM($quote->getTrailingAnnualDividendRate());
-                $contract->setFiftyTwoWeekLow($quote->getFiftyTwoWeekLow());
-                $contract->setFiftyTwoWeekHigh($quote->getFiftyTwoWeekHigh());
-                $contract->setEpsTTM($quote->getEpsTrailingTwelveMonths());
-                $contract->setEpsForward($quote->getEpsForward());
-        	} else {
-        		$io->note(sprintf("Unknown quote: %s on %s\n", $ticker, $contract->getExchange()));
-        	}
-          // save / write the changes to the database
-          $this->em->flush();
+          }
           $io->progressAdvance();
-          if ($key % 10 == 0) sleep(1);
         }
+        $this->em->flush();
 
-        $echeance = (new \DateTime())->sub(new \DateInterval('P1D'));
-        foreach ($options as $key => $contract) {
-          if ($contract->getLastTradeDate() > $echeance) {
-          	$ticker = $contract->getYahooTicker();
-          	$quote = $client->getQuote($ticker);
-            if ($quote) {
+        $query = [];
+        foreach ($stocks as $key => $contract) {
+          $query[] = $contract->getYahooTicker();
+        }
+        $result = $client->getQuotes($query);
+        foreach ($result as $quote) {
+          foreach ($stocks as $key => $contract) {
+            if ($contract->getYahooTicker() == $quote->getSymbol()) {
+              if ($quote->getCurrency() == 'GBp') {
+                      $contract->setCurrency('GBP');
+              } elseif ($quote->getCurrency()) {
+                      $contract->setCurrency($quote->getCurrency());
+              }
               $contract->setPrice(self::getYahooPrice($quote));
               $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
               $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
               $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
-          	} else {
-          		$io->note(sprintf("Unknown quote: %s on %s\n", $ticker, $contract->getExchange()));
-          	}
+              $contract->setName($quote->getLongName());
+              $contract->setDividendTTM($quote->getTrailingAnnualDividendRate());
+              $contract->setFiftyTwoWeekLow($quote->getFiftyTwoWeekLow());
+              $contract->setFiftyTwoWeekHigh($quote->getFiftyTwoWeekHigh());
+              $contract->setEpsTTM($quote->getEpsTrailingTwelveMonths());
+              $contract->setEpsForward($quote->getEpsForward());
+              break;
+            }
+          }
+          $io->progressAdvance();
+        }
+        $this->em->flush();
+
+        $query = [];
+        $echeance = (new \DateTime())->sub(new \DateInterval('P1D'));
+        foreach ($options as $key => $contract) {
+          if ($contract->getLastTradeDate() > $echeance) {
+            $query[] = $contract->getYahooTicker();
           } else {
-//            $io->note(sprintf("Expired option %s: %s < %s\n", $contract->getYahooTicker(), $contract->getLastTradeDate()->format('Y-m-d H:i:s'), $echeance->format('Y-m-d H:i:s')));
             $contract->setPrice(null);
             $contract->setAsk(null);
             $contract->setBid(null);
             $contract->setPreviousClosePrice(null);
           }
-          // save / write the changes to the database
-          $this->em->flush();
-          $io->progressAdvance();
-          if ($key % 11 == 0) sleep(1);
         }
+        $result = $client->getQuotes($query);
+        foreach ($result as $quote) {
+          foreach ($options as $key => $contract) {
+            if ($contract->getYahooTicker() == $quote->getSymbol()) {
+              $contract->setPrice(self::getYahooPrice($quote));
+              $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
+              $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
+              $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
+              break;
+            }
+          }
+          $io->progressAdvance();
+        }
+        $this->em->flush();
 
         $io->progressFinish();
         $io->success('Contracts infos updated using Yahoo finance.');

@@ -22,7 +22,7 @@
         "mopa/bootstrap-bundle": "^3.2.2",
         "nelmio/api-doc-bundle": "^2.13.4",
         "phpdocumentor/reflection-docblock": "^5.1",
-        "scheb/yahoo-finance-api": "^4.0.0",
+        "scheb/yahoo-finance-api": "^4.2.0",
         "sensio/framework-extra-bundle": "^5.5",
         "sonata-project/admin-bundle": "^3.71.1",
         "sonata-project/block-bundle": "^3.20",
