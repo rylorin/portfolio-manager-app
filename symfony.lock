@@ -2,6 +2,27 @@
     "asgrim/ofxparser": {
         "version": "1.2.2"
     },
+    "behat/behat": {
+        "version": "v3.8.1"
+    },
+    "behat/gherkin": {
+        "version": "v4.8.0"
+    },
+    "behat/mink": {
+        "version": "v1.8.1"
+    },
+    "behat/mink-browserkit-driver": {
+        "version": "v1.3.4"
+    },
+    "behat/mink-extension": {
+        "version": "2.3.1"
+    },
+    "behat/mink-goutte-driver": {
+        "version": "v1.2.1"
+    },
+    "behat/mink-selenium2-driver": {
+        "version": "v1.4.0"
+    },
     "behat/transliterator": {
         "version": "v1.3.0"
     },
@@ -105,6 +126,9 @@
     "egulias/email-validator": {
         "version": "2.1.17"
     },
+    "fabpot/goutte": {
+        "version": "v3.3.1"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
@@ -155,6 +179,9 @@
     },
     "imagine/imagine": {
         "version": "1.2.3"
+    },
+    "instaclick/php-webdriver": {
+        "version": "1.4.7"
     },
     "jms/metadata": {
         "version": "2.1.0"
@@ -264,9 +291,6 @@
     "phpstan/phpdoc-parser": {
         "version": "0.4.10"
     },
-    "phpstan/phpdoc-parser": {
-        "version": "0.4.10"
-    },
     "phpstan/phpstan": {
         "version": "0.12.32"
     },
@@ -278,9 +302,6 @@
     },
     "psr/http-client": {
         "version": "1.0.0"
-    },
-    "psr/http-factory": {
-        "version": "1.0.1"
     },
     "psr/http-factory": {
         "version": "1.0.1"
@@ -503,6 +524,9 @@
             "config/bootstrap.php"
         ]
     },
+    "symfony/css-selector": {
+        "version": "v4.4.20"
+    },
     "symfony/debug": {
         "version": "v4.4.8"
     },
@@ -605,15 +629,6 @@
     "symfony/intl": {
         "version": "v4.4.8"
     },
-    "symfony/maker-bundle": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
-        }
-    },
     "symfony/mailer": {
         "version": "4.3",
         "recipe": {
@@ -625,6 +640,15 @@
         "files": [
             "config/packages/mailer.yaml"
         ]
+    },
+    "symfony/maker-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
     },
     "symfony/mime": {
         "version": "v4.4.8"
@@ -694,9 +718,6 @@
     },
     "symfony/process": {
         "version": "v4.4.8"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.4"
     },
     "symfony/property-access": {
         "version": "v4.4.8"
