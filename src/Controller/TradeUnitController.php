@@ -20,6 +20,42 @@ use App\Form\TradeUnitType;
 class TradeUnitController extends AbstractController
 {
 
+    private function computeStats($trades, $baserate) {
+      $stats = [];
+      foreach ($trades as $key => $trade) {
+        $strategy = $trade->getStrategy();
+        if (!array_key_exists($strategy, $stats)) {
+          $stats[$strategy]['id'] = $strategy;
+          $stats[$strategy]['count'] = 0;
+          $stats[$strategy]['closed'] = 0;
+          $stats[$strategy]['pnl'] = 0.0;
+          $stats[$strategy]['win'] = 0;
+          $stats[$strategy]['lost'] = 0;
+          $stats[$strategy]['strategy'] = $trade->getStrategyName();
+          $stats[$strategy]['min'] = null;
+          $stats[$strategy]['max'] = null;
+        }
+        $stats[$strategy]['count']++;
+        if ($trade->getStatus() == TradeUnit::CLOSE_STATUS) {
+          $pnl = $trade->getPnL() * $baserate[$trade->getCurrency()];
+          $stats[$strategy]['closed']++;
+          $stats[$strategy]['pnl'] += $pnl;
+          if ($trade->getPnL() > 0) {
+            $stats[$strategy]['win']++;
+          } else {
+            $stats[$strategy]['lost']++;
+          }
+          if (!$stats[$strategy]['min'] || ($pnl < $stats[$strategy]['min'])) $stats[$strategy]['min'] = $pnl;
+          if (!$stats[$strategy]['max'] || ($pnl > $stats[$strategy]['max'])) $stats[$strategy]['max'] = $pnl;
+        }
+      }
+
+      usort($stats, function($a, $b) {
+        return $b['count'] - $a['count'];
+      });
+      return $stats;
+    }
+
   /**
    * @Route("/portfolio/{id}/index", name="portfolio_trades_index", methods={"GET"})
    */
@@ -36,33 +72,8 @@ class TradeUnitController extends AbstractController
         [ 'q.portfolio' => $portfolio ],
         [ 'q.openingDate' => 'DESC' ]
       );
-      $stats = [];
-      foreach ($trades as $key => $trade) {
-        $strategy = $trade->getStrategy();
-        if (!array_key_exists($strategy, $stats)) {
-          $stats[$strategy]['id'] = $strategy;
-          $stats[$strategy]['count'] = 0;
-          $stats[$strategy]['closed'] = 0;
-          $stats[$strategy]['pnl'] = 0.0;
-          $stats[$strategy]['win'] = 0;
-          $stats[$strategy]['lost'] = 0;
-          $stats[$strategy]['strategy'] = $trade->getStrategyName();
-        }
-        $stats[$strategy]['count']++;
-        if ($trade->getStatus() == TradeUnit::CLOSE_STATUS) {
-          $stats[$strategy]['closed']++;
-          $stats[$strategy]['pnl'] += $trade->getPnL() * $baserate[$trade->getCurrency()];
-          if ($trade->getPnL() > 0) {
-            $stats[$strategy]['win']++;
-          } else {
-            $stats[$strategy]['lost']++;
-          }
-        }
-      }
 
-      usort($stats, function($a, $b) {
-        return $b['count'] - $a['count'];
-      });
+      $stats = $this->computeStats($trades, $baserate);
 
       return $this->render('tradeunit/index.html.twig', [
           'portfolio' => $portfolio,
@@ -88,36 +99,10 @@ class TradeUnitController extends AbstractController
           [ 'q.portfolio' => $portfolio, 'q.strategy' => $strategy ],
           [ 'q.openingDate' => 'DESC' ]
         );
-        // Warning: same code as index
-        $stats = [];
-        foreach ($trades as $key => $trade) {
-          $strategy = $trade->getStrategy();
-          if (!array_key_exists($strategy, $stats)) {
-            $stats[$strategy]['id'] = $strategy;
-            $stats[$strategy]['count'] = 0;
-            $stats[$strategy]['closed'] = 0;
-            $stats[$strategy]['pnl'] = 0.0;
-            $stats[$strategy]['win'] = 0;
-            $stats[$strategy]['lost'] = 0;
-            $stats[$strategy]['strategy'] = $trade->getStrategyName();
-          }
-          $stats[$strategy]['count']++;
-          if ($trade->getStatus() == TradeUnit::CLOSE_STATUS) {
-            $stats[$strategy]['closed']++;
-            $stats[$strategy]['pnl'] += $trade->getPnL() * $baserate[$trade->getCurrency()];
-            if ($trade->getPnL() > 0) {
-              $stats[$strategy]['win']++;
-            } else {
-              $stats[$strategy]['lost']++;
-            }
-          }
-        }
 
-        usort($stats, function($a, $b) {
-          return $b['count'] - $a['count'];
-        });
+        $stats = $this->computeStats($trades, $baserate);
 
-        return $this->render('tradeunit/strategy.html.twig', [
+        return $this->render('tradeunit/index.html.twig', [
             'portfolio' => $portfolio,
             'currencies' => $baserate,
             'trades' => $trades,
