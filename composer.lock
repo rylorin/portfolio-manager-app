@@ -794,16 +794,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.2.3",
+            "version": "2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "015fdd490074d4daa891e2d1df998dc35ba54924"
+                "reference": "708ed6f99c3d0142e15a8b05022946367cfcc075"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/015fdd490074d4daa891e2d1df998dc35ba54924",
-                "reference": "015fdd490074d4daa891e2d1df998dc35ba54924",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/708ed6f99c3d0142e15a8b05022946367cfcc075",
+                "reference": "708ed6f99c3d0142e15a8b05022946367cfcc075",
                 "shasum": ""
             },
             "require": {
@@ -884,7 +884,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.2.3"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.2.4"
             },
             "funding": [
                 {
@@ -900,7 +900,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-19T20:29:53+00:00"
+            "time": "2021-02-25T11:33:34+00:00"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -5086,16 +5086,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.91.1",
+            "version": "3.93.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "6cfa7e5dd5fb1ca692c9f2dbb403447a18693425"
+                "reference": "f683abb6768cf82722d64f9b12d5c5aa242c7793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/6cfa7e5dd5fb1ca692c9f2dbb403447a18693425",
-                "reference": "6cfa7e5dd5fb1ca692c9f2dbb403447a18693425",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/f683abb6768cf82722d64f9b12d5c5aa242c7793",
+                "reference": "f683abb6768cf82722d64f9b12d5c5aa242c7793",
                 "shasum": ""
             },
             "require": {
@@ -5207,7 +5207,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/SonataAdminBundle/issues",
-                "source": "https://github.com/sonata-project/SonataAdminBundle/tree/3.91.1"
+                "source": "https://github.com/sonata-project/SonataAdminBundle/tree/3.93.0"
             },
             "funding": [
                 {
@@ -5227,7 +5227,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-06T17:46:44+00:00"
+            "time": "2021-03-15T22:07:03+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
