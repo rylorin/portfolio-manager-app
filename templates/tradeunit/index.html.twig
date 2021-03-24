@@ -52,20 +52,20 @@
               {% endif %}
             </td>
             <td class="{{ stat.min|my_number_class_2colors }}">
-              {{ stat.min | my_decimal_format }}
+              {{ stat.min | my_decimal_format_2d }}
             </td>
             <td class="{{ stat.pnl|my_number_class_2colors }}">
               {% if stat.closed > 0 %}
-                {{ (stat.pnl / stat.closed) | my_decimal_format }}
+                {{ (stat.pnl / stat.closed) | my_decimal_format_2d }}
               {% else %}
                 -
               {% endif %}
             </td>
             <td class="{{ stat.max|my_number_class_2colors }}">
-              {{ stat.max | my_decimal_format }}
+              {{ stat.max | my_decimal_format_2d }}
             </td>
             <td class="{{ stat.pnl|my_number_class_2colors }}">
-              {{ stat.pnl|my_decimal_format }}
+              {{ stat.pnl|my_decimal_format_2d }}
               {% set total_trades_pnl = total_trades_pnl + stat.pnl %}
             </td>
           </tr>

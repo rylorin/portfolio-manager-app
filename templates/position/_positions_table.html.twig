@@ -43,9 +43,9 @@
             </td>
             <td>{{ position.contract.currency }}</td>
             <td class="{{ (position.contract.changePercent * position.quantity)|my_number_class_2colors }}">{{ position.contract.changePercent|my_percent_format }}</td>
-            <td class="text-right">{{ position.contract.price|my_decimal_format }}</td>
+            <td class="text-right">{{ position.contract.price|my_decimal_format_2d }}</td>
             <td class="text-right" >{{ position_value|my_integer_format }}</td>
-            <td class="text-right">{{ position.PRU|my_decimal_format }}</td>
+            <td class="text-right">{{ position.PRU|my_decimal_format_2d }}</td>
             <td class="text-right">{{ position.cost|my_integer_format }}</td>
             <td class="{{ position_pnl|my_number_class_2colors }}">{{ position_pnl|my_integer_format }}</td>
             <td class="{{ position_pnl|my_number_class_2colors }}">{{ position.PNLYield|my_percent_format }}</td>

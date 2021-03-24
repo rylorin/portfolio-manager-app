@@ -13,8 +13,8 @@ class CustomFilters extends \Twig_Extension {
             new TwigFilter('my_number_class', array($this, 'my_number_class')),
             new TwigFilter('my_number_class_2colors', array($this, 'my_number_class_2colors')),
             new TwigFilter('my_integer_format', array($this, 'my_integer_format')),
-            new TwigFilter('my_number_format_1d', array($this, 'my_number_format_1d')),
-            new TwigFilter('my_decimal_format', array($this, 'my_decimal_format')),
+            new TwigFilter('my_decimal_format_1d', array($this, 'my_decimal_format_1d')),
+            new TwigFilter('my_decimal_format_2d', array($this, 'my_decimal_format_2d')),
             new TwigFilter('my_percent_format', array($this, 'my_percent_format')),
             new TwigFilter('to_tws_symbol', array($this, 'to_tws_symbol')),
             new TwigFilter('masq', array($this, 'masq')),
@@ -50,11 +50,11 @@ class CustomFilters extends \Twig_Extension {
         return number_format(floatval($input), 0, '.', ' ');
     }
 
-    public function my_number_format_1d($input) {
+    public function my_decimal_format_1d($input) {
         return number_format(floatval($input), 1, '.', ' ');
     }
 
-    public function my_decimal_format($input) {
+    public function my_decimal_format_2d($input) {
         $number = floatval($input);
         return $number ? number_format($number, 2, '.', ' ') : '-';
     }

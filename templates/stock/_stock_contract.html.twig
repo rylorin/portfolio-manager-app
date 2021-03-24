@@ -19,19 +19,19 @@
         </tr>
         <tr>
             <th>Ask</th>
-            <td class="text-right">{{ stock.ask|my_decimal_format }}</td>
+            <td class="text-right">{{ stock.ask|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Price</th>
-            <td class="{{ stock.changePercent|my_number_class_2colors }} font-weight-bold">{{ stock.price|my_decimal_format }}</td>
+            <td class="{{ stock.changePercent|my_number_class_2colors }} font-weight-bold">{{ stock.price|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Bid</th>
-            <td class="text-right">{{ stock.bid|my_decimal_format }}</td>
+            <td class="text-right">{{ stock.bid|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Previous close</th>
-            <td class="text-right">{{ stock.previousClosePrice|my_decimal_format }}</td>
+            <td class="text-right">{{ stock.previousClosePrice|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>% change</th>
@@ -39,11 +39,11 @@
         </tr>
         <tr>
             <th>52 week high</th>
-            <td class="text-right">{{ stock.fiftyTwoWeekHigh|my_decimal_format }}</td>
+            <td class="text-right">{{ stock.fiftyTwoWeekHigh|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>52 week low</th>
-            <td class="text-right">{{ stock.fiftyTwoWeekLow|my_decimal_format }}</td>
+            <td class="text-right">{{ stock.fiftyTwoWeekLow|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>TTM dividend</th>

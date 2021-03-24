@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <th>Amount</th>
-                <td>{{ statement.amount|my_decimal_format }}</td>
+                <td>{{ statement.amount|my_decimal_format_2d }}</td>
             </tr>
             <tr>
                 <th>Stock</th>
@@ -84,19 +84,19 @@
             </tr>
             <tr>
                 <th>Price</th>
-                <td>{{ statement.price|my_decimal_format }}</td>
+                <td>{{ statement.price|my_decimal_format_2d }}</td>
             </tr>
             <tr>
                 <th>Proceeds</th>
-                <td>{{ statement.proceeds|my_decimal_format }}</td>
+                <td>{{ statement.proceeds|my_decimal_format_2d }}</td>
             </tr>
             <tr>
                 <th>Fees</th>
-                <td>{{ statement.fees|my_decimal_format }}</td>
+                <td>{{ statement.fees|my_decimal_format_2d }}</td>
             </tr>
             <tr>
                 <th>Realized PNL</th>
-                <td>{{ statement.realizedPNL|my_decimal_format }}</td>
+                <td>{{ statement.realizedPNL|my_decimal_format_2d }}</td>
             </tr>
             <tr>
                 <th>Comment</th>

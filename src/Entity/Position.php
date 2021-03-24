@@ -38,7 +38,7 @@ class Position
     private $contract;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $quantity;
 
@@ -69,12 +69,12 @@ class Position
         return $this;
     }
 
-    public function getQuantity(): ?int
+    public function getQuantity(): ?float
     {
         return $this->quantity;
     }
 
-    public function setQuantity(int $pos): self
+    public function setQuantity(float $pos): self
     {
         $this->quantity = $pos;
         return $this;

@@ -129,14 +129,14 @@
                 {{ position.contract.stock.symbol }}
               </a>
             </td>
-            <td class="text-right {{ strike_class }}" >{{ position.contract.strike |my_number_format_1d }}</td>
+            <td class="text-right {{ strike_class }}" >{{ position.contract.strike |my_decimal_format_1d }}</td>
             <td class="{{ date_style }}">{{ position.contract.lastTradeDate | format_date('dd-MM-y') }}</td>
             <td>{% if position.contract.type == 'P' %}Put{% elseif position.contract.type == 'C' %}Call{%else %}N/A{% endif %}</td>
             <td>{{ position.contract.currency }}</td>
-            <td class="text-right {{ strike_class }}">{{ position.contract.moneyDepth|my_decimal_format }} ({{ (position.contract.moneyDepthPercent)|my_percent_format }})</td>
-            <td class="text-right">{{ position.cost|my_decimal_format }}</td>
-            <td class="text-right">{{ position_value|my_decimal_format }}</td>
-            <td class="{{ position_pnl|my_number_class }}">{{ position_pnl|my_decimal_format }}</td>
+            <td class="text-right {{ strike_class }}">{{ position.contract.moneyDepth|my_decimal_format_2d }} ({{ (position.contract.moneyDepthPercent)|my_percent_format }})</td>
+            <td class="text-right">{{ position.cost|my_decimal_format_2d }}</td>
+            <td class="text-right">{{ position_value|my_decimal_format_2d }}</td>
+            <td class="{{ position_pnl|my_number_class }}">{{ position_pnl|my_decimal_format_2d }}</td>
             <td class="text-right">{{ position.yield|my_percent_format }}</td>
             <td class="text-right">{{ position_engaged|my_integer_format }}</td>
             <td class="text-right {{ strike_class }}">{{ position_assignable|my_integer_format }}</td>

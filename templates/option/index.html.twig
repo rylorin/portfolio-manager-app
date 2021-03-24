@@ -35,12 +35,12 @@
               <td><a href="{{ path('repository_option_show', {'id': option.id}) }}">{{ option.symbol }}</a></td>
               <td>{{ option.stock.symbol }}</td>
               <td>{{ option.lastTradeDate ? option.lastTradeDate|date('d-m-Y') : 'N/A' }}</td>
-              <td class="text-right">{{ option.strike|my_number_format_1d }}</td>
+              <td class="text-right">{{ option.strike|my_decimal_format_1d }}</td>
               <td>{% if option.type == 'P' %}Put{% elseif option.type == 'C' %}Call{%else %}N/A{% endif %}</td>
-              <td class="text-right">{{ option.bid|my_decimal_format }}</td>
-              <td class="text-right">{{ option.price|my_decimal_format }}</td>
-              <td class="text-right">{{ option.ask|my_decimal_format }}</td>
-              <td class="text-right">{{ option.moneyDepth|my_decimal_format }}
+              <td class="text-right">{{ option.bid|my_decimal_format_2d }}</td>
+              <td class="text-right">{{ option.price|my_decimal_format_2d }}</td>
+              <td class="text-right">{{ option.ask|my_decimal_format_2d }}</td>
+              <td class="text-right">{{ option.moneyDepth|my_decimal_format_2d }}
                 ({{ (option.moneyDepth / option.strike)|my_percent_format }})</td>
                 <td class="text-right">{{ option.daysToMaturity }}</td>
               <td class="text-right">{{ option.bidYieldToMaturity|my_percent_format }}</td>

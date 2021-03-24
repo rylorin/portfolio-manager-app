@@ -92,8 +92,8 @@ class Stock extends Contract
         $exchange = $this->getExchange();
         if (($exchange == 'SBF') or ($exchange == 'IBIS2')) {
             $ticker = $ticker . '.PA';
-        } elseif ($exchange == 'LSE') {
-            $ticker = $ticker . 'L';
+        } elseif (($exchange == 'LSE') or ($exchange == 'LSEETF')) {
+            $ticker = $ticker . '.L';
         } elseif ($exchange == 'VSE') {
             $ticker = $ticker . '.VI';
         } elseif ($exchange == 'BVME') {
@@ -105,7 +105,11 @@ class Stock extends Contract
         } elseif ($exchange == 'AEB') {
             $ticker = $ticker . '.AS';
         } elseif ($exchange == 'EBS') {
-              $ticker = $ticker . '.SW';
+            $ticker = $ticker . '.SW';
+        } elseif ($exchange == 'FWB') {
+            $ticker = $ticker . '.DE';
+        } elseif ($exchange == 'IBIS') {
+            $ticker = (($ticker[strlen($ticker)-1] == 'd') ? substr($ticker, 0, strlen($ticker)-1) : $ticker) . '.DE';
         }
         return $ticker;
     }

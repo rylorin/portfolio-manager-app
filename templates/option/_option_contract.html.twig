@@ -47,21 +47,21 @@
         <tr>
           <th>{{ option.moneyLongLabel }} ({{ option.moneyShortLabel }})</th>
           <td class="text-right">
-            {{ option.moneyDepth|my_decimal_format }}
+            {{ option.moneyDepth|my_decimal_format_2d }}
             ({{ (option.moneyDepth / option.strike)|my_percent_format }})
           </td>
         <tr>
         <tr>
             <th>Ask</th>
-            <td class="text-right">{{ option.ask|my_decimal_format }}</td>
+            <td class="text-right">{{ option.ask|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Premium</th>
-            <td class="text-right font-weight-bold">{{ option.price|my_decimal_format }}</td>
+            <td class="text-right font-weight-bold">{{ option.price|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Bid</th>
-            <td class="text-right">{{ option.bid|my_decimal_format }}</td>
+            <td class="text-right">{{ option.bid|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Yield (bid) to maturity</th>

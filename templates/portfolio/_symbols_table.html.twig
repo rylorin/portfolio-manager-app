@@ -21,10 +21,10 @@
               </a>
           </td>
           <td>{{ symbol.currency }}</td>
-          <td class="{{ symbol.totalNetDividends|my_number_class }}">{{ symbol.totalNetDividends|my_decimal_format }}</td>
-          <td class="{{ symbol.totalStockPNL|my_number_class }}">{{ symbol.totalStockPNL|my_decimal_format }}</td>
-          <td class="{{ symbol.totalOptionsPNL|my_number_class }}">{{ symbol.totalOptionsPNL|my_decimal_format }}</td>
-          <td class="{{ (symbol.totalInterests + symbol.totalStockPNL + symbol.totalOptionsPNL + symbol.totalNetDividends)|my_number_class }}">{{ (symbol.totalStockPNL + symbol.totalOptionsPNL + symbol.totalNetDividends)|my_decimal_format }}</td>
+          <td class="{{ symbol.totalNetDividends|my_number_class }}">{{ symbol.totalNetDividends|my_decimal_format_2d }}</td>
+          <td class="{{ symbol.totalStockPNL|my_number_class }}">{{ symbol.totalStockPNL|my_decimal_format_2d }}</td>
+          <td class="{{ symbol.totalOptionsPNL|my_number_class }}">{{ symbol.totalOptionsPNL|my_decimal_format_2d }}</td>
+          <td class="{{ (symbol.totalInterests + symbol.totalStockPNL + symbol.totalOptionsPNL + symbol.totalNetDividends)|my_number_class }}">{{ (symbol.totalStockPNL + symbol.totalOptionsPNL + symbol.totalNetDividends)|my_decimal_format_2d }}</td>
         </tr>
     {% endfor %}
     </tbody>

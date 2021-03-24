@@ -24,7 +24,7 @@
                 <td><a href="{{ path('repository_stock_show', {'id': stock.id}) }}">{{ stock.symbol }}</a></td>
                 <td>{{ stock.name }}</td>
                 <td>{{ stock.currency }}</td>
-                <td class="{{ stock.changePercent|my_number_class_2colors }}">{{ stock.price|my_decimal_format }}</td>
+                <td class="{{ stock.changePercent|my_number_class_2colors }}">{{ stock.price|my_decimal_format_2d }}</td>
                 <td class="{{ stock.changePercent|my_number_class_2colors }}">{{ stock.changePercent|my_percent_format }}</td>
                 <td>
                     <a href="{{ path('repository_stock_show', {'id': stock.id}) }}"><span data-feather="search"></span></a>

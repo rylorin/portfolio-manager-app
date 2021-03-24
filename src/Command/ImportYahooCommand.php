@@ -61,7 +61,10 @@ class ImportYahooCommand extends Command
           $io->note($result->getType());
           $io->note($result->getTypeDisp());
         }
-        $quote = $client->getQuote('AAPL');
+
+        $contract = $this->em->getRepository('App:Stock')->findOneBySymbol('ISPA');
+        print($contract->getYahooTicker());
+        $quote = $client->getQuote($contract->getYahooTicker());
         print_r($quote);
         */
 
@@ -74,6 +77,7 @@ class ImportYahooCommand extends Command
           foreach ($currencies as $currency) {
             if ($rate->getShortName() == ($currency->getBase() . '/' . $currency->getCurrency())) {
               $currency->setRate($rate->getRegularMarketPrice());
+//              print($rate->getShortName());
               break;
             }
           }
@@ -104,6 +108,14 @@ class ImportYahooCommand extends Command
               $contract->setFiftyTwoWeekHigh($quote->getFiftyTwoWeekHigh());
               $contract->setEpsTTM($quote->getEpsTrailingTwelveMonths());
               $contract->setEpsForward($quote->getEpsForward());
+              /*
+              if ($quote->getSymbol() == 'ISPA.DE') {
+                printf("\n");
+                print_r($quote);
+                print($quote->getSymbol() . '/' . $contract->getSymbol() . '/' . $contract->getId() . ' = ' . $contract->getPrice());
+                printf("\n");
+              }
+              */
               break;
             }
           }
@@ -131,6 +143,7 @@ class ImportYahooCommand extends Command
               $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
               $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
               $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
+//              print($contract->getSymbol());
               break;
             }
           }

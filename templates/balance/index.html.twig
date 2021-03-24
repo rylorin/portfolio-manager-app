@@ -18,7 +18,7 @@
     {% set total_balances_value = total_balances_value + balance.quantity * currencies[balance.currency] %}
         <tr>
             <td><a href="{{ path('portfolio_balance_show', {'id': balance.id}) }}">{{ balance.currency }}</a></td>
-            <td class="{{ balance.quantity|my_number_class }}">{{ balance.quantity|my_decimal_format }}</td>
+            <td class="{{ balance.quantity|my_number_class }}">{{ balance.quantity|my_decimal_format_2d }}</td>
         </tr>
     {% else %}
         <tr>
@@ -29,7 +29,7 @@
     <tfoot class="font-weight-bold">
     	<tr>
     		<td>Total in {{ portfolio.baseCurrency }}</td>
-    		<td class="{{ total_balances_value|my_number_class }}">{{ total_balances_value|my_decimal_format }}</td>
+    		<td class="{{ total_balances_value|my_number_class }}">{{ total_balances_value|my_decimal_format_2d }}</td>
     	</tr>
     </tfoot>
     </table>

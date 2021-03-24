@@ -53,7 +53,8 @@ class Option extends Contract
 
     public function __toString()
     {
-        return Option::formatSymbol($this->stock->getSymbol(), $this->lastTradeDate, $this->strike, $this->callOrPut);
+        return $this->getSymbol();
+/* 17-03-2021 return Option::formatSymbol($this->stock->getSymbol(), $this->lastTradeDate, $this->strike, $this->callOrPut); */
     }
 
     public function getSecType(): string {
@@ -72,7 +73,7 @@ class Option extends Contract
 
     private function updateSymbol(): void
     {
-        if (!$this->getSymbol() && $this->stock && $this->lastTradeDate && $this->strike && $this->callOrPut) {
+        if (/* 17-03-2021 !$this->getSymbol() && */ $this->stock && $this->lastTradeDate && $this->strike && $this->callOrPut) {
             $this->setSymbol($this::formatSymbol(
                 $this->stock->getSymbol(),
                 $this->lastTradeDate,
@@ -237,4 +238,5 @@ class Option extends Contract
     public function getBidYieldToMaturity(): ?float {
       return $this->getBid() / $this->strike / $this->getDaysToMaturity() * 360;
     }
+
 }

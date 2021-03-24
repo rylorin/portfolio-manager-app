@@ -13,23 +13,23 @@
         </tr>
         <tr>
             <th>PRU</th>
-            <td class="text-right">{{ position.PRU|my_decimal_format }}</td>
+            <td class="text-right">{{ position.PRU|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Cost</th>
-            <td class="text-right">{{ position.cost|my_decimal_format }}</td>
+            <td class="text-right">{{ position.cost|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Value</th>
-            <td class="text-right">{{ position_value|my_decimal_format }}</td>
+            <td class="text-right">{{ position_value|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>P/L</th>
-            <td class="{{ position_pnl|my_number_class_2colors }}">{{ position_pnl|my_decimal_format }}</td>
+            <td class="{{ position_pnl|my_number_class_2colors }}">{{ position_pnl|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>TTM Dividend</th>
-            <td class="text-right">{{ (position.contract.dividendTTM * position.quantity)|my_decimal_format }}</td>
+            <td class="text-right">{{ (position.contract.dividendTTM * position.quantity)|my_decimal_format_2d }}</td>
         </tr>
     </tbody>
 </table>

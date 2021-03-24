@@ -38,7 +38,7 @@
           <td class="text-right">{{ tradeunit.risk|my_integer_format }}</td>
           {% set trade_pnl = tradeunit.pnl * currencies[tradeunit.currency] %}
           {% set total_trades_pnl = total_trades_pnl + trade_pnl %}
-          <td class="{{ trade_pnl|my_number_class_2colors }}">{{ tradeunit.pnl|my_decimal_format }}</td>
+          <td class="{{ trade_pnl|my_number_class_2colors }}">{{ tradeunit.pnl|my_decimal_format_2d }}</td>
           <td class="{{ trade_pnl|my_number_class_2colors }}">{{ tradeunit.RoR|my_percent_format }}</td>
           <td class="{{ trade_pnl|my_number_class_2colors }}">{{ tradeunit.AnnualRoR|my_percent_format }}</td>
           <td>

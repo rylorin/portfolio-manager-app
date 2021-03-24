@@ -37,11 +37,11 @@
                   </a>
               </td>
               <td>{{ portfolio.baseCurrency }}</td>
-  {#            <td class="{{ monthly[value]['interests']|my_number_class }}">{{ monthly[value]['interests']|my_decimal_format }}</td>    #}
-              <td class="{{ monthly[value]['dividends']|my_number_class }}">{{ monthly[value]['dividends']|my_decimal_format }}</td>
-              <td class="{{ monthly[value]['stocks']|my_number_class }}">{{ monthly[value]['stocks']|my_decimal_format }}</td>
-              <td class="{{ monthly[value]['options']|my_number_class }}">{{ monthly[value]['options']|my_decimal_format }}</td>
-              <td class="{{ (monthly[value]['interests'] + monthly[value]['dividends'] + monthly[value]['stocks'] + monthly[value]['options'])|my_number_class }}">{{ (monthly[value]['dividends'] + monthly[value]['stocks'] + monthly[value]['options'])|my_decimal_format }}</td>
+  {#            <td class="{{ monthly[value]['interests']|my_number_class }}">{{ monthly[value]['interests']|my_decimal_format_2d }}</td>    #}
+              <td class="{{ monthly[value]['dividends']|my_number_class }}">{{ monthly[value]['dividends']|my_decimal_format_2d }}</td>
+              <td class="{{ monthly[value]['stocks']|my_number_class }}">{{ monthly[value]['stocks']|my_decimal_format_2d }}</td>
+              <td class="{{ monthly[value]['options']|my_number_class }}">{{ monthly[value]['options']|my_decimal_format_2d }}</td>
+              <td class="{{ (monthly[value]['interests'] + monthly[value]['dividends'] + monthly[value]['stocks'] + monthly[value]['options'])|my_number_class }}">{{ (monthly[value]['dividends'] + monthly[value]['stocks'] + monthly[value]['options'])|my_decimal_format_2d }}</td>
           </tr>
       {% endfor %}
       </tbody>

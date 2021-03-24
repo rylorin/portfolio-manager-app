@@ -24,14 +24,14 @@
                 </td>
                 <td>{{ statement.currency }}</td>
                 {% set amount_total = amount_total + statement.amount * currencies[statement.currency] %}
-                <td class="text-right">{{ statement.amount|my_decimal_format }}</td>
+                <td class="text-right">{{ statement.amount|my_decimal_format_2d }}</td>
                 <td class="text-right">
                   {% if statement.statementType == 'Trade' or statement.statementType == 'TradeOption' %}
                     {% set total_pnl = total_pnl + statement.realizedPNL * currencies[statement.currency] %}
-                    {{ statement.realizedPNL|my_decimal_format }}
+                    {{ statement.realizedPNL|my_decimal_format_2d }}
                   {% else %}
                     {% set total_pnl = total_pnl + statement.amount * currencies[statement.currency] %}
-                    {{ statement.amount|my_decimal_format }}
+                    {{ statement.amount|my_decimal_format_2d }}
                   {% endif %}
                 </td>
                 <td>
