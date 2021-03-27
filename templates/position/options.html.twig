@@ -11,6 +11,7 @@
       {% set total_options_cost = 0 %}
       {% set total_options_engaged = 0 %}
       {% set total_options_assignable = 0 %}
+      {% set sub_total_options_count = 0 %}
       {% set sub_total_options_cost = 0 %}
       {% set sub_total_options_engaged = 0 %}
       {% set sub_total_options_assignable = 0 %}
@@ -103,12 +104,14 @@
           {% if sub_total_options_date != position.contract.lastTradeDate %}
             {{ include('position/_options_subtotal.html.twig') }}
             {% set sub_total_options_date = position.contract.lastTradeDate %}
+            {% set sub_total_options_count = 0 %}
             {% set sub_total_options_cost = 0 %}
             {% set sub_total_options_engaged = 0 %}
             {% set sub_total_options_assignable = 0 %}
             {% set sub_total_options_value = 0 %}
             {% set sub_total_options_pnl = 0 %}
           {% endif %}
+          {% set sub_total_options_count = sub_total_options_count + position.quantity %}
           {% set sub_total_options_cost = sub_total_options_cost + position.cost * currencies[position.contract.currency] %}
           {% set sub_total_options_value = sub_total_options_value + position_value * currencies[position.contract.currency] %}
           {% set sub_total_options_pnl = sub_total_options_pnl + position_pnl * currencies[position.contract.currency] %}
@@ -133,7 +136,9 @@
             <td class="{{ date_style }}">{{ position.contract.lastTradeDate | format_date('dd-MM-y') }}</td>
             <td>{% if position.contract.type == 'P' %}Put{% elseif position.contract.type == 'C' %}Call{%else %}N/A{% endif %}</td>
             <td>{{ position.contract.currency }}</td>
-            <td class="text-right {{ strike_class }}">{{ position.contract.moneyDepth|my_decimal_format_2d }} ({{ (position.contract.moneyDepthPercent)|my_percent_format }})</td>
+            <td class="text-right {{ strike_class }}">
+              {{ position.contract.moneyDepth|my_decimal_format_2d }} ({{ (position.contract.moneyDepthPercent)|my_percent_format }})
+            </td>
             <td class="text-right">{{ position.cost|my_decimal_format_2d }}</td>
             <td class="text-right">{{ position_value|my_decimal_format_2d }}</td>
             <td class="{{ position_pnl|my_number_class }}">{{ position_pnl|my_decimal_format_2d }}</td>

@@ -208,7 +208,13 @@ class Option extends Contract
 
     public function getMoneyDepthPercent(): ?float {
         $md = $this->getMoneyDepth();
-        return ($md < 0) ? ($md / $this->stock->getPrice()) : ($md / $this->strike);
+        if ($md < 0) {
+          return ($this->stock->getPrice() ? ($md / $this->stock->getPrice()) : null);
+        } elseif ($md > 0) {
+          return ($md / $this->strike);
+        } else {
+          return 0;
+        }
     }
 
     public function getMoneyShortLabel(): ?string {
