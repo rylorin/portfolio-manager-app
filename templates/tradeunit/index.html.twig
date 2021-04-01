@@ -68,6 +68,9 @@
               {{ stat.pnl|my_decimal_format_2d }}
               {% set total_trades_pnl = total_trades_pnl + stat.pnl %}
             </td>
+            <td>
+              <a href="{{ path('portfolio_trades_strategy', { 'portfolio': portfolio.id, 'strategy': stat.id }) }}"><span data-feather="search"></span></a>
+            </td>
           </tr>
         {% endfor %}
       </tbody>
