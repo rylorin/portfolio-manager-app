@@ -175,13 +175,47 @@ class ImporterIB
 
     // Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code
     private function processStockInformation($record): void {
-        $stock = $this->findOrCreateStock($record[3]);
-        $stock->setName($record[4]);
-        $stock->setConId(intval($record[5]));
-        $stock->setExchange($record[7]);
-        if (array_key_exists($record[7], self::$exchangeCurrencyMapping)) {
-            $stock->setCurrency(self::$exchangeCurrencyMapping[$record[7]]);
-        }
+      $contract = $this->findOrCreateStock($record[0]);
+      $contract->setName($record[1]);
+      $contract->setConId(intval($record[2]));
+      $contract->setExchange($record[4]);
+      if (array_key_exists($record[4], self::$exchangeCurrencyMapping)) {
+          $contract->setCurrency(self::$exchangeCurrencyMapping[$record[4]]);
+      }
+    }
+
+    // Financial Instrument Information,Data,Asset Category,Symbol,Description,Conid,Listing Exch,Multiplier,Expiry,Delivery Month,Type,Strike,Code
+    private function processOptionInformation($record): void {
+      // decode description field
+      $ticker = $this->parseOptionSymbol($record[1]);
+//        $stock = findOrCreateStock($ticker['symbol'], array_key_exists($record[6], self::$exchangeCurrencyMapping) ? self::$exchangeCurrencyMapping[$record[6]] : 'N/A');
+      $contract = $this->findOrCreateOption($ticker['symbol'], $ticker['date'], $ticker['strike'], $ticker['type']);
+      $contract->setName($record[1]);
+      $contract->setConId(intval($record[2]));
+      $contract->setExchange($record[3]);
+      $contract->setMultiplier(intval(str_replace(',', '', $record[4])));
+    }
+
+    // Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code,Currency
+    private function processFlexStockInformation($record): void {
+      $contract = $this->findOrCreateStock($record[0]);
+      $contract->setName($record[1]);
+      $contract->setConId(intval($record[2]));
+      $contract->setExchange($record[4]);
+      $contract->setCurrency($record[8]);
+    }
+
+    // Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code,Currency
+    private function processFlexOptionInformation($record): void {
+      // decode description field
+      $ticker = $this->parseOptionSymbol($record[1]);
+//        $stock = findOrCreateStock($ticker['symbol'], array_key_exists($record[6], self::$exchangeCurrencyMapping) ? self::$exchangeCurrencyMapping[$record[6]] : 'N/A');
+      $contract = $this->findOrCreateOption($ticker['symbol'], $ticker['date'], $ticker['strike'], $ticker['type']);
+      $contract->setName($record[1]);
+      $contract->setConId(intval($record[2]));
+      $contract->setExchange($record[4]);
+      $contract->setMultiplier(intval(str_replace(',', '', $record[5])));
+      $contract->setCurrency($record[8]);
     }
 
     private function processStockPosition($portfolio, $record): void {
@@ -315,18 +349,6 @@ class ImporterIB
           // moved to main loop            $this->em->flush();
         }
         return $contract;
-    }
-
-    // Financial Instrument Information,Data,Asset Category,Symbol,Description,Conid,Listing Exch,Multiplier,Expiry,Delivery Month,Type,Strike,Code
-    private function processOptionInformation($record): void {
-        // decode description field
-        $ticker = $this->parseOptionSymbol($record[4]);
-//        $stock = findOrCreateStock($ticker['symbol'], array_key_exists($record[6], self::$exchangeCurrencyMapping) ? self::$exchangeCurrencyMapping[$record[6]] : 'N/A');
-        $contract = $this->findOrCreateOption($ticker['symbol'], $ticker['date'], $ticker['strike'], $ticker['type']);
-        $contract->setName($record[4]);
-        $contract->setConId(intval($record[5]));
-        $contract->setExchange($record[6]);
-        $contract->setMultiplier(intval(str_replace(',', '', $record[7])));
     }
 
     // Open Positions,Data,Asset Category,Currency,Symbol,Account,Quantity,Cost Basis,Close Price,Value,Unrealized P/L
@@ -687,11 +709,16 @@ class ImporterIB
             $this->processTransactionFee($portfolio, $record);
         }
         // portfolio unrelated lines
-        elseif ($record[0] == 'Financial Instrument Information' && $record[1] == 'Data' && $record[2] == 'Stocks') {
+        elseif (($record[0] == 'Financial Instrument Information') && ($record[1] == 'Data')) {
+          array_shift($record);
+          array_shift($record);
+          $category = array_shift($record);
+          if (($category == 'Stocks') && (sizeof($record) == 8)) {
             $this->processStockInformation($record);
-        }
-        elseif ($record[0] == 'Financial Instrument Information' && $record[1] == 'Data' && $record[2] == 'Equity and Index Options') {
+          }
+          elseif (($category == 'Equity and Index Options') && (sizeof($record) == 10)) {
             $this->processOptionInformation($record);
+          }
         }
         // Account information lines, get account number and base currency to obtain portfolio
         elseif ($record[0] == 'Account Information' && $record[1] == 'Data' && sizeof($record) == 5) {
@@ -709,6 +736,21 @@ class ImporterIB
         }
         elseif ($record[0] == 'Statement' && $record[1] == 'Data' && $record[2] == 'WhenGenerated') {
             $this->whenGenerated = new \DateTime($record[3]);
+        }
+        elseif ($record[0] == 'DATA') {
+          array_shift($record);
+          $data = array_shift($record);
+          if ($data == 'SECU') {
+            $category = array_shift($record);
+            if ($category == 'STK') {
+              $this->processFlexStockInformation($record);
+            }
+            elseif ($category == 'OPT') {
+              $this->processFlexOptionInformation($record);
+            }
+          } elseif ($data == 'TRNT') {
+
+          }
         }
         else {
 //            	printf("ignored: %s,%s,%s\n", $record[0], $record[1], $record[2]);
