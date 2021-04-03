@@ -46,8 +46,12 @@
                 <td>
                   {% if (statement.TradeUnit is not null) and (statement.TradeUnit.Id > 0) %}
                     <a href="{{ path('portfolio_tradeunit_show', {'tradeunit': statement.TradeUnit.Id }) }}">{{ statement.TradeUnit.Id }}</a>
+                    {% set last_tu = statement.TradeUnit.Id %}
                   {% elseif app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
                     <a href="{{ path('portfolio_statement_createtradeunit', {'id': statement.id}) }}"><span data-feather="plus-square"></span></a>
+                    {% if last_tu is defined %}
+                      <a href="{{ path('portfolio_statement_linktradeunit', {'id': statement.id, 'tradeunit': last_tu}) }}"><span data-feather="arrow-up-circle"></span></a>
+                    {% endif %}
                   {% endif %}
                 </td>
                 <td class="text-nowrap">{{ statement.description|u.truncate(64, '...') }}</td>

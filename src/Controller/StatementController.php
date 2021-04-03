@@ -241,4 +241,17 @@ class StatementController extends AbstractController
       ]);
     }
 
+    /**
+     * @Route("/{id}/linktradeunit/{tradeunit}", name="portfolio_statement_linktradeunit", methods={"GET"})
+     */
+    public function linktradeunit(Statement $statement, TradeUnit $tradeunit): Response
+    {
+      $statement->setTradeUnit($tradeunit);
+      $this->getDoctrine()->getManager()->flush();
+      return $this->render('statement/show.html.twig', [
+        'portfolio' => $statement->getPortfolio(),
+        'statement' => $statement,
+      ]);
+    }
+
 }
