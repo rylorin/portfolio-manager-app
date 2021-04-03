@@ -90,6 +90,11 @@ class TradeUnit
      */
     private $risk;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $comment;
+
     public function __construct(Statement $statement = null)
     {
         $this->openingTrades = new ArrayCollection();
@@ -383,6 +388,17 @@ class TradeUnit
       } else {
         return null;
       }
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+        return $this;
     }
 
 }

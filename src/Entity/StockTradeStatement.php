@@ -40,11 +40,6 @@ class StockTradeStatement extends Statement
     private $realizedPNL;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $comment;
-
-    /**
      * @ORM\Column(type="smallint", nullable=false)
      */
     private $status;
@@ -105,17 +100,6 @@ class StockTradeStatement extends Statement
     public function setRealizedPNL(?float $realizedPNL): self
     {
         $this->realizedPNL = $realizedPNL;
-        return $this;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment): self
-    {
-        $this->comment = $comment;
         return $this;
     }
 

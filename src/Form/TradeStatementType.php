@@ -28,7 +28,6 @@ class TradeStatementType extends StatementType
         ->add('proceeds')
         ->add('fees')
         ->add('realizedPNL')
-        ->add('comment')
         ;
     }
 
