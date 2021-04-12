@@ -7,6 +7,7 @@ namespace App\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use \Doctrine\ORM\Query\Expr\Join;
+use App\Entity\Portfolio;
 use App\Entity\Statement;
 use App\Entity\Stock;
 use App\Entity\StockTradeStatement;
@@ -29,6 +30,7 @@ class StatementRepository extends ServiceEntityRepository
 
     public function findSymbolsByPortfolio($portfolio)
     {
+//      return $this->findByDate(null, null, [ 'q.portfolio' => $portfolio ]); // il faut restreindre au stocks only
         $query =  $this->createQueryBuilder('q')
             ->addSelect('q')
             ->andWhere('q.portfolio = :portfolio')
@@ -118,6 +120,25 @@ $query =  $this->createQueryBuilder('q')
         }
         return $query->getQuery()->getResult();
       */
+    }
+
+    public function findPreviousStatementForSymbol(Portfolio $portfolio, \DateTime $date, Stock $contract): ?Statement
+    {
+      $query =  $this->createQueryBuilder('q')
+          ->addSelect('q')
+          ->andWhere('q.portfolio = :portfolio')
+          ->setParameter('portfolio', $portfolio)
+          ->andWhere('q.date < :datetime')
+          ->setParameter('datetime', $date)
+          ->andWhere('q.stock = :contract')
+          ->setParameter('contract', $contract)
+          ->andWhere('q.tradeUnit IS NOT NULL')
+          ->andWhere('q INSTANCE OF App\Entity\StockTradeStatement')
+          ->orderBy('q.date', 'DESC')
+          ->setMaxResults(1)
+        ;
+      $results = $query->getQuery()->getResult();
+      return array_shift($results);
     }
 
 }

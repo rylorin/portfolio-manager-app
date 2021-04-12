@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         {% for statement in statements %}
-            <tr>
+            <tr id="stmt{{ statement.id }}">
                 <td><a href="{{ path('portfolio_statement_show', {'id': statement.id}) }}">{{ statement.id }}</a></td>
                 <td data-toggle="tooltip" data-placement="right" title="{{ statement.date ? statement.date|date('H:i:s') : '' }}">
                   {{ statement.date ? statement.date|date('d-m-Y') : '' }}
@@ -49,6 +49,7 @@
                     {% set last_tu = statement.TradeUnit.Id %}
                   {% elseif app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
                     <a href="{{ path('portfolio_statement_createtradeunit', {'id': statement.id}) }}"><span data-feather="plus-square"></span></a>
+                    <a href="{{ path('portfolio_statement_guesstradeunit', {'id': statement.id}) }}"><span data-feather="help-circle"></span></a>
                     {% if last_tu is defined %}
                       <a href="{{ path('portfolio_statement_linktradeunit', {'id': statement.id, 'tradeunit': last_tu}) }}"><span data-feather="arrow-up-circle"></span></a>
                     {% endif %}

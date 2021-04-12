@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Entity\Statement;
+use App\Entity\OptionTradeStatement;
 use App\Entity\Portfolio;
 use App\Entity\Stock;
 use App\Entity\TradeUnit;
@@ -17,6 +18,7 @@ use App\Form\StatementType;
 use App\Form\TradeStatementType;
 use App\Form\OptionTradeStatementType;
 use App\Repository\StatementRepository;
+use App\Repository\TradeOptionRepository;
 
 /**
  * @Route("/statement")
@@ -254,4 +256,30 @@ class StatementController extends AbstractController
       ]);
     }
 
+    /**
+     * @Route("/{id}/guesstradeunit", name="portfolio_statement_guesstradeunit", methods={"GET"})
+     */
+    public function guesstradeunit(StatementRepository $statementRepository, Statement $statement): Response
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      $portfolio = $statement->getPortfolio();
+      if ($statement->getStatementType() == Statement::TYPE_TRADE_OPTION) {
+        $x = $entityManager->getRepository('App:OptionTradeStatement')->findPreviousStatementForSymbol(
+          $portfolio, $statement->getDate(), $statement->getContract());
+        if ($x) $statement->setTradeUnit($x->getTradeUnit());
+      }
+      elseif (($statement->getStatementType() == Statement::TYPE_TRADE)
+        || ($statement->getStatementType() == Statement::TYPE_DIVIDEND)
+        || ($statement->getStatementType() == Statement::TYPE_TAX)
+        ) {
+        $x = $statementRepository->findPreviousStatementForSymbol(
+          $portfolio, $statement->getDate(), $statement->getStock());
+        if ($x) $statement->setTradeUnit($x->getTradeUnit());
+      }
+      $entityManager->flush();
+      return $this->render('statement/show.html.twig', [
+        'portfolio' => $statement->getPortfolio(),
+        'statement' => $statement,
+      ]);
+    }
 }

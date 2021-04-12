@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\OptionTradeStatement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Statement;
+use App\Entity\OptionTradeStatement;
+use App\Entity\Portfolio;
+use App\Entity\Option;
 
 /**
  * @method OptionTradeStatement|null find($id, $lockMode = null, $lockVersion = null)
@@ -49,4 +52,25 @@ class TradeOptionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findPreviousStatementForSymbol(Portfolio $portfolio, \DateTime $date, Option $contract): ?Statement
+    {
+      $query =  $this->createQueryBuilder('q')
+          ->addSelect('q')
+          ->andWhere('q.portfolio = :portfolio')
+          ->setParameter('portfolio', $portfolio)
+          ->andWhere('q.date < :datetime')
+          ->setParameter('datetime', $date)
+          ->andWhere('q.contract = :contract')
+          ->setParameter('contract', $contract)
+//          ->andWhere($query->expr()->isNotNull('q.tradeUnit'))
+          ->andWhere('q.tradeUnit IS NOT NULL')
+          ->andWhere('q INSTANCE OF App\Entity\OptionTradeStatement')
+          ->orderBy('q.date', 'DESC')
+          ->setMaxResults(1)
+        ;
+      $results = $query->getQuery()->getResult();
+      return array_shift($results);
+    }
+
 }
