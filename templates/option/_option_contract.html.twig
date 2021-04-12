@@ -3,11 +3,11 @@
 {% if option.daysToMaturity < 1 %}
   {% set date_style = '' %}
 {% elseif option.daysToMaturity < 8 %}
-  {% set date_style = 'color:red;' %}
+  {% set date_style = 'text-danger' %}
 {% elseif option.daysToMaturity < 15 %}
-  {% set date_style = 'color:DarkOrange;' %}
+  {% set date_style = 'text-warning' %}
 {% else %}
-  {% set date_style = 'color:green;' %}
+  {% set date_style = 'text-success' %}
 {% endif %}
 
 <table class="table">
@@ -18,7 +18,7 @@
         </tr>
         <tr>
             <th>Last Trade Date</th>
-            <td class="text-right" style="{{ date_style }}">{{ option.lastTradeDate|format_date('dd-MM-y') }}</td>
+            <td class="text-right {{ date_style }}">{{ option.lastTradeDate|format_date('dd-MM-y') }}</td>
         </tr>
         <tr>
             <th>Strike</th>
@@ -26,7 +26,7 @@
         </tr>
         <tr>
             <th>Days to expiration</th>
-            <td class="text-right" style="{{ date_style }}">{{ option.daysToMaturity }}</td>
+            <td class="text-right {{ date_style }}">{{ option.daysToMaturity }}</td>
         </tr>
         <tr>
             <th>Type</th>
