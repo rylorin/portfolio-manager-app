@@ -24,7 +24,7 @@
       <tr>
           <th>Symbol</th>
           <td class="text-left">
-              <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': tradeunit.portfolio.id, 'stock': tradeunit.symbol.id}) }}">
+              <a href="{{ path('portfolio_symbol_dashboard', { 'portfolio': tradeunit.portfolio.id, 'stock': tradeunit.symbol.id, '_fragment': 'trade' ~ tradeunit.id }) }}">
                 {{ tradeunit.symbol }}
               </a>
           </td>
@@ -52,6 +52,10 @@
       <tr>
           <th>Annual RoR</th>
           <td class="text-left">{{ tradeunit.AnnualRoR|my_percent_format }}</td>
+      </tr>
+      <tr>
+          <th>Notes</th>
+          <td class="text-left">{{ tradeunit.comment }}</td>
       </tr>
     </tbody>
   </table>

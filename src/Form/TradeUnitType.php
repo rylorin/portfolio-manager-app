@@ -56,6 +56,7 @@ class TradeUnitType extends AbstractType
           ->add('status', ChoiceType::class, [ 'choices' => [
             'Open' => TradeUnit::OPEN_STATUS, 'Closed' => TradeUnit::CLOSE_STATUS ]])
           ->add('PnL')
+          ->add('comment')
           ;
     }
 
