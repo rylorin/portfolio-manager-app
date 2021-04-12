@@ -31,7 +31,7 @@
                 <th>Stock</th>
                 <td>
                   {% if portfolio is defined %}
-                    <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id}) }}">
+                    <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id, '_fragment': 'stmt' ~ statement.id }) }}">
                       {{ statement.stock }}
                     </a>
                   {% else %}
@@ -78,6 +78,10 @@
           </tr>
           {% endif %}
           {% if (statement.statementType == 'Trade') or (statement.statementType == 'TradeOption') %}
+            <tr>
+                <th>Status</th>
+                <td>{{ statement.StatusText }}</td>
+            </tr>
             <tr>
                 <th>Quantity</th>
                 <td>{{ statement.quantity|my_integer_format }}</td>

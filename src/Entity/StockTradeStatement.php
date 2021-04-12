@@ -115,4 +115,19 @@ class StockTradeStatement extends Statement
         return $this;
     }
 
+    public function getStatusText(): ?string
+    {
+        if ($this->status == Statement::OPEN_STATUS) {
+          return "Open";
+        } else if ($this->status == Statement::CLOSE_STATUS) {
+          return 'Close';
+        } else if ($this->status == Statement::EXPIRED_STATUS) {
+          return 'Expired';
+        } else if ($this->status == Statement::ASSIGNED_STATUS) {
+          return 'Assigned';
+        } else if ($this->status == Statement::EXERCISED_STATUS) {
+          return 'Exercised';
+        }
+    }
+
 }

@@ -11,11 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OptionTradeStatement extends Statement
 {
-    // statuses
-    public const OPEN_STATUS = 1;
-    public const CLOSE_STATUS = 2;
-    public const EXPIRED_STATUS = 3;
-    public const ASSIGNED_STATUS = 4;
 
     /**
      * @ORM\ManyToOne(targetEntity=Contract::class)
@@ -133,6 +128,21 @@ class OptionTradeStatement extends Statement
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getStatusText(): ?string
+    {
+        if ($this->status == Statement::OPEN_STATUS) {
+          return "Open";
+        } else if ($this->status == Statement::CLOSE_STATUS) {
+          return 'Close';
+        } else if ($this->status == Statement::EXPIRED_STATUS) {
+          return 'Expired';
+        } else if ($this->status == Statement::ASSIGNED_STATUS) {
+          return 'Assigned';
+        } else if ($this->status == Statement::EXERCISED_STATUS) {
+          return 'Exercised';
+        }
     }
 
 }
