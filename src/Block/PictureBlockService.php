@@ -85,6 +85,8 @@ class PictureBlockService extends MediaBlockService
     /**
      * {@inheritdoc}
      */
+    /*
+    CoreBundle and therefore ErrorElement removed
     public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
     {
 	    $errorElement
@@ -94,6 +96,7 @@ class PictureBlockService extends MediaBlockService
 	            ->assertMaxLength(array('limit' => 250))
 	        ->end();
     }
+    */
 
     /**
      * {@inheritdoc}
