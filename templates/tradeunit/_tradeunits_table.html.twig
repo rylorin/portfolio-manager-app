@@ -19,7 +19,7 @@
     </thead>
     <tbody>
       {% for tradeunit in trades %}
-        <tr>
+      <tr id="trade{{ tradeunit.id }}">
           <td>
             <a href="{{ path('portfolio_tradeunit_show', { 'tradeunit': tradeunit.id }) }}">
               {{ tradeunit.Id }}
