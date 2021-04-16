@@ -9,7 +9,7 @@
       <canvas class="w-100" id="myChart"></canvas>
     </div>
   {% endif %}
-  <div class="table-responsive">
+  <div class="table-responsive" id="synthesis-array">
     <table class="table table-striped table-sm">
       {% set total_trades_count = 0 %}
       {% set total_trades_pnl = 0 %}
@@ -31,9 +31,13 @@
         {% for key, stat in stats %}
           <tr>
             <td>
+{#
               <a href="{{ path('portfolio_trades_strategy', { 'portfolio': portfolio.id, 'strategy': stat.id }) }}">
+#}
                 {{ stat.strategy }}
+{#
               </a>
+#}
             </td>
             <td class="text-right">
               {{ stat.count }}
@@ -164,14 +168,16 @@
 
       var pieChartData = {
           labels: [
+            {% set total_trades = 0 %}
             {% for key, stat in stats %}
                 '{{ stat.strategy }}',
+                {% set total_trades = total_trades + stat.count %}
             {% endfor %}
           ],
   				datasets: [{
   					data: [
               {% for key in stats|keys %}
-                  '{{ stats[key]['count'] }}',
+                  '{{ (stats[key]['count'] / total_trades * 100) | my_integer_format }}',
               {% endfor %}
   					],
   					backgroundColor: [
@@ -190,7 +196,7 @@
       var pieChartOptions = {
         title: {
           display: true,
-          text: '# trades / strategy'
+          text: '% trades / strategy'
         },
 				responsive: true,
 				animation: {

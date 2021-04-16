@@ -82,6 +82,11 @@ abstract class Statement
      */
     private $tradeUnit;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tradeId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -183,5 +188,17 @@ abstract class Statement
         $this->tradeUnit->addOpeningTrade($this);
       }
       return $this;
+    }
+
+    public function getTradeId(): ?int
+    {
+        return $this->tradeId;
+    }
+
+    public function setTradeId(?int $tradeId): self
+    {
+        $this->tradeId = $tradeId;
+
+        return $this;
     }
 }
