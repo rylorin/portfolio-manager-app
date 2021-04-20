@@ -7,6 +7,7 @@ namespace App\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Entity\Statement;
 use App\Entity\OptionTradeStatement;
 
 class OptionTradeStatementType extends StatementType

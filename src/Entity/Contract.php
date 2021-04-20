@@ -33,7 +33,8 @@ abstract class Contract
     // Trading View mappings
     protected const marketPlaceMapping = [
       'SBF' => 'EURONEXT', 'AEB' => 'EURONEXT', 'IBIS2' => 'EURONEXT',
-      'TSEJ' => 'TSE', 'TSE' => 'NEO', 'EBS' => 'SIX'
+      'TSEJ' => 'TSE', 'TSE' => 'NEO', 'EBS' => 'SIX',
+      'ARCA' => 'AMEX'
     ];
 
     /**
@@ -297,6 +298,14 @@ abstract class Contract
     {
         $this->previousClosePrice = $previousClosePrice;
         return $this;
+    }
+
+    public static function normalizeSymbol(string $symbol): string {
+      $symbol = str_replace('.T', '', str_replace(' ', '-', trim($symbol)));
+      if ($symbol[strlen($symbol)-1] == 'd') {
+        $symbol = substr($symbol, 0, -1);
+      }
+      return $symbol;
     }
 
 }

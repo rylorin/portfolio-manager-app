@@ -86,7 +86,7 @@ class ImporterIB
         $data = substr($data, 0, $len-strlen($datestr)-1);
         //        printf("remaining data: '%s'\n", $data);
 
-        $symbol = str_replace('.T', '', str_replace(' ', '-', substr($data, 0, strlen($datestr)-1)));
+        $symbol = Contract::normalizeSymbol($data, 0, strlen($datestr)-1);
 
         $result = [ 'symbol' => $symbol, 'date' => $date, 'strike' => $strike, 'type' => $type ];
         return $result;
@@ -160,7 +160,7 @@ class ImporterIB
     }
 
     private function findOrCreateStock($s): Stock {
-        $symbol = str_replace('.T', '', str_replace(' ', '-', trim($s)));
+        $symbol = Contract::normalizeSymbol($s);
         $stock = $this->em->getRepository('App:Stock')
           ->findOneBy([ 'symbol' => $symbol ]);
         if (!$stock) {
@@ -175,7 +175,7 @@ class ImporterIB
 
     // Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code
     private function processStockInformation($record): void {
-      $contract = $this->findOrCreateStock($record[0]);
+      $contract = $this->findOrCreateStock(Contract::normalizeSymbol($record[0]));
       $contract->setName($record[1]);
       $contract->setConId(intval($record[2]));
       $contract->setExchange($record[4]);
@@ -188,34 +188,11 @@ class ImporterIB
     private function processOptionInformation($record): void {
       // decode description field
       $ticker = $this->parseOptionSymbol($record[1]);
-//        $stock = findOrCreateStock($ticker['symbol'], array_key_exists($record[6], self::$exchangeCurrencyMapping) ? self::$exchangeCurrencyMapping[$record[6]] : 'N/A');
       $contract = $this->findOrCreateOption($ticker['symbol'], $ticker['date'], $ticker['strike'], $ticker['type']);
       $contract->setName($record[1]);
       $contract->setConId(intval($record[2]));
       $contract->setExchange($record[3]);
       $contract->setMultiplier(intval(str_replace(',', '', $record[4])));
-    }
-
-    // Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code,Currency
-    private function processFlexStockInformation($record): void {
-      $contract = $this->findOrCreateStock($record[0]);
-      $contract->setName($record[1]);
-      $contract->setConId(intval($record[2]));
-      $contract->setExchange($record[4]);
-      $contract->setCurrency($record[8]);
-    }
-
-    // Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code,Currency
-    private function processFlexOptionInformation($record): void {
-      // decode description field
-      $ticker = $this->parseOptionSymbol($record[1]);
-//        $stock = findOrCreateStock($ticker['symbol'], array_key_exists($record[6], self::$exchangeCurrencyMapping) ? self::$exchangeCurrencyMapping[$record[6]] : 'N/A');
-      $contract = $this->findOrCreateOption($ticker['symbol'], $ticker['date'], $ticker['strike'], $ticker['type']);
-      $contract->setName($record[1]);
-      $contract->setConId(intval($record[2]));
-      $contract->setExchange($record[4]);
-      $contract->setMultiplier(intval(str_replace(',', '', $record[5])));
-      $contract->setCurrency($record[8]);
     }
 
     private function processStockPosition($portfolio, $record): void {
@@ -318,7 +295,7 @@ class ImporterIB
         $contract = $this->em->getRepository('App:Option')->findOneBy(
             [ 'symbol' => $symbol ]);
         if (!$contract) {
-            $stock = $this->findOrCreateStock($s);
+            $stock = $this->findOrCreateStock(Contract::normalizeSymbol($s));
             $contract = (new Option($symbol))
             ->setStock($stock)
             ->setLastTradeDate($date)
@@ -333,7 +310,7 @@ class ImporterIB
     }
 
     private function findOrCreateOption2($s, $date, $strike, $type): Option {
-        $stock = $this->findOrCreateStock($s);
+        $stock = $this->findOrCreateStock(Contract::normalizeSymbol($s));
         $contract = $this->em->getRepository('App:Option')->findOneBy(
             [ 'stock' => $stock, 'lastTradeDate' => $date, 'strike' => $strike, 'callOrPut' => $type ]);
         if (!$contract) {
@@ -573,7 +550,7 @@ class ImporterIB
     private function processTransactionFee($portfolio, $record): void {
         $currency = $record[3];
         $date = new \DateTime($record[4]);
-        $symbol = str_replace('.T', '', str_replace(' ', '-', trim($record[5])));
+        $symbol = trim($record[5]);
         $amount = floatval($record[9]);
         $description = $record[6];
 
@@ -736,21 +713,6 @@ class ImporterIB
         }
         elseif ($record[0] == 'Statement' && $record[1] == 'Data' && $record[2] == 'WhenGenerated') {
             $this->whenGenerated = new \DateTime($record[3]);
-        }
-        elseif ($record[0] == 'DATA') {
-          array_shift($record);
-          $data = array_shift($record);
-          if ($data == 'SECU') {
-            $category = array_shift($record);
-            if ($category == 'STK') {
-              $this->processFlexStockInformation($record);
-            }
-            elseif ($category == 'OPT') {
-              $this->processFlexOptionInformation($record);
-            }
-          } elseif ($data == 'TRNT') {
-
-          }
         }
         else {
 //            	printf("ignored: %s,%s,%s\n", $record[0], $record[1], $record[2]);

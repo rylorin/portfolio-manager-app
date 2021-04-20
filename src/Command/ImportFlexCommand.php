@@ -60,15 +60,20 @@ class ImportFlexCommand extends Command
         $importer = new ImporterXml($this->em);
 // print_r($xml);
         $trades_count = sizeof($xml->FlexStatements->FlexStatement->Trades->Trade);
-        $io->progressStart($trades_count);
+        $securities_count = sizeof($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo);
+        $io->progressStart($trades_count + $securities_count);
+
         for ($i=0; $i < $trades_count; $i++) {
-//          print('Trade[' . $i . "]\n");
-//          print_r((string)$xml->FlexStatements->FlexStatement->Trades->Trade[$i]->attributes()->transactionID);
           $importer->processTrade($xml->FlexStatements->FlexStatement->Trades->Trade[$i]);
           $io->progressAdvance();
         }
-        $io->progressFinish();
+        for ($i=0; $i < $securities_count; $i++) {
+          $importer->processSecurityInfo($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo[$i]);
+          $io->progressAdvance();
+        }
 
+        $this->em->flush();
+        $io->progressFinish();
         $io->success($report . ' report loaded!');
       } elseif ($xml) {
         $io->error($xml->ErrorMessage);

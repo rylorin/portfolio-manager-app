@@ -46,25 +46,29 @@ class ImportXmlCommand extends Command
       $io = new SymfonyStyle($input, $output);
       $file = $input->getArgument('file');
 
-      $io->note(sprintf('Processing query id: %s', $query));
+      $io->note(sprintf('Processing file: %s', $file));
 
       $xml = simplexml_load_file($file);
       if ($xml) {
-//        print_r($xml);
         $report = $xml->attributes()->queryName;
 
         $importer = new ImporterXml($this->em);
-// print_r($xml);
+
         $trades_count = sizeof($xml->FlexStatements->FlexStatement->Trades->Trade);
-        $io->progressStart($trades_count);
+        $securities_count = sizeof($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo);
+        $io->progressStart($trades_count + $securities_count);
+
         for ($i=0; $i < $trades_count; $i++) {
-//          print('Trade[' . $i . "]\n");
-//          print_r((string)$xml->FlexStatements->FlexStatement->Trades->Trade[$i]->attributes()->transactionID);
           $importer->processTrade($xml->FlexStatements->FlexStatement->Trades->Trade[$i]);
           $io->progressAdvance();
         }
-        $io->progressFinish();
+        for ($i=0; $i < $securities_count; $i++) {
+          $importer->processSecurityInfo($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo[$i]);
+          $io->progressAdvance();
+        }
 
+        $this->em->flush();
+        $io->progressFinish();
         $io->success($report . ' report loaded!');
       } else {
         $io->error('You have a new command! Now make it your own! Pass --help to see your options.');

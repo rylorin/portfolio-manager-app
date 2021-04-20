@@ -53,12 +53,10 @@ class ImporterXml
   }
 
   private function findOrCreateStock(\SimpleXMLElement $xml): Stock {
-//    print((string)$xml->attributes()->symbol);
     $stock = $this->em->getRepository('App:Stock')
       ->findOneBy([ 'conId' => (string)$xml->attributes()->conid ]);
     if (!$stock) {
-      $symbol = str_replace('.T', '', str_replace(' ', '-', trim((string)$xml->attributes()->symbol)));
-      if ($symbol[sizeof($symbol)-1] == 'd') array_pop($symbol);
+      $symbol = Contract::normalizeSymbol((string)$xml->attributes()->symbol);
       $stock = $this->em->getRepository('App:Stock')
         ->findOneBy([ 'symbol' => $symbol ]);
       if (!$stock) {
@@ -67,7 +65,7 @@ class ImporterXml
       }
       $stock->setConId((int)$xml->attributes()->conid);
       // flush required therefore futurs lookup will succeed
-      $this->em->flush();
+//      $this->em->flush();
     }
     if ($xml->attributes()->listingExchange && ((string)$xml->attributes()->listingExchange != $stock->getExchange()))
       $stock->setExchange((string)$xml->attributes()->listingExchange);
@@ -79,15 +77,13 @@ class ImporterXml
   }
 
   private function findOrCreateOption(\SimpleXMLElement $xml): Option {
-//    print((string)$xml->attributes()->symbol);
     $contract = $this->em->getRepository('App:Option')
       ->findOneBy([ 'conId' => (string)$xml->attributes()->conid ]);
     if (!$contract) {
       $stock = $this->em->getRepository('App:Stock')
         ->findOneBy([ 'conId' => (string)$xml->attributes()->underlyingConid ]);
       if (!$stock) {
-        $symbol = str_replace('.T', '', str_replace(' ', '-', trim((string)$xml->attributes()->underlyingSymbol)));
-        if ($symbol[sizeof($symbol)-1] == 'd') array_pop($symbol);
+        $symbol = Contract::normalizeSymbol((string)$xml->attributes()->underlyingSymbol);
         $stock = $this->em->getRepository('App:Stock')
           ->findOneBy([ 'symbol' => $symbol ]);
         if (!$stock) {
@@ -107,22 +103,29 @@ class ImporterXml
           'callOrPut' => (string)$xml->attributes()->putCall
          ]);
       if (!$contract) {
-          // option contract does not exist
-          $contract = (new Option((string)$xml->attributes()->symbol))
-            ->setCurrency((string)$xml->attributes()->currency)
-            ->setStock($stock)
-            ->setLastTradeDate(new \DateTime((string)$xml->attributes()->expiry))
-            ->setStrike((float)$xml->attributes()->strike)
-            ->setCallOrPut((string)$xml->attributes()->putCall)
-            ->setName((string)$xml->attributes()->description)
-            ->setMultiplier((int)$xml->attributes()->multiplier)
-            ;
+        // option contract does not exist
+        $contract = (new Option((string)$xml->attributes()->description))
+          ->setStock($stock)
+          ->setLastTradeDate(new \DateTime((string)$xml->attributes()->expiry))
+          ->setStrike((float)$xml->attributes()->strike)
+          ->setCallOrPut((string)$xml->attributes()->putCall)
+          ;
 
         $this->em->persist($contract);
-        // flush required therefore futurs lookup will succeed
-        $this->em->flush();
       }
+      $contract->setConId((int)$xml->attributes()->conid);
+      // flush required therefore futurs lookup will succeed
+//      $this->em->flush();
     }
+//    print_r($xml);
+    if ($xml->attributes()->listingExchange && ((string)$xml->attributes()->listingExchange != $contract->getExchange()))
+      $contract->setExchange((string)$xml->attributes()->listingExchange);
+    if ($xml->attributes()->currency && ((string)$xml->attributes()->currency != $contract->getCurrency()))
+      $contract->setCurrency((string)$xml->attributes()->currency);
+    if ($xml->attributes()->multiplier && ((string)$xml->attributes()->multiplier != $contract->getMultiplier()))
+      $contract->setMultiplier((string)$xml->attributes()->multiplier);
+    if ($xml->attributes()->symbol && !$contract->getName())
+      $contract->setName((string)$xml->attributes()->symbol);
     return $contract;
   }
 
@@ -163,7 +166,13 @@ class ImporterXml
               ->setRealizedPNL($pnl)
               ;
 
-          if ((string)($xml->attributes()->openCloseIndicator) == 'O') {
+          if ((string)($xml->attributes()->notes) == 'A') {
+            $statement->setStatus(Statement::ASSIGNED_STATUS);
+            $description = 'Assigned ';
+          } elseif ((string)($xml->attributes()->notes) == 'Ep') {
+            $statement->setStatus(Statement::EXPIRED_STATUS);
+            $description = 'Expired ';
+          } elseif ((string)($xml->attributes()->openCloseIndicator) == 'O') {
             $statement->setStatus(Statement::OPEN_STATUS);
             $description = 'Opening ';
           } elseif ((string)$xml->attributes()->openCloseIndicator == 'C') {
@@ -173,19 +182,6 @@ class ImporterXml
             print_r($xml);
           }
           $description = $description . $quantity . ' ' . $symbol . '@' . $price . $currency;
-          /*
-          if (in_array('A', $codes)) {
-                $statement->setStatus(Statement::ASSIGNED_STATUS);
-          } elseif (in_array('Ep', $codes)) {
-              $statement->setStatus(Statement::EXPIRED_STATUS);
-          } elseif (in_array('C', $codes)) {
-              $statement->setStatus(Statement::CLOSE_STATUS);
-          } elseif (in_array('O', $codes)) {
-              $statement->setStatus(Statement::OPEN_STATUS);
-          } else {
-              print_r($codes);
-          }
-          */
           $statement->setDescription($description);
 
           $this->em->persist($statement);
@@ -234,7 +230,13 @@ class ImporterXml
               ->setRealizedPNL($pnl)
               ;
 
-          if ((string)$xml->attributes()->openCloseIndicator == 'O') {
+          if ((string)($xml->attributes()->notes) == 'A') {
+            $statement->setStatus(Statement::ASSIGNED_STATUS);
+            $description = 'Assigned ';
+          } elseif ((string)($xml->attributes()->notes) == 'Ep') {
+            $statement->setStatus(Statement::EXPIRED_STATUS);
+            $description = 'Expired ';
+          } elseif ((string)($xml->attributes()->openCloseIndicator) == 'O') {
             $statement->setStatus(Statement::OPEN_STATUS);
             $description = 'Opening ';
           } elseif ((string)$xml->attributes()->openCloseIndicator == 'C') {
@@ -243,20 +245,7 @@ class ImporterXml
           } else {
             print_r($xml);
           }
-          $description = $description . $quantity . ' ' . (string)$xml->attributes()->description . '@' . $price . $currency;
-          /*
-          if (in_array('A', $codes)) {
-                $statement->setStatus(Statement::ASSIGNED_STATUS);
-          } elseif (in_array('Ep', $codes)) {
-              $statement->setStatus(Statement::EXPIRED_STATUS);
-          } elseif (in_array('C', $codes)) {
-              $statement->setStatus(Statement::CLOSE_STATUS);
-          } elseif (in_array('O', $codes)) {
-              $statement->setStatus(Statement::OPEN_STATUS);
-          } else {
-              print_r($codes);
-          }
-          */
+          $description = $description . $quantity . ' ' . $symbol . '@' . $price . $currency;
           $statement->setDescription($description);
 
           $this->em->persist($statement);
@@ -271,6 +260,18 @@ class ImporterXml
       $this->processStockTrade($portfolio, $xml);
     } elseif ($xml->attributes()->assetCategory == "OPT") {
       $this->processOptionTrade($portfolio, $xml);
+    } else {
+      print_r($xml);
+    }
+    $this->em->flush();
+  }
+
+  public function processSecurityInfo(\SimpleXMLElement $xml): void
+  {
+    if ($xml->attributes()->assetCategory == "STK") {
+      $this->findOrCreateStock($xml);
+    } elseif ($xml->attributes()->assetCategory == "OPT") {
+      $this->findOrCreateOption($xml);
     } else {
       print_r($xml);
     }

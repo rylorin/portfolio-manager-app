@@ -168,7 +168,7 @@ class Option extends Contract
           return sprintf("InvalidId(%d)", $this->getId());
         }
     }
-
+/*
     public function getExchange(): ?string
     {
         $s = parent::getExchange();
@@ -184,7 +184,7 @@ class Option extends Contract
     public function getDescription(): ?string {
       return $this->stock->getDescription();
     }
-
+*/
     public function getMultiplier(): ?int
     {
         return $this->multiplier ? $this->multiplier : 100;
@@ -232,11 +232,11 @@ class Option extends Contract
     public function getMoneyLongLabel(): ?string {
       return ($this->getMoneyShortLabel() ? self::$moneyLabelMapping[$this->getMoneyShortLabel()] : null);
     }
-
+/*
     public function getName(): ?string {
       return $this->stock ? $this->stock->getName() : null;
     }
-
+*/
     public function getYieldToMaturity(): ?float {
       return $this->getPrice() / $this->strike / $this->getDaysToMaturity() * 360;
     }
