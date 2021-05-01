@@ -5,6 +5,7 @@
         <th>#</th>
         <th>Symbol</th>
         <th>Currency</th>
+        <th>Proceeds</th>
         <th>Net Dividends</th>
         <th>Stock P/L</th>
         <th>Options P/L</th>
@@ -21,10 +22,11 @@
               </a>
           </td>
           <td>{{ symbol.currency }}</td>
-          <td class="{{ symbol.totalNetDividends|my_number_class }}">{{ symbol.totalNetDividends|my_decimal_format_2d }}</td>
-          <td class="{{ symbol.totalStockPNL|my_number_class }}">{{ symbol.totalStockPNL|my_decimal_format_2d }}</td>
-          <td class="{{ symbol.totalOptionsPNL|my_number_class }}">{{ symbol.totalOptionsPNL|my_decimal_format_2d }}</td>
-          <td class="{{ (symbol.totalInterests + symbol.totalStockPNL + symbol.totalOptionsPNL + symbol.totalNetDividends)|my_number_class }}">{{ (symbol.totalStockPNL + symbol.totalOptionsPNL + symbol.totalNetDividends)|my_decimal_format_2d }}</td>
+          <td class="{{ symbol.totalProceeds|my_number_class }}">{{ symbol.totalProceeds|my_integer_format }}</td>
+          <td class="{{ symbol.totalNetDividends|my_number_class }}">{{ symbol.totalNetDividends|my_integer_format }}</td>
+          <td class="{{ symbol.totalStockPNL|my_number_class }}">{{ symbol.totalStockPNL|my_integer_format }}</td>
+          <td class="{{ symbol.totalOptionsPNL|my_number_class }}">{{ symbol.totalOptionsPNL|my_integer_format }}</td>
+          <td class="{{ (symbol.totalInterests + symbol.totalStockPNL + symbol.totalOptionsPNL + symbol.totalNetDividends)|my_number_class }}">{{ (symbol.totalStockPNL + symbol.totalOptionsPNL + symbol.totalNetDividends)|my_integer_format }}</td>
         </tr>
     {% endfor %}
     </tbody>

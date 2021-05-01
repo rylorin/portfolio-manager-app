@@ -16,6 +16,7 @@ class StatementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+          ->add('transactionID')
           ->add('tradeUnit')
           ->add('date', DateTimeType::class, [
                 'html5' => true,
