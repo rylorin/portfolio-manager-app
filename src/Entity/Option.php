@@ -54,7 +54,6 @@ class Option extends Contract
     public function __toString()
     {
         return $this->getSymbol();
-/* 17-03-2021 return Option::formatSymbol($this->stock->getSymbol(), $this->lastTradeDate, $this->strike, $this->callOrPut); */
     }
 
     public function getSecType(): string {

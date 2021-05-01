@@ -87,6 +87,11 @@ abstract class Statement
      */
     private $tradeId;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $fxRateToBase;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -190,14 +195,26 @@ abstract class Statement
       return $this;
     }
 
-    public function getTradeId(): ?int
+    public function getTransactionId(): ?int
     {
         return $this->tradeId;
     }
 
-    public function setTradeId(?int $tradeId): self
+    public function setTransactionId(?int $tradeId): self
     {
         $this->tradeId = $tradeId;
+
+        return $this;
+    }
+
+    public function getFxRateToBase(): ?float
+    {
+        return $this->fxRateToBase;
+    }
+
+    public function setFxRateToBase(?float $fxRateToBase): self
+    {
+        $this->fxRateToBase = $fxRateToBase;
 
         return $this;
     }

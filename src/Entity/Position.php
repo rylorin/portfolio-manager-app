@@ -49,7 +49,6 @@ class Position
 
     public function __construct()
     {
-//        parent::__construct();
         $this->openDate = new \DateTime();
     }
 

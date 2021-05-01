@@ -217,6 +217,7 @@ class PortfolioController extends AbstractController
                         'stockId' => $stockId,
                         'symbol' => $symbol,
                         'currency' => $currency,
+                        'totalProceeds' => $totalProceeds,
                         'totalStockPNL' => $totalStockPNL,
                         'totalOptionsPNL' => $totalOptionsPNL,
                         'totalNetDividends' => $totalNetDividends,
@@ -227,6 +228,7 @@ class PortfolioController extends AbstractController
                 $stockId = $value->getStock()->getId();
                 $symbol = $value->getStock()->getSymbol();
                 $currency = $value->getStock()->getCurrency();
+                $totalProceeds = 0;
                 $totalStockPNL = 0;
                 $totalOptionsPNL = 0;
                 $totalNetDividends = 0;
@@ -244,15 +246,19 @@ class PortfolioController extends AbstractController
                     $monthly[$month]['count'] = 0;
             }
             if ($value->getStatementType() == Statement::TYPE_TRADE) {
+                $totalProceeds += $value->getAmount();
                 $totalStockPNL += $value->getRealizedPNL();
                 $monthly[$month]['stocks'] += $value->getRealizedPNL() * $baserate[$value->getCurrency()];
             } elseif ($value->getStatementType() == Statement::TYPE_TRADE_OPTION) {
+                $totalProceeds += $value->getAmount();
                 $totalOptionsPNL += $value->getRealizedPNL();
                 $monthly[$month]['options'] += $value->getRealizedPNL() * $baserate[$value->getCurrency()];
             } elseif ($value->getStatementType() == Statement::TYPE_DIVIDEND) {
+                $totalProceeds += $value->getAmount();
                 $totalNetDividends += $value->getAmount();
                 $monthly[$month]['dividends'] += $value->getAmount() * $baserate[$value->getCurrency()];
             } elseif ($value->getStatementType() == Statement::TYPE_TAX) {
+                $totalProceeds += $value->getAmount();
                 $totalNetDividends += $value->getAmount();
                 $monthly[$month]['dividends'] += $value->getAmount() * $baserate[$value->getCurrency()];
             } elseif ($value->getStatementType() == Statement::TYPE_INTEREST) {
@@ -268,6 +274,7 @@ class PortfolioController extends AbstractController
                 'stockId' => $stockId,
                 'symbol' => $symbol,
                 'currency' => $currency,
+                'totalProceeds' => $totalProceeds,
                 'totalStockPNL' => $totalStockPNL,
                 'totalOptionsPNL' => $totalOptionsPNL,
                 'totalNetDividends' => $totalNetDividends,

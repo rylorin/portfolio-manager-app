@@ -34,6 +34,7 @@ class TradeUnitController extends AbstractController
           $stats[$strategy]['strategy'] = $trade->getStrategyName();
           $stats[$strategy]['min'] = null;
           $stats[$strategy]['max'] = null;
+          $stats[$strategy]['duration'] = 0;
         }
         $stats[$strategy]['count']++;
         if ($trade->getStatus() == TradeUnit::CLOSE_STATUS) {
@@ -47,6 +48,7 @@ class TradeUnitController extends AbstractController
           }
           if (!$stats[$strategy]['min'] || ($pnl < $stats[$strategy]['min'])) $stats[$strategy]['min'] = $pnl;
           if (!$stats[$strategy]['max'] || ($pnl > $stats[$strategy]['max'])) $stats[$strategy]['max'] = $pnl;
+          $stats[$strategy]['duration'] += $trade->getDuration();
         }
       }
 
