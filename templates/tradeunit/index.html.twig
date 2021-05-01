@@ -15,12 +15,14 @@
       {% set total_trades_pnl = 0 %}
       {% set total_trades_closed = 0 %}
       {% set total_trades_won = 0 %}
+      {% set total_trades_duration = 0 %}
       <thead>
           <tr class="text-center">
             <th>Strategy</th>
             <th>Trades</th>
             <th>Closed #</th>
             <th>Success</th>
+            <th>Duration</th>
             <th>Min</th>
             <th>Average</th>
             <th>Max</th>
@@ -55,6 +57,14 @@
                 -
               {% endif %}
             </td>
+            <td class="text-right">
+            {% if stat.closed > 0 %}
+              {{ (stat.duration / stat.closed) | my_integer_format }}
+              {% set total_trades_duration = total_trades_duration + stat.duration %}
+            {% else %}
+              -
+            {% endif %}
+            </td>
             <td class="{{ stat.min|my_number_class_2colors }}">
               {{ stat.min | my_decimal_format_2d }}
             </td>
@@ -86,6 +96,9 @@
             <td class="text-right">{{ total_trades_closed }}</td>
             <td class="text-right">
               {{ (total_trades_won / total_trades_closed) | my_percent_format }}
+            </td>
+            <td class="text-right">
+              {{ (total_trades_duration / total_trades_closed) | my_integer_format }}
             </td>
             <td></td>
             <td class="{{ total_trades_pnl|my_number_class_2colors }}">
