@@ -54,27 +54,53 @@ class ImportFlexCommand extends Command
         sprintf("https://gdcdyn.interactivebrokers.com/Universal/servlet/FlexStatementService.SendRequest?t=%s&q=%s&v=3", $token, $query));
       if ($xml && ($xml->Status == "Success")) {
         $xml = simplexml_load_file(sprintf("%s?q=%s&t=%s&v=3", $xml->Url, $xml->ReferenceCode, $token));
-//        print_r($xml);
         $report = $xml->attributes()->queryName;
 
         $importer = new ImporterXml($this->em);
-// print_r($xml);
-        $trades_count = sizeof($xml->FlexStatements->FlexStatement->Trades->Trade);
-        $securities_count = sizeof($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo);
-        $io->progressStart($trades_count + $securities_count);
 
-        for ($i=0; $i < $trades_count; $i++) {
-          $importer->processTrade($xml->FlexStatements->FlexStatement->Trades->Trade[$i]);
-          $io->progressAdvance();
+        if (isset($xml->FlexStatements->FlexStatement->Trades)) {
+          $trades_count = sizeof($xml->FlexStatements->FlexStatement->Trades->Trade);
+        } else {
+          $trades_count = 0;
         }
-        for ($i=0; $i < $securities_count; $i++) {
-          $importer->processSecurityInfo($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo[$i]);
-          $io->progressAdvance();
+        if (isset($xml->FlexStatements->FlexStatement->SecuritiesInfo)) {
+          $securities_count = sizeof($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo);
+        } else {
+          $securities_count = 0;
         }
-
-        $this->em->flush();
-        $io->progressFinish();
-        $io->success($report . ' report loaded!');
+        if (isset($xml->FlexStatements->FlexStatement->CashTransactions)) {
+          $cash_count = sizeof($xml->FlexStatements->FlexStatement->CashTransactions->CashTransaction);
+        } else {
+          $cash_count = 0;
+        }
+        if (isset($xml->FlexStatements->FlexStatement->TransactionTaxes)) {
+          $taxes_count = sizeof($xml->FlexStatements->FlexStatement->TransactionTaxes->TransactionTax);
+        } else {
+          $taxes_count = 0;
+        }
+        if (($trades_count + $securities_count + $cash_count + $taxes_count) > 0) {
+          $io->progressStart($trades_count + $securities_count);
+          for ($i=0; $i < $securities_count; $i++) {
+            $importer->processSecurityInfo($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo[$i]);
+            $io->progressAdvance();
+          }
+          for ($i=0; $i < $trades_count; $i++) {
+            $importer->processTrade($xml->FlexStatements->FlexStatement->Trades->Trade[$i]);
+            $io->progressAdvance();
+          }
+          for ($i=0; $i < $cash_count; $i++) {
+            $importer->processCashTransaction($xml->FlexStatements->FlexStatement->CashTransactions->CashTransaction[$i]);
+            $io->progressAdvance();
+          }
+          for ($i=0; $i < $taxes_count; $i++) {
+            $importer->processTransactionTax($xml->FlexStatements->FlexStatement->TransactionTaxes->TransactionTax[$i]);
+            $io->progressAdvance();
+          }
+          $io->progressFinish();
+          $io->success($report . ' report loaded!');
+        } else {
+          $io->error($xml->ErrorMessage);
+        }
       } elseif ($xml) {
         $io->error($xml->ErrorMessage);
       } else {

@@ -72,7 +72,7 @@ class ImporterXml
     if ($xml->attributes()->currency && ((string)$xml->attributes()->currency != $stock->getCurrency()))
       $stock->setCurrency((string)$xml->attributes()->currency);
     if ($xml->attributes()->description && !$stock->getName())
-      $stock->setName((string)$xml->attributes()->description);
+      $stock->setName(html_entity_decode((string)$xml->attributes()->description));
     return $stock;
   }
 
@@ -130,10 +130,10 @@ class ImporterXml
   }
 
   private function processStockTrade(Portfolio $portfolio, \SimpleXMLElement $xml): void {
-    $tradeId = intval((string)$xml->attributes()->transactionID);
-//print("tradeId: " . $tradeId . "\n");
+    $transactionID = intval((string)$xml->attributes()->transactionID);
+//print("tradeId: " . $transactionID . "\n");
     $statement = $this->em->getRepository('App:StockTradeStatement')->findOneBy(
-      [ 'portfolio' => $portfolio, 'tradeId' => $tradeId ]);
+      [ 'portfolio' => $portfolio, 'tradeId' => $transactionID ]);
     if (!$statement) {
       $currency = (string)$xml->attributes()->currency;
       $symbol = (string)$xml->attributes()->symbol;
@@ -153,9 +153,7 @@ class ImporterXml
       if (!$statement) {
            $statement = (new StockTradeStatement())
               ->setPortfolio($portfolio)
-              ->setTradeId($tradeId)
               ->setStock($stock)
-              ->setName((string)$xml->attributes()->description)
               ->setDate($date)
               ->setCurrency($currency)
               ->setQuantity($quantity)
@@ -188,15 +186,17 @@ class ImporterXml
       } else {
 //          print($symbol . ' statement already exists');
       }
+      $statement->setTransactionId($transactionID);
     }
+    if ($xml->attributes()->fxRateToBase && !$statement->getfxRateToBase())
+      $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
   }
 
-  // Trades,Data,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,Proceeds,Comm/Fee,Basis,Realized P/L,Realized P/L %,Code
   private function processOptionTrade(Portfolio $portfolio, \SimpleXMLElement $xml): void {
-    $tradeId = intval((string)$xml->attributes()->transactionID);
-//print("tradeId: " . $tradeId . "\n");
+    $transactionID = intval((string)$xml->attributes()->transactionID);
+//print("tradeId: " . $transactionID . "\n");
     $statement = $this->em->getRepository('App:OptionTradeStatement')->findOneBy(
-      [ 'portfolio' => $portfolio, 'tradeId' => $tradeId ]);
+      [ 'portfolio' => $portfolio, 'tradeId' => $transactionID ]);
     if (!$statement) {
       $currency = (string)$xml->attributes()->currency;
       $symbol = (string)$xml->attributes()->symbol;
@@ -217,7 +217,6 @@ class ImporterXml
       if (!$statement) {
            $statement = (new OptionTradeStatement())
               ->setPortfolio($portfolio)
-              ->setTradeId($tradeId)
               ->setStock($stock)
               ->setContract($option)
               ->setDate($date)
@@ -245,12 +244,133 @@ class ImporterXml
           } else {
             print_r($xml);
           }
-          $description = $description . $quantity . ' ' . $symbol . '@' . $price . $currency;
+          $description = $description . $quantity . ' ' . (string)$xml->attributes()->description . '@' . $price . $currency;
           $statement->setDescription($description);
 
           $this->em->persist($statement);
         }
+        $statement->setTransactionId($transactionID);
       }
+      if ($xml->attributes()->fxRateToBase && !$statement->getfxRateToBase())
+        $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
+  }
+
+  private function processDividends(\SimpleXMLElement $xml): void {
+    $portfolio = $this->findOrCreatePortfolio((string)$xml->attributes()->accountId);
+    $transactionID = (int)$xml->attributes()->transactionID;
+    $statement = $this->em->getRepository('App:OptionTradeStatement')->findOneBy(
+      [ 'portfolio' => $portfolio, 'tradeId' => $transactionID ]);
+    if (!$statement) {
+      $description = (string)$xml->attributes()->description;
+      $xml->attributes()->description = null;
+      $stock = $this->findOrCreateStock($xml);
+      $date = new \DateTime((string)$xml->attributes()->settleDate);
+      $amount = (float)$xml->attributes()->amount;
+      $statement = $this->em->getRepository('App:DividendStatement')->findOneBy(
+        [ 'portfolio' => $portfolio, 'stock' => $stock->getId(), 'date' => $date, 'amount' => $amount ]);
+      if (!$statement) {
+        $currency = (string)$xml->attributes()->currency;
+        $country = substr($description, strpos($description, '(') + 1, 2);
+        $statement = (new DividendStatement())
+            ->setPortfolio($portfolio)
+            ->setStock($stock)
+            ->setDate($date)
+            ->setDescription($description)
+            ->setAmount($amount)
+            ->setCurrency($currency)
+            ->setCountry($country)
+            ;
+        $this->em->persist($statement);
+      }
+      $statement->setTransactionId($transactionID);
+    }
+    if ($xml->attributes()->fxRateToBase && !$statement->getfxRateToBase())
+      $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
+  }
+
+  private function processWithholdingTax(\SimpleXMLElement $xml): void {
+    $portfolio = $this->findOrCreatePortfolio((string)$xml->attributes()->accountId);
+    $transactionID = (int)$xml->attributes()->transactionID;
+    $statement = $this->em->getRepository('App:OptionTradeStatement')->findOneBy(
+      [ 'portfolio' => $portfolio, 'tradeId' => $transactionID ]);
+    if (!$statement) {
+      $description = (string)$xml->attributes()->description;
+      $xml->attributes()->description = null;
+      $stock = $this->findOrCreateStock($xml);
+      $date = new \DateTime((string)$xml->attributes()->settleDate);
+      $amount = (float)$xml->attributes()->amount;
+      $statement = $this->em->getRepository('App:TaxStatement')->findOneBy(
+        [ 'portfolio' => $portfolio, 'stock' => $stock->getId(), 'date' => $date, 'amount' => $amount ]);
+      if (!$statement) {
+        $currency = (string)$xml->attributes()->currency;
+        $country = substr($description, strpos($description, '(') + 1, 2);
+        $statement = (new TaxStatement())
+            ->setPortfolio($portfolio)
+            ->setStock($stock)
+            ->setDate($date)
+            ->setDescription($description)
+            ->setAmount($amount)
+            ->setCurrency($currency)
+            ->setCountry($country)
+            ;
+        $this->em->persist($statement);
+      }
+      $statement->setTransactionId($transactionID);
+    }
+    if ($xml->attributes()->fxRateToBase && !$statement->getfxRateToBase())
+      $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
+  }
+
+  private function processBrokerInterest(\SimpleXMLElement $xml): void {
+    $portfolio = $this->findOrCreatePortfolio((string)$xml->attributes()->accountId);
+    $transactionID = (int)$xml->attributes()->transactionID;
+    $statement = $this->em->getRepository('App:InterestStatement')->findOneBy(
+      [ 'portfolio' => $portfolio, 'tradeId' => $transactionID ]);
+    if (!$statement) {
+      $date = new \DateTime((string)$xml->attributes()->dateTime);
+      $amount = (float)$xml->attributes()->amount;
+      $statement = $this->em->getRepository('App:InterestStatement')->findOneBy(
+        [ 'portfolio' => $portfolio, 'date' => $date, 'amount' => $amount ]);
+      if (!$statement) {
+        $currency = (string)$xml->attributes()->currency;
+        $description = (string)$xml->attributes()->description;
+        $statement = (new InterestStatement())
+            ->setPortfolio($portfolio)
+            ->setDate($date)
+            ->setDescription($description)
+            ->setAmount($amount)
+            ->setCurrency($currency)
+            ;
+        $this->em->persist($statement);
+      }
+      $statement->setTransactionId($transactionID);
+    }
+    if ($xml->attributes()->fxRateToBase && !$statement->getfxRateToBase())
+      $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
+  }
+
+  public function processTransactionTax(\SimpleXMLElement $xml): void {
+    $portfolio = $this->findOrCreatePortfolio((string)$xml->attributes()->accountId);
+      $stock = $this->findOrCreateStock($xml);
+      $date = new \DateTime((string)$xml->attributes()->settleDate);
+      $amount = (float)$xml->attributes()->amount;
+      $statement = $this->em->getRepository('App:FeeStatement')->findOneBy(
+        [ 'portfolio' => $portfolio, 'stock' => $stock->getId(), 'date' => $date, 'amount' => $amount ]);
+      if (!$statement) {
+        $currency = (string)$xml->attributes()->currency;
+        $description = (string)$xml->attributes()->taxDescription;
+        $statement = (new FeeStatement())
+            ->setPortfolio($portfolio)
+            ->setStock($stock)
+            ->setDate($date)
+            ->setDescription($description)
+            ->setAmount($amount)
+            ->setCurrency($currency)
+            ;
+        $this->em->persist($statement);
+      }
+    if ($xml->attributes()->fxRateToBase && !$statement->getfxRateToBase())
+      $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
   }
 
   public function processTrade(\SimpleXMLElement $xml): void
@@ -260,6 +380,26 @@ class ImporterXml
       $this->processStockTrade($portfolio, $xml);
     } elseif ($xml->attributes()->assetCategory == "OPT") {
       $this->processOptionTrade($portfolio, $xml);
+    } elseif ($xml->attributes()->assetCategory == "CASH") {
+      // silently ignore for the moment
+    } else {
+      print_r($xml);
+    }
+    $this->em->flush();
+  }
+
+  public function processCashTransaction(\SimpleXMLElement $xml): void
+  {
+    if ($xml->attributes()->type == "Withholding Tax") {
+      $this->processWithholdingTax($xml);
+    } elseif (($xml->attributes()->type == "Dividends") || ($xml->attributes()->type == "Payment In Lieu Of Dividends")) {
+      $this->processDividends($xml);
+    } elseif (($xml->attributes()->type == "Broker Interest Paid") || ($xml->attributes()->type == "Broker Interest Received")) {
+      $this->processBrokerInterest($xml);
+    } elseif ($xml->attributes()->type == "Deposits/Withdrawals") {
+      // silently ignore for the moment
+    } elseif ($xml->attributes()->type == "Other Fees") {
+      // silently ignore for the moment
     } else {
       print_r($xml);
     }
