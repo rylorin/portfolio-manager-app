@@ -32,6 +32,35 @@ class TradeUnit
     public const BULL_SPREAD = 10;
     public const SHORT_STRANGLE = 11;
 
+    public const stategyLabelMapping = [
+      TradeUnit::LONG_STOCK => 'long stock',
+      TradeUnit::SHORT_STOCK => 'short stock',
+      TradeUnit::LONG_CALL => 'long call',
+      TradeUnit::SHORT_CALL => 'naked short call',
+      TradeUnit::COVERED_CALL => 'covered short call',
+      TradeUnit::LONG_PUT => 'long put',
+      TradeUnit::SHORT_PUT => 'short put',
+      TradeUnit::THE_WHEEL => 'the wheel',
+      TradeUnit::RISK_REVERSAL => 'risk reversal',
+      TradeUnit::BULL_SPREAD => 'bull spread',
+      TradeUnit::SHORT_STRANGLE => 'short strangle',
+    ];
+
+    public const stategyMenuMapping = [
+      'undefined' => 0,
+      'long stock' => TradeUnit::LONG_STOCK,
+      'short stock' => TradeUnit::SHORT_STOCK,
+      'long call' => TradeUnit::LONG_CALL,
+      'naked short call' => TradeUnit::SHORT_CALL,
+      'covered short call' => TradeUnit::COVERED_CALL,
+      'long put' => TradeUnit::LONG_PUT,
+      'short put' => TradeUnit::SHORT_PUT,
+      'the wheel' => TradeUnit::THE_WHEEL,
+      'risk reversal' => TradeUnit::RISK_REVERSAL,
+      'bull spread' => TradeUnit::BULL_SPREAD,
+      'short strangle' => TradeUnit::SHORT_STRANGLE,
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -153,6 +182,9 @@ class TradeUnit
         if ($statement->getStatementType() == Statement::TYPE_TRADE_OPTION) {
           $risk += $statement->getContract()->getStrike() * $statement->getContract()->getMultiplier() * $statement->getQuantity();
           $this->risk = max(abs($risk), $this->risk);
+        } elseif ($statement->getStatementType() == Statement::TYPE_TRADE) {
+          $risk += $statement->getPrice() * $statement->getQuantity();
+          $this->risk = max(abs($risk), $this->risk);
         }
       }
       $this->openingDate = ($openingDate ? $openingDate : new \DateTime());
@@ -187,33 +219,11 @@ class TradeUnit
 
     public function getStrategyName(): string
     {
-        if (!$this->strategy) {
-          return 'undefined';
-        } elseif ($this->strategy == TradeUnit::LONG_STOCK) {
-          return 'long stock';
-        } elseif ($this->strategy == TradeUnit::SHORT_STOCK) {
-          return 'short stock';
-        } elseif ($this->strategy == TradeUnit::LONG_CALL) {
-          return 'long call';
-        } elseif ($this->strategy == TradeUnit::SHORT_CALL) {
-          return 'naked short call';
-        } elseif ($this->strategy == TradeUnit::LONG_PUT) {
-          return 'long put';
-        } elseif ($this->strategy == TradeUnit::SHORT_PUT) {
-          return 'short put';
-        } elseif ($this->strategy == TradeUnit::COVERED_CALL) {
-          return 'covered short call';
-        } elseif ($this->strategy == TradeUnit::THE_WHEEL) {
-          return 'the wheel';
-        } elseif ($this->strategy == TradeUnit::RISK_REVERSAL) {
-          return 'risk reversal';
-        } elseif ($this->strategy == TradeUnit::BULL_SPREAD) {
-          return 'bull spread';
-        } elseif ($this->strategy == TradeUnit::SHORT_STRANGLE) {
-          return 'short strangle';
-        } else {
-          return strval($this->strategy);
-        }
+      if (array_key_exists($this->strategy, self::stategyLabelMapping)) {
+        return self::stategyLabelMapping[$this->strategy];
+      } else {
+        return sprintf("stategy(%d)", $this->strategy);
+      }
     }
 
     public function setStrategy(int $strategy): self

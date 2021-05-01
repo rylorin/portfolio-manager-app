@@ -29,19 +29,7 @@ class TradeUnitType extends AbstractType
             // 'multiple' => true,
             // 'expanded' => true,
             ])
-          ->add('strategy', ChoiceType::class, [ 'choices' => [
-            'long stock' => TradeUnit::LONG_STOCK,
-            'short stock' => TradeUnit::SHORT_STOCK,
-            'long call' => TradeUnit::LONG_CALL,
-            'naked short call' => TradeUnit::SHORT_CALL,
-            'covered short call' => TradeUnit::COVERED_CALL,
-            'long put' => TradeUnit::LONG_PUT,
-            'short put' => TradeUnit::SHORT_PUT,
-            'the wheel' => TradeUnit::THE_WHEEL,
-            'risk reversal' => TradeUnit::RISK_REVERSAL,
-            'bull spread' => TradeUnit::BULL_SPREAD,
-            'short strangle' => TradeUnit::SHORT_STRANGLE,
-            ]])
+          ->add('strategy', ChoiceType::class, [ 'choices' => TradeUnit::stategyMenuMapping ])
           ->add('openingDate', DateTimeType::class, [
                 'html5' => true,
                 'date_widget' => 'single_text',
