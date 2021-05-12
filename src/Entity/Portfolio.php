@@ -62,12 +62,18 @@ class Portfolio
      */
     private $owner;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OpenOrder::class, mappedBy="Account", orphanRemoval=true)
+     */
+    private $openOrders;
+
     public function __construct()
     {
         $this->positions = new ArrayCollection();
         $this->balances = new ArrayCollection();
         $this->statements = new ArrayCollection();
         $this->tradeUnits = new ArrayCollection();
+        $this->openOrders = new ArrayCollection();
     }
 
     public function __toString()
@@ -259,6 +265,36 @@ class Portfolio
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OpenOrder[]
+     */
+    public function getOpenOrders(): Collection
+    {
+        return $this->openOrders;
+    }
+
+    public function addOpenOrder(OpenOrder $openOrder): self
+    {
+        if (!$this->openOrders->contains($openOrder)) {
+            $this->openOrders[] = $openOrder;
+            $openOrder->setAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpenOrder(OpenOrder $openOrder): self
+    {
+        if ($this->openOrders->removeElement($openOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($openOrder->getAccount() === $this) {
+                $openOrder->setAccount(null);
+            }
+        }
 
         return $this;
     }
