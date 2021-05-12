@@ -79,7 +79,7 @@ class ImportFlexCommand extends Command
           $taxes_count = 0;
         }
         if (($trades_count + $securities_count + $cash_count + $taxes_count) > 0) {
-          $io->progressStart($trades_count + $securities_count);
+          $io->progressStart($trades_count + $securities_count + $cash_count + $taxes_count);
           for ($i=0; $i < $securities_count; $i++) {
             $importer->processSecurityInfo($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo[$i]);
             $io->progressAdvance();

@@ -48,10 +48,34 @@ class ImportYahooCommand extends Command
 
         // Create a new client from the factory
         $client = ApiClientFactory::createApiClient();
+
         $currencies = $this->em->getRepository('App:Currency')->findAll();
+        $query_currencies = [];
+        foreach ($currencies as $currency) {
+          $query_currencies[] = [$currency->getBase(), $currency->getCurrency()];
+        }
+
         $stocks = $this->em->getRepository('App:Stock')->findAll();
+        $query_stocks = [];
+        foreach ($stocks as $key => $contract) {
+          $query_stocks[] = $contract->getYahooTicker();
+        }
+
         $options = $this->em->getRepository('App:Option')->findAll();
-        $io->progressStart(sizeof($stocks) + sizeof($options) + sizeof($currencies));
+        $query_options = [];
+        $echeance = (new \DateTime())->sub(new \DateInterval('P1D'));
+        foreach ($options as $key => $contract) {
+          if ($contract->getLastTradeDate() > $echeance) {
+            $query_options[] = $contract->getYahooTicker();
+          } else {
+            $contract->setPrice(null);
+            $contract->setAsk(null);
+            $contract->setBid(null);
+            $contract->setPreviousClosePrice(null);
+          }
+        }
+
+        $io->progressStart(sizeof($query_currencies) + sizeof($query_stocks) + sizeof($query_options));
 
         /*
         // Returns an array of Scheb\YahooFinanceApi\Results\SearchResult
@@ -68,11 +92,7 @@ class ImportYahooCommand extends Command
         print_r($quote);
         */
 
-        $query = [];
-        foreach ($currencies as $currency) {
-          $query[] = [$currency->getBase(), $currency->getCurrency()];
-        }
-        $result = $client->getExchangeRates($query);
+        $result = $client->getExchangeRates($query_currencies);
         foreach ($result as $rate) {
           foreach ($currencies as $currency) {
             if ($rate->getShortName() == ($currency->getBase() . '/' . $currency->getCurrency())) {
@@ -85,37 +105,35 @@ class ImportYahooCommand extends Command
         }
         $this->em->flush();
 
-        $query = [];
-        foreach ($stocks as $key => $contract) {
-          $query[] = $contract->getYahooTicker();
-        }
-        $result = $client->getQuotes($query);
+        $result = $client->getQuotes($query_stocks);
         foreach ($result as $quote) {
           foreach ($stocks as $key => $contract) {
             if ($contract->getYahooTicker() == $quote->getSymbol()) {
-              if ($quote->getCurrency() == 'GBp') {
-                      $contract->setCurrency('GBP');
-              } elseif ($quote->getCurrency()) {
-                      $contract->setCurrency($quote->getCurrency());
+              if (!$contract->getCurrency()) {
+                if ($quote->getCurrency() == 'GBp') {
+                        $contract->setCurrency('GBP');
+                } elseif ($quote->getCurrency()) {
+                        $contract->setCurrency($quote->getCurrency());
+                }
               }
               $contract->setPrice(self::getYahooPrice($quote));
               $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
               $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
               $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
-              $contract->setName($quote->getLongName());
+              if (!$contract->getName()) $contract->setName($quote->getLongName());
               $contract->setDividendTTM($quote->getTrailingAnnualDividendRate());
               $contract->setFiftyTwoWeekLow($quote->getFiftyTwoWeekLow());
               $contract->setFiftyTwoWeekHigh($quote->getFiftyTwoWeekHigh());
               $contract->setEpsTTM($quote->getEpsTrailingTwelveMonths());
               $contract->setEpsForward($quote->getEpsForward());
-              /*
-              if ($quote->getSymbol() == 'ISPA.DE') {
+/*
+              if ($quote->getSymbol() == 'AMD') {
                 printf("\n");
                 print_r($quote);
                 print($quote->getSymbol() . '/' . $contract->getSymbol() . '/' . $contract->getId() . ' = ' . $contract->getPrice());
                 printf("\n");
               }
-              */
+*/
               break;
             }
           }
@@ -123,19 +141,7 @@ class ImportYahooCommand extends Command
         }
         $this->em->flush();
 
-        $query = [];
-        $echeance = (new \DateTime())->sub(new \DateInterval('P1D'));
-        foreach ($options as $key => $contract) {
-          if ($contract->getLastTradeDate() > $echeance) {
-            $query[] = $contract->getYahooTicker();
-          } else {
-            $contract->setPrice(null);
-            $contract->setAsk(null);
-            $contract->setBid(null);
-            $contract->setPreviousClosePrice(null);
-          }
-        }
-        $result = $client->getQuotes($query);
+        $result = $client->getQuotes($query_options);
         foreach ($result as $quote) {
           foreach ($options as $key => $contract) {
             if ($contract->getYahooTicker() == $quote->getSymbol()) {
