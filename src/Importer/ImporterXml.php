@@ -149,7 +149,7 @@ class ImporterXml
 
       // create trade statement if not exits
       $statement = $this->em->getRepository('App:StockTradeStatement')->findOneBy(
-        [ 'stock' => $stock->getId(), 'portfolio' => $portfolio, 'date' => $date ]);
+        [ 'stock' => $stock->getId(), 'portfolio' => $portfolio, 'date' => $date, 'tradeId' => null ]);
       if (!$statement) {
            $statement = (new StockTradeStatement())
               ->setPortfolio($portfolio)
