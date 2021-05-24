@@ -273,7 +273,10 @@ class StatementController extends AbstractController
         || ($statement->getStatementType() == Statement::TYPE_TAX)
         ) {
         $x = $statementRepository->findPreviousStatementForSymbol(
-          $portfolio, $statement->getDate(), $statement->getStock());
+          $portfolio,
+          $statement->getDate(),
+          $statement->getStock()
+        );
         if ($x) $statement->setTradeUnit($x->getTradeUnit());
       }
       $entityManager->flush();

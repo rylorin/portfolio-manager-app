@@ -51,6 +51,7 @@
                   <a href="{{ path('portfolio_statement_unlinktradeunit', {'id': statement.id}) }}"><span data-feather='trash-2' ></span></a>
                 {% else %}
                   <a href="{{ path('portfolio_statement_createtradeunit', {'id': statement.id}) }}"><span data-feather="plus-square"></span></a>
+                  <a href="{{ path('portfolio_statement_guesstradeunit', {'id': statement.id}) }}"><span data-feather="help-circle"></span></a>
                 {% endif %}
                 </td>
             </tr>

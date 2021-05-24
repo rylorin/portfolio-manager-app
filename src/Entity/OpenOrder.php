@@ -74,6 +74,11 @@ class OpenOrder
      */
     private $Status;
 
+    /**
+     * @ORM\Column(type="float", nullable=false)
+     */
+    private $RemainingQty;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -207,6 +212,18 @@ class OpenOrder
     public function setStatus(string $Status): self
     {
         $this->Status = $Status;
+
+        return $this;
+    }
+
+    public function getRemainingQty(): ?float
+    {
+        return $this->RemainingQty;
+    }
+
+    public function setRemainingQty(?float $RemainingQty): self
+    {
+        $this->RemainingQty = $RemainingQty;
 
         return $this;
     }
