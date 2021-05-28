@@ -44,6 +44,21 @@ class Stock extends Contract
      */
     private $tradeUnits;
 
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $industry;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $category;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $subcategory;
+
     public function __construct($symbol = null)
     {
         parent::__construct($symbol);
@@ -196,6 +211,42 @@ class Stock extends Contract
                 $tradeUnit->setSymbol(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIndustry(): ?string
+    {
+        return $this->industry;
+    }
+
+    public function setIndustry(string $industry): self
+    {
+        $this->industry = $industry;
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getSubcategory(): ?string
+    {
+        return $this->subcategory;
+    }
+
+    public function setSubcategory(?string $subcategory): self
+    {
+        $this->subcategory = $subcategory;
 
         return $this;
     }

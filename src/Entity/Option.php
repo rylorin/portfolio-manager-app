@@ -45,6 +45,36 @@ class Option extends Contract
      */
     private $multiplier;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $ImpliedVolatility;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $Delta;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $pvDividend;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $Gamma;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $Vega;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $Theta;
+
     public function __construct()
     {
         parent::__construct();
@@ -242,6 +272,78 @@ class Option extends Contract
 
     public function getBidYieldToMaturity(): ?float {
       return $this->getBid() / $this->strike / $this->getDaysToMaturity() * 360;
+    }
+
+    public function getImpliedVolatility(): ?float
+    {
+        return $this->ImpliedVolatility;
+    }
+
+    public function setImpliedVolatility(?float $ImpliedVolatility): self
+    {
+        $this->ImpliedVolatility = $ImpliedVolatility;
+
+        return $this;
+    }
+
+    public function getDelta(): ?float
+    {
+        return $this->Delta;
+    }
+
+    public function setDelta(?float $Delta): self
+    {
+        $this->Delta = $Delta;
+
+        return $this;
+    }
+
+    public function getPvDividend(): ?float
+    {
+        return $this->pvDividend;
+    }
+
+    public function setPvDividend(?float $pvDividend): self
+    {
+        $this->pvDividend = $pvDividend;
+
+        return $this;
+    }
+
+    public function getGamma(): ?float
+    {
+        return $this->Gamma;
+    }
+
+    public function setGamma(?float $Gamma): self
+    {
+        $this->Gamma = $Gamma;
+
+        return $this;
+    }
+
+    public function getVega(): ?float
+    {
+        return $this->Vega;
+    }
+
+    public function setVega(?float $Vega): self
+    {
+        $this->Vega = $Vega;
+
+        return $this;
+    }
+
+    public function getTheta(): ?float
+    {
+        return $this->Theta;
+    }
+
+    public function setTheta(?float $Theta): self
+    {
+        $this->Theta = $Theta;
+
+        return $this;
     }
 
 }

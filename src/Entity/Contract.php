@@ -75,11 +75,6 @@ abstract class Contract
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=31, nullable=true)
-     */
-//    private $longName;  // Obsolete, use "name" instead
-
-    /**
      * @ORM\Column(type="float", nullable=true)
      */
     private $fiftyTwoWeekLow;
@@ -108,6 +103,11 @@ abstract class Contract
      * @ORM\Column(type="float", nullable=true)
      */
     private $previousClosePrice;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ApiReqId;
 
     public function __construct(?string $symbol = null)
     {
@@ -306,6 +306,11 @@ abstract class Contract
         $symbol = substr($symbol, 0, -1);
       }
       return $symbol;
+    }
+
+    public function getApiReqId(): ?int
+    {
+        return $this->ApiReqId;
     }
 
 }
