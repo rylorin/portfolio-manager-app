@@ -55,9 +55,14 @@ class Stock extends Contract
     private $category;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=true)
+     * @ORM\Column(type="string", length=40, nullable=true)
      */
     private $subcategory;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $HistoricalVolatility;
 
     public function __construct($symbol = null)
     {
@@ -247,6 +252,18 @@ class Stock extends Contract
     public function setSubcategory(?string $subcategory): self
     {
         $this->subcategory = $subcategory;
+
+        return $this;
+    }
+
+    public function getHistoricalVolatility(): ?float
+    {
+        return $this->HistoricalVolatility;
+    }
+
+    public function setHistoricalVolatility(?float $HistoricalVolatility): self
+    {
+        $this->HistoricalVolatility = $HistoricalVolatility;
 
         return $this;
     }

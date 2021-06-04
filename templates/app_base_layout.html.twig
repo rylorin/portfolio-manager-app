@@ -22,21 +22,11 @@
             https://www.googletagmanager.com/gtag/js https://code.jquery.com/
             https://cdn.jsdelivr.net/npm/ https://stackpath.bootstrapcdn.com/bootstrap/
             https://cdnjs.cloudflare.com/ajax/libs/ https://s3.tradingview.com/external-embedding/
-            https://unpkg.com/ https://getreplacer.com/ ;
-        connect-src 'self' https://www.google-analytics.com/ ;
+            https://unpkg.com/ https://getreplacer.com/ http://static.axept.io/sdk.js ;
+        connect-src 'self' https://www.google-analytics.com/  https://client.axept.io/ ;
         child-src https://s.tradingview.com/embed-widget/ ;
         font-src https://fonts.gstatic.com/ ;
         ">
-      <!-- Global site tag (gtag.js) - Google Analytics -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-305956-12"></script>
-      <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          {%if app.environment == 'prod' %}
-            gtag('config', 'UA-305956-12');
-          {%endif%}
-      </script>
 
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <meta name="author" content="Ronan-Yann Lorin">
@@ -142,5 +132,27 @@
         {{ sonata_block_include_javascripts('screen', app.request.basePath) }}
       {% endblock %}
     {% endblock %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script src="https://www.googletagmanager.com/gtag/js?id=UA-305956-12"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        {%if app.environment == 'prod' %}
+          gtag('config', 'UA-305956-12');
+        {%endif%}
+    </script>
+    <script>
+      window.axeptioSettings = {
+        clientId: "60b381b691f6941bb7183bcb",
+        cookiesVersion: "123-group-base",
+      };
+      
+      (function(d, s) {
+        var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+        e.async = true; e.src = "https://static.axept.io/sdk.js";
+        t.parentNode.insertBefore(e, t);
+      })(document, "script");
+    </script>
  </body>
 </html>
