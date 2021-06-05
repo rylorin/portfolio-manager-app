@@ -67,6 +67,36 @@ class Portfolio
      */
     private $openOrders;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Stock::class)
+     */
+    private $benchmark;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TradingParameters::class, mappedBy="portfolio", orphanRemoval=true)
+     */
+    private $tradingParameters;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $PutRatio;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $sellNakedPutSleep;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $FindSymbolsSleep;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $AdjustCashSleep;
+
     public function __construct()
     {
         $this->positions = new ArrayCollection();
@@ -74,6 +104,7 @@ class Portfolio
         $this->statements = new ArrayCollection();
         $this->tradeUnits = new ArrayCollection();
         $this->openOrders = new ArrayCollection();
+        $this->tradingParameters = new ArrayCollection();
     }
 
     public function __toString()
@@ -295,6 +326,96 @@ class Portfolio
                 $openOrder->setAccount(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBenchmark(): ?Stock
+    {
+        return $this->benchmark;
+    }
+
+    public function setBenchmark(?Stock $benchmark): self
+    {
+        $this->benchmark = $benchmark;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TradingParameters[]
+     */
+    public function getTradingParameters(): Collection
+    {
+        return $this->tradingParameters;
+    }
+
+    public function addTradingParameter(TradingParameters $tradingParameter): self
+    {
+        if (!$this->tradingParameters->contains($tradingParameter)) {
+            $this->tradingParameters[] = $tradingParameter;
+            $tradingParameter->setPortfolio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTradingParameter(TradingParameters $tradingParameter): self
+    {
+        if ($this->tradingParameters->removeElement($tradingParameter)) {
+            // set the owning side to null (unless already changed)
+            if ($tradingParameter->getPortfolio() === $this) {
+                $tradingParameter->setPortfolio(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPutRatio(): ?float
+    {
+        return $this->PutRatio;
+    }
+
+    public function setPutRatio(?float $PutRatio): self
+    {
+        $this->PutRatio = $PutRatio;
+
+        return $this;
+    }
+
+    public function getSellNakedPutSleep(): ?int
+    {
+        return $this->sellNakedPutSleep;
+    }
+
+    public function setSellNakedPutSleep(int $sellNakedPutSleep): self
+    {
+        $this->sellNakedPutSleep = $sellNakedPutSleep;
+
+        return $this;
+    }
+
+    public function getFindSymbolsSleep(): ?int
+    {
+        return $this->FindSymbolsSleep;
+    }
+
+    public function setFindSymbolsSleep(?int $FindSymbolsSleep): self
+    {
+        $this->FindSymbolsSleep = $FindSymbolsSleep;
+
+        return $this;
+    }
+
+    public function getAdjustCashSleep(): ?int
+    {
+        return $this->AdjustCashSleep;
+    }
+
+    public function setAdjustCashSleep(?int $AdjustCashSleep): self
+    {
+        $this->AdjustCashSleep = $AdjustCashSleep;
 
         return $this;
     }
