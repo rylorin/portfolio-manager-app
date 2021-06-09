@@ -109,6 +109,11 @@ abstract class Contract
      */
     private $ApiReqId;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $updated;
+
     public function __construct(?string $symbol = null)
     {
         $this->positions = new ArrayCollection();
@@ -311,6 +316,18 @@ abstract class Contract
     public function getApiReqId(): ?int
     {
         return $this->ApiReqId;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(?\DateTimeInterface $updated): self
+    {
+        $this->updated = $updated;
+
+        return $this;
     }
 
 }

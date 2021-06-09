@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\TradingParametersRepository;
+use App\Repository\TradeParameterRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TradingParametersRepository::class)
+ * @ORM\Entity(repositoryClass=TradeParameterRepository::class)
+ * @ORM\Table(name="trading_parameters")
  */
-class TradingParameters
+class TradeParameter
 {
     /**
      * @ORM\Id
@@ -19,7 +20,7 @@ class TradingParameters
 
     /**
      * @ORM\ManyToOne(targetEntity=Stock::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, unique=true))
      */
     private $stock;
 

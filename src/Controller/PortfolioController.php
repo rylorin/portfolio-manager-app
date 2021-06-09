@@ -58,7 +58,7 @@ class PortfolioController extends AbstractController
     /**
      * @Route("/{id}/dashboard", name="portfolio_show", methods={"GET"})
      */
-    public function show(Portfolio $portfolio): Response
+    public function dashboard(Portfolio $portfolio): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $currencies = $entityManager->getRepository('App:Currency')->findByBase($portfolio->getBaseCurrency());
@@ -106,7 +106,17 @@ class PortfolioController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/update", name="portfolio_edit", methods={"GET","POST"})
+     * @Route("/{id}", name="portfolio_settings_show", methods={"GET"})
+     */
+    public function show(Portfolio $portfolio): Response
+    {
+        return $this->render('portfolio/show.html.twig', [
+            'portfolio' => $portfolio,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/update", name="portfolio_settings_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Portfolio $portfolio): Response
     {
@@ -116,7 +126,7 @@ class PortfolioController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('portfolio_index');
+            return $this->redirectToRoute('portfolio_settings_show', [ 'id' => $portfolio->getId() ]);
         }
 
         return $this->render('portfolio/edit.html.twig', [

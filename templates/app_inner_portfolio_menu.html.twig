@@ -48,9 +48,9 @@
   </li>
   {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
   <li class="nav-item">
-    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_edit' %}active{% endif %}" href="{{ path('portfolio_edit', { 'id': portfolio.id }) }}">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_settings' %}active{% endif %}" href="{{ path('portfolio_settings_show', { 'id': portfolio.id }) }}">
       <span data-feather="layers"></span>
-      Parameters
+      Settings
     </a>
   </li>
   {% endif %}

@@ -59,11 +59,11 @@
       </tr>
     </tbody>
   </table>
-  {% set statements = tradeunit.openingTrades %}
-  {% include('statement/_statements_table.html.twig') %}
   <nav><ul class="pagination">
     <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_trades_index', {'id': tradeunit.portfolio.id}) }}"><span data-feather="arrow-left"></span></a></li>
     <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_tradeunit_edit', {'tradeunit': tradeunit.id}) }}"><span data-feather="edit-2"></span></a></li>
     <li class="page-item">{{ include('tradeunit/_delete_form.html.twig') }}</li>
   </ul></nav>
+  {% set statements = tradeunit.openingTrades %}
+  {% include('statement/_statements_table.html.twig') %}
 {% endblock %}

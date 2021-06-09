@@ -27,7 +27,7 @@ class OptionController extends AbstractController
   public function index(Request $request, PaginatorInterface $paginator, OptionRepository $optionRepository): Response
   {
     $data = $optionRepository->findOptions(
-      [ 'o.symbol' => $request->query->getAlnum('symbol'), ],
+      [ 'o.symbol' => $request->query->get('symbol'), ],
       [
         's.symbol' => 'ASC', 'o.lastTradeDate' => 'ASC', 'o.strike' => 'ASC',
       ]);
@@ -36,7 +36,7 @@ class OptionController extends AbstractController
     return $this->render('option/index.html.twig', [
         'options' => $options,
         'data_count' => sizeof($data),
-        'symbol' => $request->query->getAlnum('symbol'),
+        'symbol' => $request->query->get('symbol'),
         'page' => $page,
     ]);
   }

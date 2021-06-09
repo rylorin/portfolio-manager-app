@@ -21,12 +21,6 @@
         Options
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link {% if app.request.attributes.get('_route') starts with 'repository_opportunities' %}active{% endif %}" href="{{ path('repository_opportunities') }}">
-        <span data-feather="file-text"></span>
-        Puts to short
-      </a>
-    </li>
   </ul>
   {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
   {% endif %}

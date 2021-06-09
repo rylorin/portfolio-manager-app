@@ -9,6 +9,7 @@ use App\Repository\PortfolioRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\TradeParameter;
 
 /**
  * @ORM\Entity(repositoryClass=PortfolioRepository::class)
@@ -73,7 +74,7 @@ class Portfolio
     private $benchmark;
 
     /**
-     * @ORM\OneToMany(targetEntity=TradingParameters::class, mappedBy="portfolio", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=TradeParameter::class, mappedBy="portfolio", orphanRemoval=true)
      */
     private $tradingParameters;
 
@@ -343,14 +344,14 @@ class Portfolio
     }
 
     /**
-     * @return Collection|TradingParameters[]
+     * @return Collection|TradeParameter[]
      */
     public function getTradingParameters(): Collection
     {
         return $this->tradingParameters;
     }
 
-    public function addTradingParameter(TradingParameters $tradingParameter): self
+    public function addTradingParameter(TradeParameter $tradingParameter): self
     {
         if (!$this->tradingParameters->contains($tradingParameter)) {
             $this->tradingParameters[] = $tradingParameter;
@@ -360,7 +361,7 @@ class Portfolio
         return $this;
     }
 
-    public function removeTradingParameter(TradingParameters $tradingParameter): self
+    public function removeTradingParameter(TradeParameter $tradingParameter): self
     {
         if ($this->tradingParameters->removeElement($tradingParameter)) {
             // set the owning side to null (unless already changed)

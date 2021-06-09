@@ -24,7 +24,7 @@
               <td>
                   <a href="{{ path('portfolio_show', {'id': portfolio.id}) }}"><span data-feather="search"></span></a>
                   {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
-                    <a href="{{ path('portfolio_edit', {'id': portfolio.id}) }}"><span data-feather="edit-2"></span></a>
+                    <a href="{{ path('portfolio_settings_edit', {'id': portfolio.id}) }}"><span data-feather="edit-2"></span></a>
                     <form class="form-inline" id="row{{portfolio.id}}" method="post" action="{{ path('portfolio_delete', {'id': portfolio.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ portfolio.id) }}">

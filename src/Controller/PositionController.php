@@ -138,7 +138,7 @@ class PositionController extends AbstractController
     		$type = print_r($position->getContract(), true);
     	}
     	return $this->render('position/show.html.twig', [
-            'portfolio' => $position->getPortfolio(),
+        'portfolio' => $position->getPortfolio(),
     		'position' => $position,
     		'type' => $type,
     		'stock' => $stock,
@@ -170,8 +170,8 @@ class PositionController extends AbstractController
         }
         return $this->render('position/edit.html.twig', [
             'portfolio' => $position->getPortfolio(),
-    	    'position' => $position,
-    		'type' => $type,
+    	      'position' => $position,
+    		    'type' => $type,
             'form' => $form->createView(),
         ]);
     }
