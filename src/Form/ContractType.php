@@ -22,8 +22,9 @@ class ContractType extends AbstractType
                 ])
             ->add('currency')
             ->add('name')
+            ->add('bid')
             ->add('price')
-            ->add('description')
+            ->add('ask')
             ;
     }
 

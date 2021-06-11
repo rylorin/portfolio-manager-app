@@ -1,27 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
-use App\Entity\Option;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Entity\Option;
+use App\Form\ContractType;
 
-class OptionType extends AbstractType
+class OptionType extends ContractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
         $builder
-            ->add('conId')
-            ->add('symbol')
             ->add('stock')
             ->add('lastTradeDate')
             ->add('strike')
             ->add('callOrPut', ChoiceType::class, [ 'choices' => [ 'Call' => 'C', 'Put' => 'P' ]])
-            ->add('currency')
             ->add('multiplier')
-            ->add('price')
         ;
     }
 
