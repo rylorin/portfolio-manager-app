@@ -27,7 +27,7 @@ class Position
     private $portfolio;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $openDate;
 
