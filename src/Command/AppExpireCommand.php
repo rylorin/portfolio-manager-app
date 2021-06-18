@@ -49,21 +49,20 @@ class AppExpireCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         if ($input->getOption('options')) {
-            $options = $this->em->getRepository('App:Option')->findByBeforeLastTradeDate(new \DateTime());
+            $now = (new \DateTime())->sub(new \DateInterval('P1D'));
+            $options = $this->em->getRepository('App:Option')->findByBeforeLastTradeDate($now);
             $io->progressStart(sizeof($options));
             // Expire options
-            $echeance = (new \DateTime());
             foreach ($options as $contract) {
-    //            $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
-              $positions = $contract->getPositions();
-              foreach ($positions as $position) {
-                $position->getPortfolio()->removePosition($position);
-                $position->setPortfolio(null);
-                $this->em->remove($position);
-              }
-              $contract->setStock(null);
-              $this->em->remove($contract);
-              $io->progressAdvance();
+                $positions = $contract->getPositions();
+                $statements = $this->em->getRepository('App:OptionTradeStatement')->findByContract($contract);
+                if (!sizeof($positions) && !sizeof($statements)) {
+//                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
+                    $this->em->remove($contract);
+                } else {
+//                    printf("%d positions, %d statements\n", sizeof($positions), sizeof($statements));
+                }
+                $io->progressAdvance();
             }
             // save / write the changes to the database
             $this->em->flush();
