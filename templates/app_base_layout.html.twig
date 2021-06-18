@@ -15,6 +15,7 @@
           https://www.google.com/s2/favicons
           ;
         style-src 'self' {%if app.environment == 'dev' %}'unsafe-inline'{%endif%}
+          'unsafe-inline'
           https://fonts.googleapis.com/
           https://stackpath.bootstrapcdn.com/bootstrap/
           https://cdnjs.cloudflare.com/
@@ -23,7 +24,9 @@
           https://getreplacer.com/
           https://bootswatch.com/
           ;
-        script-src 'self' 'unsafe-inline' https://www.google-analytics.com/
+        script-src 'self'
+            'unsafe-inline'
+            https://www.google-analytics.com/
             https://www.googletagmanager.com/gtag/js https://code.jquery.com/
             https://cdn.jsdelivr.net/npm/ https://stackpath.bootstrapcdn.com/bootstrap/
             https://cdnjs.cloudflare.com/ajax/libs/ https://s3.tradingview.com/external-embedding/
