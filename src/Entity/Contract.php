@@ -110,7 +110,7 @@ abstract class Contract
     private $ApiReqId;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updated;
 

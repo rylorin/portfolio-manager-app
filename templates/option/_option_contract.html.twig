@@ -67,5 +67,9 @@
             <th>Yield (bid) to maturity</th>
             <td class="text-right">{{ (option.bidYieldToMaturity)|my_percent_format }}</td>
         </tr>
+        <tr>
+            <th>Updated</th>
+            <td class="text-right">{{ option.updated|date('Y-m-d H:i:s') }}</td>
+        </tr>
     </tbody>
 </table>
