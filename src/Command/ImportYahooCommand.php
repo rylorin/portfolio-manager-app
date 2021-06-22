@@ -140,22 +140,28 @@ class ImportYahooCommand extends Command
           $io->progressAdvance();
         }
         $this->em->flush();
-
-        $result = $client->getQuotes($query_options);
-        foreach ($result as $quote) {
-          foreach ($options as $key => $contract) {
-            if ($contract->getYahooTicker() == $quote->getSymbol()) {
-              $contract->setPrice(self::getYahooPrice($quote));
-              $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
-              $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
-              $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
-//              print($contract->getSymbol());
-              break;
-            }
+        
+        while (sizeof($query_options)) {
+          $options_to_query = array();
+          for ($i=0; ($i < 100) && sizeof($query_options); $i++) {
+            array_push($options_to_query, array_pop($query_options));
           }
-          $io->progressAdvance();
+          $result = $client->getQuotes($options_to_query);
+          foreach ($result as $quote) {
+            foreach ($options as $key => $contract) {
+              if ($contract->getYahooTicker() == $quote->getSymbol()) {
+                $contract->setPrice(self::getYahooPrice($quote));
+                $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
+                $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
+                $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
+  //              print($contract->getSymbol());
+                break;
+              }
+            }
+            $io->progressAdvance();
+          }
+          $this->em->flush();
         }
-        $this->em->flush();
 
         $io->progressFinish();
         $io->success('Contracts infos updated using Yahoo finance.');
