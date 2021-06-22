@@ -64,6 +64,10 @@
             <td class="text-right">{{ option.bid|my_decimal_format_2d }}</td>
         </tr>
         <tr>
+            <th>Previous Close Price</th>
+            <td class="text-right font-weight-bold">{{ option.previousClosePrice|my_decimal_format_2d }}</td>
+        </tr>
+        <tr>
             <th>Yield (bid) to maturity</th>
             <td class="text-right">{{ (option.bidYieldToMaturity)|my_percent_format }}</td>
         </tr>
