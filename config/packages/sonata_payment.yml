@@ -61,10 +61,36 @@
 #        order: sonata.payment.transformer.order
 #        basket: sonata.payment.transformer.basket
 #
-## Enable Doctrine to map the provided entities
-#doctrine:
-#    orm:
-#        entity_managers:
-#            default:
-#                mappings:
-#                    SonataPaymentBundle: ~
+#                openssl: /opt/local/bin/openssl
+        pass:
+            name: Pass
+            code: pass
+            browser: sonata.payment.browser.curl
+
+            transformers:
+                basket: sonata.payment.transformer.basket
+                order: sonata.payment.transformer.order
+
+            options:
+                shop_secret_key: assdsds
+                url_callback: sonata_payment_callback
+                url_return_ko: sonata_payment_error
+                url_return_ok: sonata_payment_confirmation
+
+    # service which find the correct payment methods for a basket
+    selector: sonata.payment.selector.simple
+
+    # service which generate the correct order and invoice number
+    generator: sonata.payment.generator.mysql
+
+    transformers:
+        order: sonata.payment.transformer.order
+        basket: sonata.payment.transformer.basket
+
+# Enable Doctrine to map the provided entities
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    SonataPaymentBundle: ~
