@@ -140,15 +140,14 @@
         {{ sonata_block_include_javascripts('screen', app.request.basePath) }}
       {% endblock %}
     {% endblock %}
+    {%if app.environment == 'prod' %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script src="https://www.googletagmanager.com/gtag/js?id=UA-305956-12"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        {%if app.environment == 'prod' %}
           gtag('config', 'UA-305956-12');
-        {%endif%}
     </script>
     <script>
       window.axeptioSettings = {
@@ -162,5 +161,6 @@
         t.parentNode.insertBefore(e, t);
       })(document, "script");
     </script>
+    {%endif%}
  </body>
 </html>
