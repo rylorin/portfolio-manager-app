@@ -143,18 +143,21 @@ class ImportYahooCommand extends Command
         
         while (sizeof($query_options)) {
           $options_to_query = array();
-          for ($i=0; ($i < 100) && sizeof($query_options); $i++) {
+          for ($i=0; ($i < 512) && sizeof($query_options); $i++) {
             array_push($options_to_query, array_pop($query_options));
           }
           $result = $client->getQuotes($options_to_query);
           foreach ($result as $quote) {
             foreach ($options as $key => $contract) {
               if ($contract->getYahooTicker() == $quote->getSymbol()) {
+                $dv = new \DateInterval('PT'.$quote->getExchangeDataDelayedBy().'M');
+                $updated = (new \DateTime())->sub($dv);
+                // print($updated->format('Y-m-d h:i'));
                 $contract->setPrice(self::getYahooPrice($quote));
                 $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
                 $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
                 $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
-  //              print($contract->getSymbol());
+                $contract->setUpdated($updated);
                 break;
               }
             }
