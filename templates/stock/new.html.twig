@@ -8,7 +8,7 @@
 </div>
 <div class="row">
   {% set item_size='col-sm-6' %}
-  <div class="{{ col_style }}">
+  <div class="{{ item_size }}">
     {{ include('stock/_form.html.twig') }}
     <a href="{{ path('repository_stock_index') }}"><span data-feather="arrow-left"></span></a>
     <a href="#" onclick="click_button('save')"><span data-feather="save"></span></a>

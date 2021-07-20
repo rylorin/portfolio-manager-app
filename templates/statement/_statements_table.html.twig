@@ -43,9 +43,12 @@
                     N/A
                   {% endif %}
                 </td>
-                <td>
+                <td class='text-right'>
                   {% if (statement.TradeUnit is not null) and (statement.TradeUnit.Id > 0) %}
                     <a href="{{ path('portfolio_tradeunit_show', {'tradeunit': statement.TradeUnit.Id }) }}">{{ statement.TradeUnit.Id }}</a>
+                    {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
+                      <a href="{{ path('portfolio_statement_unlinktradeunit', {'id': statement.id}) }}"><span data-feather='trash-2' ></span></a>
+                    {% endif %}
                     {% set last_tu = statement.TradeUnit.Id %}
                   {% elseif app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
                     <a href="{{ path('portfolio_statement_createtradeunit', {'id': statement.id}) }}"><span data-feather="plus-square"></span></a>

@@ -346,7 +346,7 @@ class Portfolio
     /**
      * @return Collection|TradeParameter[]
      */
-    public function getTradingParameters(): Collection
+    public function getTradingParameters(): ?Collection
     {
         return $this->tradingParameters;
     }
