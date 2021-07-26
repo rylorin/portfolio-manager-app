@@ -28,7 +28,7 @@
         {% set total_positions_pnl = total_positions_pnl + position_pnl * currencies[position.contract.currency] %}
         {% set total_positions_cost = total_positions_cost + position.cost * currencies[position.contract.currency] %}
         <tr>
-            <td class="text-right">{{ position.quantity|my_integer_format }}</td>
+            <td class="text-right">{{ position.quantity|my_quantity_format }}</td>
             <td class=" {% if position.contract.secType == 'OPT' %}font-italic{% endif %}">
               {% if position.contract.secType == 'OPT' %}
                 <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': position.portfolio.id, 'stock': position.contract.stock.id}) }}">

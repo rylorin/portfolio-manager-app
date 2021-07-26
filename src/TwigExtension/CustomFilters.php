@@ -13,6 +13,7 @@ class CustomFilters extends \Twig_Extension {
             new TwigFilter('my_number_class', array($this, 'my_number_class')),
             new TwigFilter('my_number_class_2colors', array($this, 'my_number_class_2colors')),
             new TwigFilter('my_integer_format', array($this, 'my_integer_format')),
+            new TwigFilter('my_quantity_format', array($this, 'my_quantity_format')),
             new TwigFilter('my_decimal_format_1d', array($this, 'my_decimal_format_1d')),
             new TwigFilter('my_decimal_format_2d', array($this, 'my_decimal_format_2d')),
             new TwigFilter('my_percent_format', array($this, 'my_percent_format')),
@@ -48,6 +49,12 @@ class CustomFilters extends \Twig_Extension {
 
     public function my_integer_format($input) {
         return number_format(floatval($input), 0, '.', ' ');
+    }
+
+    public function my_quantity_format($input) {
+        $number = floatval($input);
+        $result =  rtrim(rtrim(number_format($number, 4, '.', ' '), '0'), '.');
+        return $result;
     }
 
     public function my_decimal_format_1d($input) {
