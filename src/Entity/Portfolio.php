@@ -98,6 +98,11 @@ class Portfolio
      */
     private $AdjustCashSleep;
 
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $rollOptionsSleep;
+
     public function __construct()
     {
         $this->positions = new ArrayCollection();
@@ -417,6 +422,18 @@ class Portfolio
     public function setAdjustCashSleep(?int $AdjustCashSleep): self
     {
         $this->AdjustCashSleep = $AdjustCashSleep;
+
+        return $this;
+    }
+
+    public function getRollOptionsSleep(): ?int
+    {
+        return $this->rollOptionsSleep;
+    }
+
+    public function setRollOptionsSleep(?int $rollOptionsSleep): self
+    {
+        $this->rollOptionsSleep = $rollOptionsSleep;
 
         return $this;
     }

@@ -23,6 +23,7 @@ class PortfolioType extends AbstractType
             ->add('benchmark', null, ['required' => true])
             ->add('FindSymbolsSleep', IntegerType::class, ['required' => true])
             ->add('AdjustCashSleep', IntegerType::class, ['required' => true])
+            ->add('rollOptionsSleep', IntegerType::class, ['required' => true])
             ->add('sellNakedPutSleep', IntegerType::class, ['required' => true])
             ->add('PutRatio', PercentType::class, ['required' => true ])
             ;
