@@ -41,8 +41,20 @@
                     <td class="text-left">{{ portfolio.sellNakedPutSleep }} mins</td>
                 </tr>
                 <tr>
+                    <th>Min premium</th>
+                    <td class="text-left">{{ portfolio.minPremium|my_decimal_format_2d }}</td>
+                </tr>
+                <tr>
                     <th>Put ratio</th>
                     <td class="text-left">{{ portfolio.putRatio|my_percent_format }}</td>
+                </tr>
+                <tr>
+                    <th>Naked put win ratio</th>
+                    <td class="text-left">{{ portfolio.nakedPutWinRatio|my_percent_format }}</td>
+                </tr>
+                <tr>
+                    <th>Short call win ratio</th>
+                    <td class="text-left">{{ portfolio.nakedCallWinRatio|my_percent_format }}</td>
                 </tr>
             </tbody>
         </table>

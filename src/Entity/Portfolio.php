@@ -103,6 +103,21 @@ class Portfolio
      */
     private $rollOptionsSleep;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $minPremium;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $nakedPutWinRatio;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $nakedCallWinRatio;
+
     public function __construct()
     {
         $this->positions = new ArrayCollection();
@@ -434,6 +449,42 @@ class Portfolio
     public function setRollOptionsSleep(?int $rollOptionsSleep): self
     {
         $this->rollOptionsSleep = $rollOptionsSleep;
+
+        return $this;
+    }
+
+    public function getMinPremium(): ?float
+    {
+        return $this->minPremium;
+    }
+
+    public function setMinPremium(?float $minPremium): self
+    {
+        $this->minPremium = $minPremium;
+
+        return $this;
+    }
+
+    public function getNakedPutWinRatio(): ?float
+    {
+        return $this->nakedPutWinRatio;
+    }
+
+    public function setNakedPutWinRatio(?float $nakedPutWinRatio): self
+    {
+        $this->nakedPutWinRatio = $nakedPutWinRatio;
+
+        return $this;
+    }
+
+    public function getNakedCallWinRatio(): ?float
+    {
+        return $this->nakedCallWinRatio;
+    }
+
+    public function setNakedCallWinRatio(?float $nakedCallWinRatio): self
+    {
+        $this->nakedCallWinRatio = $nakedCallWinRatio;
 
         return $this;
     }
