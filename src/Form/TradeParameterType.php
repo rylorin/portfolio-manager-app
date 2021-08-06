@@ -31,7 +31,7 @@ class TradeParameterType extends AbstractType
             // 'expanded' => true,
             'required' => true
             ])
-            ->add('NavRatio', PercentType::class, [ 'required' => true ])
+            ->add('NavRatio', PercentType::class, [ 'required' => true, 'scale' => 1 ])
           ;
     }
 
