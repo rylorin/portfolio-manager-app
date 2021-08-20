@@ -64,6 +64,10 @@
             <td class="text-right font-weight-bold">{{ option.price|my_decimal_format_2d }}</td>
         </tr>
         <tr>
+            <th>Updated</th>
+            <td class="text-right">{{ option.updated|date('d-m-Y H:i:s') }}</td>
+        </tr>
+        <tr>
             <th>Bid</th>
             <td class="text-right">{{ option.bid|my_decimal_format_2d }}</td>
         </tr>
@@ -74,10 +78,6 @@
         <tr>
             <th>Yield (bid) to maturity</th>
             <td class="text-right">{{ (option.bidYieldToMaturity)|my_percent_format }}</td>
-        </tr>
-        <tr>
-            <th>Updated</th>
-            <td class="text-right">{{ option.updated|date('Y-m-d H:i:s') }}</td>
         </tr>
     </tbody>
 </table>

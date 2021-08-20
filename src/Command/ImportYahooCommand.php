@@ -120,7 +120,7 @@ class ImportYahooCommand extends Command
               $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
               $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
               $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
-              if (!$contract->getName()) $contract->setName($quote->getLongName());
+              if (strlen($contract->getName()) == 0) $contract->setName($quote->getLongName());
               $contract->setDividendTTM($quote->getTrailingAnnualDividendRate());
               $contract->setFiftyTwoWeekLow($quote->getFiftyTwoWeekLow());
               $contract->setFiftyTwoWeekHigh($quote->getFiftyTwoWeekHigh());

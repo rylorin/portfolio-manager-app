@@ -30,6 +30,10 @@
             <td class="{{ stock.changePercent|my_number_class_2colors }} font-weight-bold">{{ stock.price|my_decimal_format_2d }}</td>
         </tr>
         <tr>
+            <th>Updated</th>
+            <td>{{ stock.updated|date('d-m-Y H:i:s') }}</td>
+        </tr>
+        <tr>
             <th>Bid</th>
             <td class="text-right">{{ stock.bid|my_decimal_format_2d }}</td>
         </tr>
