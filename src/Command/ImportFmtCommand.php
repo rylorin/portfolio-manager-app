@@ -44,7 +44,6 @@ class ImportFmtCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-    	$apikey = 'demo';
         $io = new SymfonyStyle($input, $output);
         /*
         $arg1 = $input->getArgument('apikey');
