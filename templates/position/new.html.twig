@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create new Position{% endblock %}
+
+{% block body %}
+  {{ include('position/_form.html.twig') }}
+
+  <a href="{{ path('portfolio_positions_index', {'id': portfolio.id}) }}"><span data-feather="arrow-left"></span></a>
+  <a href="#" onclick="click_button('save')"><span data-feather="save"></span></a>
+{% endblock body %}

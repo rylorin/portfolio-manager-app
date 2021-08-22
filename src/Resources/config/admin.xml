@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+<!-- 
+       <service id="ryl.admin.contract" class="AppBundle\Admin\ContractAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Ryl" label="Contracts"/>
+          <argument />
+          <argument>App\Entity\Contract</argument>
+          <argument />
+      </service>
+
+       <service id="ryl.admin.option" class="AppBundle\Admin\ContractAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Ryl" label="Options"/>
+          <argument />
+          <argument>App\Entity\Option</argument>
+          <argument />
+      </service>
+  -->
+   </services>
+</container>

@@ -1,0 +1,7 @@
+<div class="col-md-3 col-sm-4">
+{% if settings.year|length > 0 or settings.author|length > 0 %}
+<p class="copyright text-xs-center">&copy;
+{{ settings.year }}{% if settings.year|length > 0 and settings.author|length > 0 %}, {% endif %}{{ settings.author }}
+</p>
+{% endif %}
+</div>

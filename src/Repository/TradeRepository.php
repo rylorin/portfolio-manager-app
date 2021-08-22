@@ -1,0 +1,52 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Repository;
+
+use App\Entity\StockTradeStatement;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @method StockTradeStatement|null find($id, $lockMode = null, $lockVersion = null)
+ * @method StockTradeStatement|null findOneBy(array $criteria, array $orderBy = null)
+ * @method StockTradeStatement[]    findAll()
+ * @method StockTradeStatement[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class TradeRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, StockTradeStatement::class);
+    }
+
+    // /**
+    //  * @return StockTradeStatement[] Returns an array of StockTradeStatement objects
+    //  */
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('t.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
+
+    /*
+    public function findOneBySomeField($value): ?StockTradeStatement
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    */
+}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ stock.symbol }} - {{ stock.name }}{% endblock %}
+
+{% block body %}
+  <div class="row">
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/gopro/?share_your_love=rylorin" rel="noopener" target="_blank"><span class="blue-text">Quotes</span></a> by TradingView</div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
+          {
+              "symbol": "{{ stock.marketPlace }}:{{ stock.symbol|to_tws_symbol }}",
+              "width": "100%",
+              "locale": "en",
+              "colorTheme": "dark",
+              "isTransparent": true
+          }
+      </script>
+    </div>
+    <!-- TradingView Widget END -->
+{#
+    {% if (stocks|length) > 0 %}
+        <h2>Realized performance ({{ stocks|length }})</h2>
+        {% include('portfolio/_symbols_table.html.twig') %}
+    {% endif %}
+#}
+    {% if (positions|length) > 0 %}
+        <h2>Positions ({{ positions|length }})</h2>
+        {% include('position/_positions_table.html.twig') %}
+    {% endif %}
+
+    {% if (trades is defined) and (trades|length) > 0 %}
+        <h2>Trades ({{ trades|length }})</h2>
+        {% include('tradeunit/_tradeunits_table.html.twig') %}
+    {% endif %}
+
+    {% if (statements|length) > 0 %}
+        <h2>Statements ({{ statements|length }})</h2>
+        {% include('statement/_statements_table.html.twig') %}
+    {% endif %}
+  </div>
+{% endblock %}

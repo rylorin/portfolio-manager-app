@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Setting{% endblock %}
+
+{% block body %}
+    <h1>Create new Setting</h1>
+
+    {{ include('tradingsettings/_form.html.twig') }}
+
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_settings_show', {'id': setting.portfolio.id}) }}"><span data-feather="arrow-left"></span></a></li>
+        <li class="page-item"><a class="page-link mb-3" href="#" onclick="click_button('save')"><span data-feather="save"></span></a></li>
+    </ul>
+{% endblock %}

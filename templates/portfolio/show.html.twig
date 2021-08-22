@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Portfolio {{ portfolio.id }}{% endblock %}
+
+{% block body %}
+{% set item_size='col-12 col-sm-6' %}
+<div class="row">
+    <div class="{{ item_size }}">
+        <table class='table'>
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td class="text-left">{{ portfolio.name }}</td>
+                </tr>
+                <tr>
+                    <th>Account</th>
+                    <td class="text-left">{{ portfolio.account|masq }}</td>
+                </tr>
+                <tr>
+                    <th>Base currency</th>
+                    <td class="text-left">{{ portfolio.baseCurrency }}</td>
+                </tr>
+                <tr>
+                    <th>Benchmark</th>
+                    <td class="text-left">{{ portfolio.benchmark.symbol }}</td>
+                </tr>
+                <tr>
+                    <th>Find symbols sleep</th>
+                    <td class="text-left">{{ portfolio.findSymbolsSleep }} mins</td>
+                </tr>
+                <tr>
+                    <th>Adjust cash sleep</th>
+                    <td class="text-left">{{ portfolio.adjustCashSleep }} mins</td>
+                </tr>
+                <tr>
+                    <th>Roll options sleep</th>
+                    <td class="text-left">{{ portfolio.rollOptionsSleep }} mins</td>
+                </tr>
+                <tr>
+                    <th>Sell naked put sleep</th>
+                    <td class="text-left">{{ portfolio.sellNakedPutSleep }} mins</td>
+                </tr>
+                <tr>
+                    <th>Min premium</th>
+                    <td class="text-left">{{ portfolio.minPremium|my_decimal_format_2d }}</td>
+                </tr>
+                <tr>
+                    <th>Put ratio</th>
+                    <td class="text-left">{{ portfolio.putRatio|my_percent_format }}</td>
+                </tr>
+                <tr>
+                    <th>Naked put win ratio</th>
+                    <td class="text-left">{{ portfolio.nakedPutWinRatio|my_percent_format }}</td>
+                </tr>
+                <tr>
+                    <th>Short call win ratio</th>
+                    <td class="text-left">{{ portfolio.nakedCallWinRatio|my_percent_format }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="{{ item_size }}">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_index') }}"><span
+                            data-feather="arrow-left"></span></a></li>
+                {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
+                <li class="page-item"><a class="page-link mb-3"
+                        href="{{ path('portfolio_settings_edit', {'id': portfolio.id}) }}"><span
+                            data-feather="edit-2"></a></li>
+                <li class="page-item">{{ include('portfolio/_delete_form.html.twig') }}</li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="{{ item_size }}">
+        {% set settings = portfolio.tradingParameters %}
+        {{ include('tradingsettings/_tradingsettings_table.html.twig') }}
+        <nav>
+            <ul class="pagination">
+                {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
+                    <a class="page-link mb-3" href="{{ path('portfolio_settings_tradingsettings_new', {'id': portfolio.id}) }}"><span data-feather="plus-square"></span></a>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock body %}

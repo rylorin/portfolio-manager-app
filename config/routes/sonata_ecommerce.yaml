@@ -1,4 +1,11 @@
 # yamllint disable rule:braces
+# these 2 references : sonata_demo and sonata_qa can be safely removed
+# RYL sonata_demo:
+# RYL    resource: "@SonataDemoBundle/Resources/config/routing/demo.xml"
+
+# RYLsonata_qa:
+# RYL    resource: "@SonataQABundle/Resources/config/routing/qa.xml"
+
 sonata_user_security:
     resource: "@SonataUserBundle/Resources/config/routing/admin_security.xml"
     prefix: /admin
@@ -46,33 +53,33 @@ sonata_media_media:
     resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
     prefix: /media
 
-sonata_customer:
-    resource: '@SonataCustomerBundle/Resources/config/routing/customer.xml'
-    prefix: /shop/user
+# RYL sonata_customer:
+# RYL     resource: '@SonataCustomerBundle/Resources/config/routing/customer.xml'
+# RYL     prefix: /shop/user
 
-sonata_basket:
-    resource: '@SonataBasketBundle/Resources/config/routing/basket.xml'
-    prefix: /shop/basket
+# RYL sonata_basket:
+# RYL     resource: '@SonataBasketBundle/Resources/config/routing/basket.xml'
+# RYL     prefix: /shop/basket
 
-sonata_order:
-    resource: '@SonataOrderBundle/Resources/config/routing/order.xml'
-    prefix: /shop/user/order
+# RYL sonata_order:
+# RYL     resource: '@SonataOrderBundle/Resources/config/routing/order.xml'
+# RYL     prefix: /shop/user/order
 
-sonata_product_catalog:
-    resource: '@SonataProductBundle/Resources/config/routing/catalog.xml'
-    prefix: /shop/catalog
+# RYL sonata_product_catalog:
+# RYL     resource: '@SonataProductBundle/Resources/config/routing/catalog.xml'
+# RYL     prefix: /shop/catalog
 
-sonata_product:
-    resource: '@SonataProductBundle/Resources/config/routing/product.xml'
-    prefix: /shop/product
+# RYL sonata_product:
+# RYL     resource: '@SonataProductBundle/Resources/config/routing/product.xml'
+# RYL     prefix: /shop/product
 
-sonata_payment:
-    resource: '@SonataPaymentBundle/Resources/config/routing/payment.xml'
-    prefix: /shop/payment
+# RYL sonata_payment:
+# RYL     resource: '@SonataPaymentBundle/Resources/config/routing/payment.xml'
+# RYL     prefix: /shop/payment
 
-sonata_invoice:
-    resource: '@SonataInvoiceBundle/Resources/config/routing/invoice.xml'
-    prefix: /shop/user/invoice
+# RYL sonata_invoice:
+# RYL     resource: '@SonataInvoiceBundle/Resources/config/routing/invoice.xml'
+# RYL     prefix: /shop/user/invoice
 
 blog:
     resource: '@SonataNewsBundle/Resources/config/routing/news.xml'

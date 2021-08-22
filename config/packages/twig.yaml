@@ -9,5 +9,10 @@ twig:
         - '@SonataFormatter/Form/formatter.html.twig'
         - '@SonataMedia/Form/media_widgets.html.twig'
         - '@SonataForm/Form/datepicker.html.twig'
+        - 'bootstrap_4_layout.html.twig'
 
     exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
+
+    paths:
+        '%kernel.project_dir%/vendor/knplabs/knp-paginator-bundle/templates': KnpPaginator
+        '%kernel.project_dir%/templates': App

@@ -66,7 +66,12 @@
         "symfony/validator": "^4.4.25",
         "twig/extra-bundle": "^3.3.1",
         "twig/twig": "^2.14.6",
-        "willdurand/faker-bundle": "^1.4.1"
+        "willdurand/faker-bundle": "^1.4.1",
+
+        "knplabs/knp-paginator-bundle": "^5.2",
+        "scheb/yahoo-finance-api": "^4.2.0",
+        "asgrim/ofxparser": "dev-master",
+        "league/csv": "^9.6"
     },
     "replace": {
         "symfony/polyfill-iconv": "*",
@@ -89,8 +94,11 @@
         "symfony/dotenv": "^4.4.25",
         "symfony/phpunit-bridge": "^5.3.0",
         "symfony/stopwatch": "^4.4.25",
-        "symfony/web-profiler-bundle": "^4.4.25"
-    },
+        "symfony/web-profiler-bundle": "^4.4.25",
+
+        "symfony/maker-bundle": "^1.19",
+        "symfony/web-server-bundle": "4.4.*"
+      },
     "config": {
         "preferred-install": {
             "*": "dist"
@@ -98,7 +106,7 @@
         "sort-packages": true
     },
     "extra": {
-        "branch-alias": "3.0",
+        "branch-alias": [ "3.0-dev" ],
         "symfony": {
             "allow-contrib": true,
             "require": "4.4.*"

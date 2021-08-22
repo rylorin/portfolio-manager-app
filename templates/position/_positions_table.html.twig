@@ -1,0 +1,91 @@
+<div class="table-responsive">
+  <table class="table table-striped table-sm">
+    {% set total_positions_value = 0 %}
+    {% set total_positions_pnl = 0 %}
+    {% set total_positions_dividends = 0 %}
+    {% set total_positions_cost = 0 %}
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>Units</th>
+            <th>Symbol</th>
+            <th class="d-none d-lg-block">Name</th>
+            <th>Curr.</th>
+            <th>%</th>
+            <th>Price</th>
+            <th>Value</th>
+            <th>PRU</th>
+            <th>Cost</th>
+            <th>P/L</th>
+            <th>P/L%</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for position in positions %}
+        {% set position_value = position.value %}
+        {% set position_pnl = position.PNL %}
+        {% set total_positions_value = total_positions_value + position_value * currencies[position.contract.currency] %}
+        {% set total_positions_pnl = total_positions_pnl + position_pnl * currencies[position.contract.currency] %}
+        {% set total_positions_cost = total_positions_cost + position.cost * currencies[position.contract.currency] %}
+        <tr>
+            <td class="text-right">{{ position.quantity|my_quantity_format }}</td>
+            <td class=" {% if position.contract.secType == 'OPT' %}font-italic{% endif %}">
+              {% if position.contract.secType == 'OPT' %}
+                <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': position.portfolio.id, 'stock': position.contract.stock.id}) }}">
+              {% else %}
+                <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': position.portfolio.id, 'stock': position.contract.id}) }}">
+              {% endif %}
+                  {{ position.contract.symbol }}
+              </a>
+            </td>
+            <td class="d-none d-lg-block {% if position.contract.secType == 'OPT' %}font-italic{% endif %}">
+              {% if position.contract.secType == 'OPT' %}
+                {{ position.contract.stock.name|u.truncate(35, '...') }}
+              {% else %}
+                {{ position.contract.name|u.truncate(35, '...') }}
+              {% endif %}
+            </td>
+            <td>{{ position.contract.currency }}</td>
+            <td class="{{ (position.contract.changePercent * position.quantity)|my_number_class_2colors }}">{{ position.contract.changePercent|my_percent_format }}</td>
+            <td class="text-right">{{ position.contract.price|my_decimal_format_2d }}</td>
+            <td class="text-right" >{{ position_value|my_integer_format }}</td>
+            <td class="text-right">{{ position.PRU|my_decimal_format_2d }}</td>
+            <td class="text-right">{{ position.cost|my_integer_format }}</td>
+            <td class="{{ position_pnl|my_number_class_2colors }}">{{ position_pnl|my_integer_format }}</td>
+            <td class="{{ position_pnl|my_number_class_2colors }}">{{ position.PNLYield|my_percent_format }}</td>
+            <td>
+              <a href="{{ path('portfolio_position_show', {'id': position.id}) }}"><span data-feather="search"></span></a>
+              {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
+                <a href="{{ path('portfolio_position_edit', {'id': position.id}) }}"><span data-feather="edit-2"></span></a>
+                <form class="form-inline" id="row{{position.id}}" method="post" action="{{ path('portfolio_position_delete', {'id': position.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ position.id) }}">
+                    <a href="#" onclick="delete_item('row{{position.id}}')"><span data-feather='trash-2' ></span></a>
+                </form>
+              {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot class="font-weight-bold">
+      <tr>
+          <td></td>
+          <td>Total in</td>
+          <td class="d-none d-lg-block"></td>
+          <td>{{ portfolio.baseCurrency }}</td>
+          <td></td>
+          <td></td>
+          <td class="text-right" >{{ total_positions_value|my_integer_format }}</td>
+          <td></td>
+          <td class="text-right" >{{ total_positions_cost|my_integer_format }}</td>
+          <td class="{{ total_positions_pnl|my_number_class }}">{{ total_positions_pnl|my_integer_format }}</td>
+          <td class="{{ total_positions_pnl|my_number_class }}">
+              {% if total_positions_cost != 0 %}
+                  {{ (total_positions_pnl / total_positions_cost)|my_percent_format }}
+              {% endif %}
+          </td>
+          <td></td>
+      </tr>
+  </tfoot>
+</table>
+</div>

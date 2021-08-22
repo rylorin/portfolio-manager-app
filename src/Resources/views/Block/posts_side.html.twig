@@ -1,0 +1,16 @@
+<div class="widget popular-posts">
+	<div class=widget-title>
+		<h4>{{ settings.title }}</h4>
+	</div>
+	<div class=widget-content>
+		<ul>
+            {% for post in pager.getResults() %}
+			<li class=clearfix><a href=# class="pull-left thumb"> {% media post.image, 'thumb' with {'class': 'img-responsive'} %}
+			</a> <a href={{ path('sonata_news_view', { 'permalink': sonata_news_permalink(post) }) }} class=title>{{ post.title }}</a>
+				<div class=date>{{ post.publicationDateStart | format_date }}</div></li>
+            {% else %}
+                <li><p>{{ 'no_post_found'|trans({}, 'SonataNewsBundle') }}</p></li>
+            {% endfor %}
+		</ul>
+	</div>
+</div>

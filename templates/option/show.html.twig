@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Option {{ option.id }}{% endblock %}
+
+{% block body %}
+<div class="row">
+  {% set item_size='col-12 col-sm-6' %}
+  <div class="{{ item_size }}">
+		{{ include('option/_option_contract.html.twig') }}
+      <nav><ul class="pagination">
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_option_index') }}"><span data-feather="arrow-left"></span></a></li>
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_option_edit', {'id': option.id}) }}"><span data-feather="edit-2"></a></li>
+        <li class="page-item">{{ include('option/_delete_form.html.twig') }}</li>
+      </ul></nav>
+	</div>
+    <div class="{{ item_size }}">
+	   {{ include('stock/_stock_contract.html.twig') }}
+	</div>
+</div>
+{% endblock body %}

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Option{% endblock %}
+
+{% block body %}
+    <h1>Create new Option</h1>
+
+    {{ include('option/_form.html.twig') }}
+
+    <a href="{{ path('repository_option_index') }}"><span data-feather="arrow-left"></span></a>
+    <a href="#" onclick="click_button('save')"><span data-feather="save"></span></a>
+{% endblock %}

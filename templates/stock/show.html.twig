@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ stock.symbol }}{% endblock %}
+
+{% block body %}
+<div class="row">
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
+  {
+  "symbol": "{{ stock.marketPlace }}:{{ stock.symbol|to_tws_symbol }}",
+  "width": "100%",
+  "locale": "en",
+  "colorTheme": "dark",
+  "isTransparent": true
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+</div>
+<div class="row">
+  {% set item_size='col-12 col-md-6' %}
+  <div class="{{ item_size }}">
+		{{ include('stock/_stock_contract.html.twig') }}
+        <nav><ul class="pagination">
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_stock_index') }}"><span data-feather="arrow-left"></span></a></li>
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_stock_edit', {'id': stock.id}) }}"><span data-feather="edit-2"></span></a></li>
+        <li class="page-item">{{ include('stock/_delete_form.html.twig') }}</li>
+        </ul></nav>
+	</div>
+  <div class="{{ item_size }}">
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container mb-3">
+      <h4>Price History</h4>
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+      {
+      "symbol": "{{ stock.marketPlace }}:{{ stock.symbol|to_tws_symbol }}",
+      "width": "100%",
+      "height": 250,
+      "locale": "en",
+      "dateRange": "12m",
+      "colorTheme": "dark",
+      "trendLineColor": "#37a6ef",
+      "underLineColor": "#E3F2FD",
+      "isTransparent": true,
+      "autosize": false,
+      "largeChartUrl": ""
+    }
+      </script>
+    </div>
+    <!-- TradingView Widget END -->
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container pt-3">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+      {
+      "interval": "1D",
+      "width": "100%",
+      "isTransparent": true,
+      "height": "400",
+      "symbol": "{{ stock.marketPlace }}:{{ stock.symbol|to_tws_symbol }}",
+      "showIntervalTabs": true,
+      "locale": "en",
+      "colorTheme": "dark"
+    }
+      </script>
+    </div>
+    <!-- TradingView Widget END -->
+  </div>
+</div>
+{% endblock %}

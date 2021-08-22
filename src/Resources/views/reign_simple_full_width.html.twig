@@ -1,0 +1,17 @@
+{% extends '@App/reign_base_layout.html.twig' %}
+
+  {% block reign_page_content %}  
+
+    {% block page_content_top %}
+      {{ parent() }}
+    {% endblock %}
+
+    {% block page_content %}
+  <section class="section">
+    <div class=container>
+          {{ parent() }}
+    </div>
+  </section>
+    {% endblock %}
+
+  {% endblock %}

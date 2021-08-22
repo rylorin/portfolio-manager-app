@@ -1,0 +1,16 @@
+<footer id=footer class=footer>
+  <div class=container>
+    <div class=row>
+    {% for child in block.children %}
+      {% if child.enabled %}
+        {% block block_child_render %}
+            {{ sonata_block_render(child) }}
+        {% endblock %}
+      {% else %}
+        <!-- RYL block {{ child.name }} disabled -->
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+</footer>
+<a id=totop href=#totop><i class="fa fa-angle-double-up"></i></a>

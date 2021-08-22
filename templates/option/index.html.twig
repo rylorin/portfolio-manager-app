@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Options index ({{data_count}}){% endblock %}
+
+{% block body %}
+  {% if not (page is defined) %}{% set page = 1 %}{% endif %}
+  {#
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <h1 class="h2">Options index ({{data_count}})</h1>
+  </div>
+  #}
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead class="thead-dark">
+          <tr>
+              <th class="text-center">Id</th>
+              <th class="text-center">Symbol</th>
+              <th class="text-center">Stock</th>
+              <th class="text-center">Maturity</th>
+              <th class="text-center">Strike</th>
+              <th class="text-center">Type</th>
+              <th class="text-center">Bid</th>
+              <th class="text-center">Price</th>
+              <th class="text-center">Ask</th>
+              <th class="text-center">Money</th>
+              <th class="text-center">Days</th>
+              <th class="text-center">Bid Yield</th>
+              <th>actions</th>
+          </tr>
+      </thead>
+      <tbody>
+      {% for option in options %}
+          <tr>
+              <td>{{ option.id }}</td>
+              <td><a href="{{ path('repository_option_show', {'id': option.id}) }}">{{ option.symbol }}</a></td>
+              <td>{{ option.stock.symbol }}</td>
+              <td>{{ option.lastTradeDate ? option.lastTradeDate|date('d-m-Y') : 'N/A' }}</td>
+              <td class="text-right">{{ option.strike|my_decimal_format_1d }}</td>
+              <td>{% if option.type == 'P' %}Put{% elseif option.type == 'C' %}Call{%else %}N/A{% endif %}</td>
+              <td class="text-right">{{ option.bid|my_decimal_format_2d }}</td>
+              <td class="text-right">{{ option.price|my_decimal_format_2d }}</td>
+              <td class="text-right">{{ option.ask|my_decimal_format_2d }}</td>
+              <td class="text-right">{{ option.moneyDepth|my_decimal_format_2d }}
+                ({{ (option.moneyDepth / option.strike)|my_percent_format }})</td>
+                <td class="text-right">{{ option.daysToMaturity }}</td>
+              <td class="text-right">{{ option.bidYieldToMaturity|my_percent_format }}</td>
+              <td>
+                  <a href="{{ path('repository_option_show', {'id': option.id}) }}"><span data-feather="search"></span></a>
+                  <a href="{{ path('repository_option_edit', {'id': option.id}) }}"><span data-feather="edit-2"></span></a>
+                  <form class="form-inline" id="row{{option.id}}" method="post" action="{{ path('repository_option_delete', {'id': option.id, 'page': page }) }}">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ option.id) }}">
+                      <a href="#" onclick="delete_item('row{{option.id}}')"><span data-feather='trash-2' ></span></a>
+                  </form>
+              </td>
+          </tr>
+      {% else %}
+          <tr>
+              <td colspan="13">no records found</td>
+          </tr>
+      {% endfor %}
+      <form class="form-inline" method="get" action="{{ path('repository_option_index') }}" enctype="application/x-www-form-urlencoded">
+        {% if symbol is not defined %}{% set symbol = '' %}{% endif %}
+        <tr>
+          <td></td>
+          <td><input class="form-control" name="symbol" value="{{ symbol }}" /></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <a href="#" onclick="click_button('search')"><span data-feather="search"></span></a>
+            <button type="submit" id="search" class="btn btn-primary"><span data-feather="search"></span></button>
+          </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <a class="page-link mb-3" href="{{ path('repository_option_new') }}"><span data-feather="plus-square"></span></a>
+    {{ knp_pagination_render(options) }}
+    <div><!-- spacer --></div>
+  </div>
+{% endblock body %}

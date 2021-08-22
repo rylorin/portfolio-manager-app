@@ -1,5 +1,20 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_name: sonata_sandbox
+    database_user: root
+    database_password: root
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: null
+    mailer_password: null
     locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
     sonata_admin.title: 'Sonata Project'
     sonata_admin.logo_title: /bundles/sonataadmin/logo_title.png
     sonata_news.blog_title: 'My Awesome Blog'
@@ -12,19 +27,87 @@ parameters:
     sonata_media.cdn.host: '/uploads/media/'
     sonata_user.google_authenticator.server: demo.sonata-project.org
     sonata_page.varnish.command: 'if [ ! -r "/etc/varnish/secret" ]; then echo "VALID ERROR :/"; else varnishadm -S /etc/varnish/secret -T 127.0.0.1:6082 {{ COMMAND }} "{{ EXPRESSION }}"; fi;'
-    sonata.fixtures.product.fake: 500
+    sonata.fixtures.product.fake: 0
     sonata.fixtures.customer.fake: 10
-    sonata.fixtures.page.create_subsite: true
+    sonata.fixtures.page.create_subsite: false
 
 services:
+    # default configuration for services in *this* file
     _defaults:
-        autowire: true
-        autoconfigure: true
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{App,DependencyInjection,Entity,Migrations,Sonata,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Repository,Sonata,Tests,Kernel.php}'
 
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Repository\:
+        autowire: true
+        resource: '../src/Repository'
+        tags: ['doctrine.repository_service']
+
+    admin.contract:
+        class: App\Admin\ContractAdmin
+        arguments: [~, App\Entity\Contract, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Contract }
+        public: true
+
+    admin.option:
+        class: App\Admin\OptionAdmin
+        arguments: [~, App\Entity\Option, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Option }
+        public: true
+
+    admin.stock:
+        class: App\Admin\StockAdmin
+        arguments: [~, App\Entity\Stock, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Stock }
+        public: true
+
+    admin.position:
+        class: App\Admin\PositionAdmin
+        arguments: [~, App\Entity\Position, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Position }
+        public: true
+
+    admin.balance:
+        class: App\Admin\BalanceAdmin
+        arguments: [~, App\Entity\Balance, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Balance }
+        public: true
+
+    admin.portfolio:
+        class: App\Admin\PortfolioAdmin
+        arguments: [~, App\Entity\Portfolio, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Portfolio }
+        public: true
+
+    admin.currency:
+        class: App\Admin\CurrencyAdmin
+        arguments: [~, App\Entity\Currency, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Currency }
+        public: true
+
+    admin.statement:
+        class: App\Admin\StatementAdmin
+        arguments: [~, App\Entity\Statement, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Statement }
+        public: true

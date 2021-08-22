@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="fr" datatype="plaintext" original="RylReignThemeBundle.en.xliff">
+        <body>
+            <trans-unit id="read_more">
+                <source>read_more</source>
+                <target>Lire</target>
+            </trans-unit>
+            <trans-unit id="ryl.reigntheme.block.newsletter.message.confirmation">
+                <source>ryl.reigntheme.block.newsletter.message.confirmation</source>
+                <target>Vous avez été abonné à notre newsletter.</target>
+            </trans-unit>
+            <trans-unit id="ryl.reigntheme.block.newsletter.label.submit">
+                <source>ryl.reigntheme.block.newsletter.label.submit</source>
+                <target>Valider</target>
+            </trans-unit>
+            <trans-unit id="ryl.reigntheme.block.newsletter.message.formerror">
+                <source>ryl.ryl.reigntheme.block.newsletter.message.formerror</source>
+                <target>Erreur inconnue à la validation du formulaire.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

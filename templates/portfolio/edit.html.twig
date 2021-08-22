@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Portfolio {{ portfolio.id }}{% endblock %}
+
+{% block body %}
+<div class="row">
+  {% set item_size='col-12 col-sm-6' %}
+  <div class="{{ item_size }}">
+
+    {{ include('portfolio/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_settings_show', { 'id': portfolio.id }) }}"><span data-feather="arrow-left"></span></a></li>
+        <li class="page-item"><a class="page-link mb-3" href="#" onclick="click_button('save')"><span data-feather="save"></span></a></li>
+        <li class="page-item">{{ include('portfolio/_delete_form.html.twig') }}</li>
+    </ul>
+  </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,226 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Portfolio {{ portfolio.name }} ({{ portfolio.account|masq }}-{{ portfolio.baseCurrency }}){% endblock %}
+{# Warning: almost (parts of) the same template as index #}
+{% block body %}
+  <h2>Trades statistics</h2>
+  {% if (stats|length) > 1 %}
+    <div id="canvas-holder" class="my-4 col-12 col-lg-8">
+      <canvas class="w-100" id="myChart"></canvas>
+    </div>
+  {% endif %}
+  <div class="table-responsive" id="synthesis-array">
+    <table class="table table-striped table-sm">
+      {% set total_trades_count = 0 %}
+      {% set total_trades_pnl = 0 %}
+      {% set total_trades_closed = 0 %}
+      {% set total_trades_won = 0 %}
+      {% set total_trades_duration = 0 %}
+      <thead>
+          <tr class="text-center">
+            <th>Strategy</th>
+            <th>Trades</th>
+            <th>Closed #</th>
+            <th>Success</th>
+            <th>Duration</th>
+            <th>Min</th>
+            <th>Average</th>
+            <th>Max</th>
+            <th>PnL</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for key, stat in stats %}
+          <tr>
+            <td>
+{#
+              <a href="{{ path('portfolio_trades_strategy', { 'portfolio': portfolio.id, 'strategy': stat.id }) }}">
+#}
+                {{ stat.strategy }}
+{#
+              </a>
+#}
+            </td>
+            <td class="text-right">
+              {{ stat.count }}
+              {% set total_trades_count = total_trades_count + stat.count %}
+            </td>
+            <td class="text-right">
+              {{ stat.closed }}
+              {% set total_trades_closed = total_trades_closed + stat.closed %}
+            </td>
+            <td class="text-right">
+              {% if stat.closed > 0 %}
+                {{ (stat.win / stat.closed) | my_percent_format }}
+                {% set total_trades_won = total_trades_won + stat.win %}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td class="text-right">
+            {% if stat.closed > 0 %}
+              {{ (stat.duration / stat.closed) | my_integer_format }}
+              {% set total_trades_duration = total_trades_duration + stat.duration %}
+            {% else %}
+              -
+            {% endif %}
+            </td>
+            <td class="{{ stat.min|my_number_class_2colors }}">
+              {{ stat.min | my_decimal_format_2d }}
+            </td>
+            <td class="{{ stat.pnl|my_number_class_2colors }}">
+              {% if stat.closed > 0 %}
+                {{ (stat.pnl / stat.closed) | my_decimal_format_2d }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td class="{{ stat.max|my_number_class_2colors }}">
+              {{ stat.max | my_decimal_format_2d }}
+            </td>
+            <td class="{{ stat.pnl|my_number_class_2colors }}">
+              {{ stat.pnl|my_decimal_format_2d }}
+              {% set total_trades_pnl = total_trades_pnl + stat.pnl %}
+            </td>
+            <td>
+              <a href="{{ path('portfolio_trades_strategy', { 'portfolio': portfolio.id, 'strategy': stat.id }) }}"><span data-feather="search"></span></a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      {% if (stats|length) > 1 %}
+        <tfoot class="font-weight-bold">
+        	<tr>
+            <td>Total</td>
+            <td class="text-right">{{ total_trades_count }}</td>
+            <td class="text-right">{{ total_trades_closed }}</td>
+            <td class="text-right">
+              {{ (total_trades_won / total_trades_closed) | my_percent_format }}
+            </td>
+            <td class="text-right">
+              {{ (total_trades_duration / total_trades_closed) | my_integer_format }}
+            </td>
+            <td></td>
+            <td class="{{ total_trades_pnl|my_number_class_2colors }}">
+              {{ (total_trades_pnl / total_trades_closed) | my_integer_format }}
+            </td>
+            <td></td>
+        		<td class="{{ total_trades_pnl|my_number_class_2colors }}">
+              {{ total_trades_pnl|my_integer_format }}
+            </td>
+        	</tr>
+        </tfoot>
+      {% endif %}
+    </table>
+  </div>
+  {% if (stats|length) > 1 %}
+    <canvas class="my-4 w-100" id="myChart2" width="900" height="380"></canvas>
+  {% endif %}
+  <h2>All Trades ({{ trades|length }})</h2>
+  {% include('tradeunit/_tradeunits_table.html.twig') %}
+
+  <script>
+      var chartColors = {
+      	red: 'rgb(255, 99, 132)',
+      	orange: 'rgb(255, 159, 64)',
+      	yellow: 'rgb(255, 205, 86)',
+      	green: 'rgb(75, 192, 192)',
+      	blue: 'rgb(54, 162, 235)',
+      	purple: 'rgb(153, 102, 255)',
+      	grey: 'rgb(201, 203, 207)'
+      };
+
+      var barChartData = {
+      		labels: [
+              {% for key, stat in stats %}
+                  '{{ stat.strategy }}',
+              {% endfor %}
+          ],
+          datasets: [
+              {
+                  label: 'P/L',
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: window.chartColors.blue,
+                  borderWidth: 1,
+                  data: [
+                      {% for key in stats|keys %}
+                        {% if stats[key]['closed'] > 0 %}
+                          '{{ (stats[key]['pnl'] / stats[key]['closed'])|round }}',
+                        {% else %}
+                          '-',
+                        {% endif %}
+                      {% endfor %}
+                  ]
+        			}
+          ]
+    	};
+
+      var barChartOptions = {
+  				title: {
+  					display: true,
+  					text: 'Average P/L / strategy'
+  				},
+  				tooltips: {
+  					mode: 'index',
+  					intersect: false
+  				},
+  				responsive: true,
+  				scales: {
+  					xAxes: [{
+  						stacked: true,
+  					}],
+  					yAxes: [{
+  						stacked: true,
+              gridLines: {
+                color: 'rgba(201, 203, 207, 0.2)',
+                zeroLineColor: 'rgba(201, 203, 207, 0.8)',
+              }
+  					}],
+  				},
+  		};
+
+      var pieChartData = {
+          labels: [
+            {% set total_trades = 0 %}
+            {% for key, stat in stats %}
+                '{{ stat.strategy }}',
+                {% set total_trades = total_trades + stat.count %}
+            {% endfor %}
+          ],
+  				datasets: [{
+  					data: [
+              {% for key in stats|keys %}
+                  '{{ (stats[key]['count'] / total_trades * 100) | my_integer_format }}',
+              {% endfor %}
+  					],
+  					backgroundColor: [
+  						window.chartColors.red,
+  						window.chartColors.orange,
+  						window.chartColors.yellow,
+  						window.chartColors.green,
+  						window.chartColors.blue,
+              window.chartColors.purple,
+              window.chartColors.grey,
+  					],
+  					label: 'Dataset 1'
+  				}],
+  		};
+
+      var pieChartOptions = {
+        title: {
+          display: true,
+          text: '% trades / strategy'
+        },
+				responsive: true,
+				animation: {
+					animateRotate: false,
+					animateScale: true
+				}
+  		};
+
+      var graphs = [
+        {context: 'myChart', type: 'doughnut', data: pieChartData, options: pieChartOptions},
+        {context: 'myChart2', type: 'bar', data: barChartData, options: barChartOptions},
+      ];
+  </script>
+{% endblock %}

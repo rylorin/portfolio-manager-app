@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tools{% endblock %}
+
+{% block body %}
+{{ form_start(formUpload, {'attr': {'id': 'portfolio'}}) }}
+    {{ form_errors(formUpload) }}
+    {# ... #}
+    {{ form_row(formUpload.csvFile) }}
+    {{ form_row(formUpload.ofxFile) }}
+
+    {{ form_rest(formUpload) }}
+    <button type="submit" class="btn" id="save"><span data-feather="save"></span></button>
+{{ form_end(formUpload) }}
+{% endblock body %}

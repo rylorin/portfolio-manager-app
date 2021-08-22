@@ -1,0 +1,35 @@
+<h4>Position {{ position.id }}</h4>
+{% set position_value = position.value %}
+{% set position_pnl = position_value - position.cost %}
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Open Date</th>
+            <td class="text-right">{{ position.openDate|format_date('dd-MM-y') }}</td>
+        </tr>
+        <tr>
+            <th>Quantity</th>
+            <td class="text-right">{{ position.quantity }}</td>
+        </tr>
+        <tr>
+            <th>PRU</th>
+            <td class="text-right">{{ position.PRU|my_decimal_format_2d }}</td>
+        </tr>
+        <tr>
+            <th>Cost</th>
+            <td class="text-right">{{ position.cost|my_decimal_format_2d }}</td>
+        </tr>
+        <tr>
+            <th>Value</th>
+            <td class="text-right">{{ position_value|my_decimal_format_2d }}</td>
+        </tr>
+        <tr>
+            <th>P/L</th>
+            <td class="{{ position_pnl|my_number_class_2colors }}">{{ position_pnl|my_decimal_format_2d }}</td>
+        </tr>
+        <tr>
+            <th>TTM Dividend</th>
+            <td class="text-right">{{ (position.contract.dividendTTM * position.quantity)|my_decimal_format_2d }}</td>
+        </tr>
+    </tbody>
+</table>

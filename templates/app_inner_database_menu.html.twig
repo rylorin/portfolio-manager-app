@@ -1,0 +1,26 @@
+  <h6 class="sidebar-heading d-flex align-items-center px-3 pt-3 mb-1 text-muted">
+    <span data-feather="database"></span>
+    <span class="ml-2">Repository</span>
+  </h6>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link {% if app.request.attributes.get('_route') starts with 'repository_currency' %}active{% endif %}" href="{{ path('repository_currency_index') }}">
+        <span data-feather="file-text"></span>
+        Currencies
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if app.request.attributes.get('_route') starts with 'repository_stock' %}active{% endif %}" href="{{ path('repository_stock_index') }}">
+        <span data-feather="file-text"></span>
+        Stocks
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if app.request.attributes.get('_route') starts with 'repository_option' %}active{% endif %}" href="{{ path('repository_option_index') }}">
+        <span data-feather="file-text"></span>
+        Options
+      </a>
+    </li>
+  </ul>
+  {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
+  {% endif %}

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stocks index ({{data_count}}){% endblock %}
+
+{% block body %}
+  {% if not (page is defined) %}{% set page = 1 %}{% endif %}
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Curr.</th>
+                <th>Price</th>
+                <th>% change</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.id }}</td>
+                <td><a href="{{ path('repository_stock_show', {'id': stock.id}) }}">{{ stock.symbol }}</a></td>
+                <td>{{ stock.name }}</td>
+                <td>{{ stock.currency }}</td>
+                <td class="{{ stock.changePercent|my_number_class_2colors }}">{{ stock.price|my_decimal_format_2d }}</td>
+                <td class="{{ stock.changePercent|my_number_class_2colors }}">{{ stock.changePercent|my_percent_format }}</td>
+                <td>
+                    <a href="{{ path('repository_stock_show', {'id': stock.id}) }}"><span data-feather="search"></span></a>
+                    <a href="{{ path('repository_stock_edit', {'id': stock.id}) }}"><span data-feather="edit-2"></span></a>
+                    <form class="form-inline" id="row{{stock.id}}" method="post" action="{{ path('repository_stock_delete', {'id': stock.id, 'page': page }) }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock.id) }}">
+                        <a href="#" onclick="delete_item('row{{stock.id}}')"><span data-feather='trash-2' ></span></a>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        <form class="form-inline" method="get" action="{{ path('repository_stock_index') }}" enctype="application/x-www-form-urlencoded">
+          {% if symbol is not defined %}{% set symbol = '' %}{% endif %}
+          {% if name is not defined %}{% set name = '' %}{% endif %}
+          <tr>
+            <td><a class="btn btn-primary" href="{{ path('repository_stock_new') }}"><span data-feather="plus-square"></a></td>
+            <td><input class="form-control" name="symbol" value="{{ symbol }}" /></td>
+            <td><input class="form-control" name="name" value="{{ name }}" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <a href="#" onclick="click_button('search')"><span data-feather="search"></span></a>
+              <button type="submit" id="search" class="btn btn-primary"><span data-feather="search"></span></button>
+            </td>
+          </tr>
+        </form>
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <div><!-- spacer --></div>
+    {{ knp_pagination_render(stocks) }}
+    <div><!-- spacer --></div>
+  </div>
+{% endblock body %}
