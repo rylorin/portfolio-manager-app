@@ -161,7 +161,7 @@ class TradeUnit
         }
     }
 
-    public function __toString( ): ?string {
+    public function __toString( ): string {
       return $this->symbol . '@' . $this->openingDate->format('d-m-y H:i') . ' (' . strval($this->id) . ')';
     }
 
