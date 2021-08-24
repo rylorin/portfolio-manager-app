@@ -70,7 +70,6 @@ class ApiClient
      */
     private function fetchQuotes(array $symbols)
     {
-        $url = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols='.urlencode(implode(',', $symbols));
         $url = sprintf('https://financialmodelingprep.com/api/v3/quote/%s?apikey=%s', urlencode(implode(',', $symbols)), $this->apikey);
         $responseBody = (string) $this->client->request('GET', $url)->getBody();
         return $this->resultDecoder->transformQuotes($responseBody);
