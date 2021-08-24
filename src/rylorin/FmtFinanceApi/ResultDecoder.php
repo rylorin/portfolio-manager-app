@@ -34,11 +34,11 @@ class ResultDecoder
     /**
      * @var array
      */
-    private $quoteFields;
+    // private $quoteFields;
 
     public function __construct()
     {
-        $this->quoteFields = array_keys(self::QUOTE_FIELDS_MAP);
+        // $this->quoteFields = array_keys(self::QUOTE_FIELDS_MAP);
     }
 
     public function transformSearchResult($responseBody)
@@ -115,8 +115,9 @@ class ResultDecoder
     public function transformQuotes($responseBody)
     {
     	$results = json_decode($responseBody, true);
-    	if (!is_array($results) || !is_array($results[array_key_first($results)])) {
-    		printf("FMT quote API returned an invalid result: %s\n", $results[array_key_first($results)]);
+    	if (!is_array($results) || !sizeof($results) || !is_array($results[array_key_first($results)])) {
+    		print("FMT quote API returned an invalid result.");
+            print_r($results);
     		return null;
 //    		throw new ApiException('FMT quote API returned an invalid result.', ApiException::INVALID_RESPONSE);
     	}

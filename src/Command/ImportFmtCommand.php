@@ -45,13 +45,6 @@ class ImportFmtCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        /*
-        $arg1 = $input->getArgument('apikey');
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
-            $apikey = $arg1;
-        }
-        */
         if ($input->getOption('apikey')) {
             $apikey = $input->getOption('apikey');
         } else {
@@ -60,24 +53,20 @@ class ImportFmtCommand extends Command
         // Create a new client from the factory
         $client = ApiClientFactory::createApiClient($apikey);
 
-//        $quotes = $client->getQuotes(['AAPL','AMZN']);
-// print_r($quotes);
-        $quote = $client->getQuote('AAPL');
-        print_r($quote);
-        return 1;
-
         $stocks = $this->em->getRepository('App:Stock')->findAll();
         $io->progressStart(sizeof($stocks));
 
         foreach ($stocks as $stock) {
         	$ticker = $stock->getYahooTicker();
         	$quote = $client->getQuote($ticker);
+            print_r($quote);
         	if ($quote) {
         		$stock->setPrice($quote->getPrice());
+                return 1;
         	} else {
         		$io->note(sprintf("Unknown quote: %s on %s\n", $ticker, $stock->getExchange()));
         	}
-//        	$io->progressAdvance();
+           	$io->progressAdvance();
         }
 
         // save / write the changes to the database
