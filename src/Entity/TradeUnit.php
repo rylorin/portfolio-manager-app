@@ -31,6 +31,10 @@ class TradeUnit
     public const RISK_REVERSAL = 9;
     public const BULL_SPREAD = 10;
     public const SHORT_STRANGLE = 11;
+    public const BEAR_SPREAD = 12;
+    public const LONG_STRANGLE = 13;
+    public const LONG_STRADDLE = 14;
+    public const SHORT_STRADDLE = 15;
 
     public const stategyLabelMapping = [
       TradeUnit::LONG_STOCK => 'long stock',
@@ -43,7 +47,11 @@ class TradeUnit
       TradeUnit::THE_WHEEL => 'the wheel',
       TradeUnit::RISK_REVERSAL => 'risk reversal',
       TradeUnit::BULL_SPREAD => 'bull spread',
+      TradeUnit::BEAR_SPREAD => 'bear spread',
+      TradeUnit::LONG_STRANGLE => 'long strangle',
       TradeUnit::SHORT_STRANGLE => 'short strangle',
+      TradeUnit::LONG_STRADDLE => 'long straddle',
+      TradeUnit::SHORT_STRADDLE => 'short straddle',
     ];
 
     public const stategyMenuMapping = [
@@ -59,6 +67,10 @@ class TradeUnit
       'risk reversal' => TradeUnit::RISK_REVERSAL,
       'bull spread' => TradeUnit::BULL_SPREAD,
       'short strangle' => TradeUnit::SHORT_STRANGLE,
+      'bear spread' => TradeUnit::BEAR_SPREAD,
+      'long strangle' => TradeUnit::LONG_STRANGLE,
+      'long straddle' => TradeUnit::LONG_STRADDLE,
+      'short straddle' => TradeUnit::SHORT_STRADDLE,
     ];
 
     /**
