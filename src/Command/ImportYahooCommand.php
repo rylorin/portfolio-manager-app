@@ -58,6 +58,7 @@ class ImportYahooCommand extends Command
         $stocks = $this->em->getRepository('App:Stock')->findAll();
         $query_stocks = [];
         foreach ($stocks as $key => $contract) {
+          // if ($contract->getSymbol() == 'SPY') print('SPY !!!');
           $query_stocks[] = $contract->getYahooTicker();
         }
 
@@ -109,7 +110,9 @@ class ImportYahooCommand extends Command
         foreach ($result as $quote) {
           foreach ($stocks as $key => $contract) {
             if ($contract->getYahooTicker() == $quote->getSymbol()) {
-              if (!$contract->getCurrency()) {
+            $dv = new \DateInterval('PT' . ($quote->getExchangeDataDelayedBy() ? $quote->getExchangeDataDelayedBy() : 0) . 'M');
+            $updated = (new \DateTime())->sub($dv);
+            if (!$contract->getCurrency()) {
                 if ($quote->getCurrency() == 'GBp') {
                         $contract->setCurrency('GBP');
                 } elseif ($quote->getCurrency()) {
@@ -126,14 +129,13 @@ class ImportYahooCommand extends Command
               $contract->setFiftyTwoWeekHigh($quote->getFiftyTwoWeekHigh());
               $contract->setEpsTTM($quote->getEpsTrailingTwelveMonths());
               $contract->setEpsForward($quote->getEpsForward());
-/*
-              if ($quote->getSymbol() == 'AMD') {
-                printf("\n");
-                print_r($quote);
-                print($quote->getSymbol() . '/' . $contract->getSymbol() . '/' . $contract->getId() . ' = ' . $contract->getPrice());
-                printf("\n");
-              }
-*/
+              $contract->setUpdated($updated);
+              // if ($quote->getSymbol() == 'SPY') {
+              //   printf("\n");
+              //   print_r($quote);
+              //   print($quote->getSymbol() . '/' . $contract->getSymbol() . '/' . $contract->getId() . ' = ' . $contract->getPrice());
+              //   printf("\n");
+              // }
               break;
             }
           }
@@ -150,7 +152,7 @@ class ImportYahooCommand extends Command
           foreach ($result as $quote) {
             foreach ($options as $key => $contract) {
               if ($contract->getYahooTicker() == $quote->getSymbol()) {
-                $dv = new \DateInterval('PT'.$quote->getExchangeDataDelayedBy().'M');
+                $dv = new \DateInterval('PT' . ($quote->getExchangeDataDelayedBy() ? $quote->getExchangeDataDelayedBy() : 0) . 'M');
                 $updated = (new \DateTime())->sub($dv);
                 // print($updated->format('Y-m-d h:i'));
                 $contract->setPrice(self::getYahooPrice($quote));
