@@ -95,6 +95,8 @@
           {% if position.contract.type == 'C' or position.quantity > 0 %}
             {% set position_engaged = 0 %}
             {% set position_assignable = 0 %}
+          {% elseif (position.contract.type == 'P') and (position.quantity < 0) and (position_iv < 0) %}
+            {% set position_assignable = 0 %}
           {% endif %}
 
           {# Sub-total #}
