@@ -29,6 +29,7 @@ class PortfolioType extends AbstractType
             ->add('minPremium', null, ['required' => true ])
             ->add('nakedPutWinRatio', PercentType::class, ['required' => true ])
             ->add('nakedCallWinRatio', PercentType::class, ['required' => true ])
+            ->add('rollDaysBefore', IntegerType::class, ['required' => true ])
             ;
     }
 

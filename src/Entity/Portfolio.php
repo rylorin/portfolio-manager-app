@@ -118,6 +118,11 @@ class Portfolio
      */
     private $nakedCallWinRatio;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rollDaysBefore;
+
     public function __construct()
     {
         $this->positions = new ArrayCollection();
@@ -485,6 +490,18 @@ class Portfolio
     public function setNakedCallWinRatio(?float $nakedCallWinRatio): self
     {
         $this->nakedCallWinRatio = $nakedCallWinRatio;
+
+        return $this;
+    }
+
+    public function getRollDaysBefore(): ?int
+    {
+        return $this->rollDaysBefore;
+    }
+
+    public function setRollDaysBefore(?int $rollDaysBefore): self
+    {
+        $this->rollDaysBefore = $rollDaysBefore;
 
         return $this;
     }
