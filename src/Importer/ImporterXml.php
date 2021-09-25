@@ -176,6 +176,9 @@ class ImporterXml
           } elseif ((string)$xml->attributes()->openCloseIndicator == 'C') {
             $statement->setStatus(Statement::CLOSE_STATUS);
             $description = 'Closing ';
+          } elseif ((string)($xml->attributes()->openCloseIndicator) == 'C;O') {
+            $statement->setStatus(Statement::OPEN_STATUS);
+            $description = 'Opening ';
           } else {
             print_r($xml);
           }
@@ -409,6 +412,7 @@ class ImporterXml
   public function processSecurityInfo(\SimpleXMLElement $xml): void
   {
     if ($xml->attributes()->assetCategory == "STK") {
+      // print_r($xml);
       $this->findOrCreateStock($xml);
     } elseif ($xml->attributes()->assetCategory == "OPT") {
       $this->findOrCreateOption($xml);
