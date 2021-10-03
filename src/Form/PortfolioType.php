@@ -24,12 +24,12 @@ class PortfolioType extends AbstractType
             ->add('FindSymbolsSleep', IntegerType::class, ['required' => true])
             ->add('AdjustCashSleep', IntegerType::class, ['required' => true])
             ->add('rollOptionsSleep', IntegerType::class, ['required' => true])
+            ->add('rollDaysBefore', IntegerType::class, ['required' => true ])
             ->add('sellNakedPutSleep', IntegerType::class, ['required' => true])
             ->add('PutRatio', PercentType::class, ['required' => true ])
             ->add('minPremium', null, ['required' => true ])
             ->add('nakedPutWinRatio', PercentType::class, ['required' => true ])
             ->add('nakedCallWinRatio', PercentType::class, ['required' => true ])
-            ->add('rollDaysBefore', IntegerType::class, ['required' => true ])
             ;
     }
 

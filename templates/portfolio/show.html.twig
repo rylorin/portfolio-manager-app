@@ -37,6 +37,10 @@
                     <td class="text-left">{{ portfolio.rollOptionsSleep }} mins</td>
                 </tr>
                 <tr>
+                    <th>Roll days before</th>
+                    <td class="text-left">{{ portfolio.rollDaysBefore }}</td>
+                </tr>
+                <tr>
                     <th>Sell naked put sleep</th>
                     <td class="text-left">{{ portfolio.sellNakedPutSleep }} mins</td>
                 </tr>
@@ -55,10 +59,6 @@
                 <tr>
                     <th>Short call win ratio</th>
                     <td class="text-left">{{ portfolio.nakedCallWinRatio|my_percent_format }}</td>
-                </tr>
-                <tr>
-                    <th>Roll days before</th>
-                    <td class="text-left">{{ portfolio.rollDaysBefore }}</td>
                 </tr>
             </tbody>
         </table>
