@@ -160,6 +160,8 @@ class ImportYahooCommand extends Command
                 $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
                 $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
                 $contract->setUpdated($updated);
+                $contract->setAskDate($updated);
+                $contract->setBidDate($updated);
                 break;
               }
             }

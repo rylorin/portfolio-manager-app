@@ -114,6 +114,16 @@ abstract class Contract
      */
     private $updated;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $askDate;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $bidDate;
+
     public function __construct(?string $symbol = null)
     {
         $this->positions = new ArrayCollection();
@@ -326,6 +336,30 @@ abstract class Contract
     public function setUpdated(?\DateTimeInterface $updated): self
     {
         $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getAskDate(): ?\DateTimeInterface
+    {
+        return $this->askDate;
+    }
+
+    public function setAskDate(?\DateTimeInterface $askDate): self
+    {
+        $this->askDate = $askDate;
+
+        return $this;
+    }
+
+    public function getBidDate(): ?\DateTimeInterface
+    {
+        return $this->bidDate;
+    }
+
+    public function setBidDate(?\DateTimeInterface $bidDate): self
+    {
+        $this->bidDate = $bidDate;
 
         return $this;
     }
