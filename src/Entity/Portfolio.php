@@ -123,6 +123,11 @@ class Portfolio
      */
     private $rollDaysBefore;
 
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $crawlerDays;
+
     public function __construct()
     {
         $this->positions = new ArrayCollection();
@@ -502,6 +507,18 @@ class Portfolio
     public function setRollDaysBefore(?int $rollDaysBefore): self
     {
         $this->rollDaysBefore = $rollDaysBefore;
+
+        return $this;
+    }
+
+    public function getCrawlerDays(): ?int
+    {
+        return $this->crawlerDays;
+    }
+
+    public function setCrawlerDays(?int $crawlerDays): self
+    {
+        $this->crawlerDays = $crawlerDays;
 
         return $this;
     }
