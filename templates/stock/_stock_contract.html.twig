@@ -22,8 +22,20 @@
             <td class="text-right">{{ stock.currency }}</td>
         </tr>
         <tr>
+            <th>Historical volatility</th>
+            <td class="text-right">{{ stock.HistoricalVolatility|my_percent_format }}</td>
+        </tr>
+        <tr>
             <th>Ask</th>
             <td class="text-right">{{ stock.ask|my_decimal_format_2d }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td class="text-right">
+                {% if stock.askDate %}
+                    {{ stock.askDate|date('d-m-Y H:i:s') }}
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>Price</th>
@@ -31,11 +43,23 @@
         </tr>
         <tr>
             <th>Updated</th>
-            <td>{{ stock.updated|date('d-m-Y H:i:s') }}</td>
+            <td class="text-right">
+                {% if stock.updated %}
+                    {{ stock.updated|date('d-m-Y H:i:s') }}
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>Bid</th>
             <td class="text-right">{{ stock.bid|my_decimal_format_2d }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td class="text-right">
+                {% if stock.bidDate %}
+                    {{ stock.bidDate|date('d-m-Y H:i:s') }}
+                {% endif %}
+                </td>
         </tr>
         <tr>
             <th>Previous close</th>
