@@ -29,6 +29,10 @@
                     <td class="text-left">{{ portfolio.findSymbolsSleep }} mins</td>
                 </tr>
                 <tr>
+                    <th>Crawler days count</th>
+                    <td class="text-left">{{ portfolio.crawlerDays }} days</td>
+                </tr>
+                <tr>
                     <th>Adjust cash sleep</th>
                     <td class="text-left">{{ portfolio.adjustCashSleep }} mins</td>
                 </tr>
@@ -38,7 +42,7 @@
                 </tr>
                 <tr>
                     <th>Roll days before</th>
-                    <td class="text-left">{{ portfolio.rollDaysBefore }}</td>
+                    <td class="text-left">{{ portfolio.rollDaysBefore }} days</td>
                 </tr>
                 <tr>
                     <th>Sell naked put sleep</th>
@@ -46,7 +50,7 @@
                 </tr>
                 <tr>
                     <th>Min premium</th>
-                    <td class="text-left">{{ portfolio.minPremium|my_decimal_format_2d }}</td>
+                    <td class="text-left">{{ portfolio.minPremium|my_decimal_format_2d }} $</td>
                 </tr>
                 <tr>
                     <th>Put ratio</th>

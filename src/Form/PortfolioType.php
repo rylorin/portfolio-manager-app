@@ -22,6 +22,7 @@ class PortfolioType extends AbstractType
             ->add('baseCurrency', null, ['required' => true])
             ->add('benchmark', null, ['required' => true])
             ->add('FindSymbolsSleep', IntegerType::class, ['required' => true])
+            ->add('crawlerDays', IntegerType::class, ['required' => true])
             ->add('AdjustCashSleep', IntegerType::class, ['required' => true])
             ->add('rollOptionsSleep', IntegerType::class, ['required' => true])
             ->add('rollDaysBefore', IntegerType::class, ['required' => true ])
