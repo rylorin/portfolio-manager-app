@@ -132,17 +132,17 @@ class Position
         return ($this->quantity && $this->cost) ? ($this->quantity / abs($this->quantity) * $this->getPNL() / $this->cost) : null;
     }
 
-    private function getDaysToMaturity(): ?int
+    private function getDaysToMaturity(): ?float
     {
         $maturity = $this->openDate->diff($this->contract->getLastTradeDate());
         if ($maturity->invert) {
-          if ($maturity->days) {
-            $days = -$maturity->days;
+          if ($maturity->days > 1) {
+                $days = -$maturity->days;
           } else {
             $days = 1;
           }
         } else {
-          $days = $maturity->days + 2;
+            $days = $maturity->days + ($maturity->h / 24.0) + 1.0;
         }
         return $days;
     }
@@ -152,7 +152,7 @@ class Position
       if ($this->contract->getSecType() == Contract::TYPE_STOCK) {
         return $this->quantity ? $this->quantity / abs($this->quantity) * $this->contract->getDividendYield() : 0;
       } elseif ($this->contract->getSecType() == Contract::TYPE_OPTION) {
-        return $this->quantity ? -$this->quantity / abs($this->quantity) * $this->getPRU() / $this->contract->getStrike() / $this->getDaysToMaturity() * 360 : 0;
+        return $this->quantity ? -$this->quantity / abs($this->quantity) * $this->getPRU() / $this->contract->getStrike() / $this->getDaysToMaturity() * 365.25 : 0;
       } else {
         return null;
       }

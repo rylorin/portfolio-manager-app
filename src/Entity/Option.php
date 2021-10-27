@@ -149,17 +149,17 @@ class Option extends Contract
         return $this;
     }
 
-    public function getDaysToMaturity(): ?int
+    public function getDaysToMaturity(): float
     {
         $maturity = (new \DateTime())->diff($this->lastTradeDate);
         if ($maturity->invert) {
-          if ($maturity->days) {
+          if ($maturity->days > 1) {
             $days = -$maturity->days;
           } else {
             $days = 1;
           }
         } else {
-          $days = $maturity->days + 2;
+          $days = $maturity->days + ($maturity->h / 24.0) + 1.0;
         }
         return $days;
     }
