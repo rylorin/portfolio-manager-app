@@ -130,6 +130,21 @@
       	grey: 'rgb(201, 203, 207)'
       };
 
+      function colorizePoint() {
+        return (ctx) => {
+          const v = ctx.parsed.x;
+          console.log(ctx.parsed.x, ctx.parsed.y);
+          if (v > {{ (total_trades_pnl / total_trades_closed) }}) {
+            c = 'rgba(75, 192, 192, 0.5)';
+          } else if (v < 0) {
+            c = 'rgba(255, 99, 132, 0.5)';
+          } else {
+            c = 'rgba(54, 162, 235, 0.5)';
+          }
+          return c;
+        };
+      }
+
       var barChartData = {
       		labels: [
               {% for key, stat in stats %}
@@ -139,8 +154,7 @@
           datasets: [
               {
                   label: 'P/L',
-                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                  borderColor: window.chartColors.blue,
+                  XborderColor: window.chartColors.grey,
                   borderWidth: 1,
                   data: [
                       {% for key in stats|keys %}
@@ -165,7 +179,15 @@
   					intersect: false
   				},
   				responsive: true,
+          indexAxis: 'y',
   				scales: {
+            y: {
+              suggestedMin: -100,
+              grid: {
+                color: 'rgba(201, 203, 207, 0.2)',
+                zeroLineColor: 'rgba(201, 203, 207, 0.8)',
+              }
+            },
   					xAxes: [{
   						stacked: true,
   					}],
@@ -177,6 +199,11 @@
               }
   					}],
   				},
+          elements: {
+            bar: {
+              backgroundColor: colorizePoint(),
+            }
+          }
   		};
 
       var pieChartData = {

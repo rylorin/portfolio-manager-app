@@ -88,25 +88,25 @@
                       {% endfor %}
                   ]
         			}, {
-                        label: 'Dividends',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgb(75, 192, 192)',
-                        borderWidth: 1,
-                        data: [
-                            {% for key, value in monthly|keys|sort %}
-                                '{{ monthly[value]['dividends']|round }}',
-                            {% endfor %}
-                        ]
+                  label: 'Dividends',
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  borderColor: 'rgb(75, 192, 192)',
+                  borderWidth: 1,
+                  data: [
+                      {% for key, value in monthly|keys|sort %}
+                          '{{ monthly[value]['dividends']|round }}',
+                      {% endfor %}
+                  ]
         			}, {
-                        label: 'Stocks P/L',
-                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                        borderColor: 'rgb(255, 159, 64)',
-                        borderWidth: 1,
-                        data: [
-                            {% for key, value in monthly|keys|sort %}
-                                '{{ monthly[value]['stocks']|round }}',
-                            {% endfor %}
-                        ]
+                  label: 'Stocks P/L',
+                  backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                  borderColor: 'rgb(255, 159, 64)',
+                  borderWidth: 1,
+                  data: [
+                      {% for key, value in monthly|keys|sort %}
+                          '{{ monthly[value]['stocks']|round }}',
+                      {% endfor %}
+                  ]
         			}
               ]
   		};
@@ -122,6 +122,16 @@
   				},
   				responsive: true,
   				scales: {
+            x: {
+              stacked: true,
+            },
+            y: {
+  						stacked: true,
+              grid: {
+                color: 'rgba(201, 203, 207, 0.2)',
+                zeroLineColor: 'rgba(201, 203, 207, 0.8)',
+              }
+            },
   					xAxes: [{
   						stacked: true,
   					}],

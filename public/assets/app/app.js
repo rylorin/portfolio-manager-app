@@ -73,7 +73,9 @@ function click_button(id) {
 
   // Graph.js graphs
   // Disable automatic style injection
-  Chart.platform.disableCSSInjection = true;
+  if (Chart.platform) {
+    Chart.platform.disableCSSInjection = true;
+  }
   /*
   let ctx = window.document.getElementById('myChart')
   if (ctx) draw_chart(ctx)
