@@ -23,7 +23,7 @@ abstract class Contract
     public const TYPE_STOCK = 'STK';
     public const TYPE_OPTION = 'OPT';
     public const EXCHANGES = [
-        'NYSE' => 'NYSE', 'NASDAQ' => 'NASDAQ', 'IBIS2' => 'IBIS2', 'AMEX' => 'AMEX', 'CBOE' => 'CBOE',
+        'NYSE' => 'NYSE', 'NASDAQ' => 'NASDAQ', 'ARCA' => 'ARCA', 'IBIS2' => 'IBIS2', 'AMEX' => 'AMEX', 'CBOE' => 'CBOE',
         'SBF' => 'SBF', 'AEB' => 'AEB', 'VSE' => 'VSE', 'BVME' => 'BVME', 'DTB' => 'DTB',
         'LSE' => 'LSE', 'ICEEU' => 'ICEEU',
         'TSEJ' => 'TSEJ', 'TSE' => 'TSE',
@@ -34,7 +34,7 @@ abstract class Contract
     protected const marketPlaceMapping = [
       'SBF' => 'EURONEXT', 'AEB' => 'EURONEXT', 'IBIS2' => 'EURONEXT',
       'TSEJ' => 'TSE', 'TSE' => 'NEO', 'EBS' => 'SIX',
-      'ARCA' => 'AMEX'
+      'ARCA' => 'AMEX', 'PINK' => 'OTC'
     ];
 
     /**
