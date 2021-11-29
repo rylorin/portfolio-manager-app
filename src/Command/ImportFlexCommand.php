@@ -104,7 +104,7 @@ class ImportFlexCommand extends Command
       } elseif ($xml) {
         $io->error($xml->ErrorMessage);
       } else {
-        $io->error('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->error('Unknow error connecting to service.');
       }
       return 0;
     }

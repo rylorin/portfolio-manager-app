@@ -6,6 +6,11 @@
                 <th>Id</th>
                 <th>Stock</th>
                 <th>NAV ratio</th>
+                <th>Volatility</th>
+                <th>Dividend</th>
+                <th>Dividend %</th>
+                <th>EPS</th>
+                <th>PER</th>
                 <th></th>
             </tr>
         </thead>
@@ -19,12 +24,29 @@
                             {{ setting.stock }}
                         </a>
                         {% else %}
-                        N/A
+                            N/A
                         {% endif %}
                     </td>
                     <td class='text-right'>{{ setting.NavRatio|my_percent_format }}</td>
+                    <td class='text-right'>{{ setting.stock.HistoricalVolatility|my_percent_format }}</td>
+                    <td class='text-right'>{{ setting.stock.dividendTTM|my_decimal_format_2d }}</td>
+                    <td class='text-right'>
+                        {% if setting.stock.price %}
+                            {{ (setting.stock.dividendTTM / setting.stock.price)|my_percent_format }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td class='text-right'>{{ setting.stock.EpsTTM|my_decimal_format_2d }}</td>
+                    <td class='text-right'>
+                        {% if setting.stock.EpsTTM %}
+                            {{ (setting.stock.price / setting.stock.EpsTTM)|my_integer_format }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
                     <td>
-                        <a href="{{ path('portfolio_settings_tradingsettings_show', {'id': setting.id}) }}"><span data-feather="search"></span></a>
+                        {# <a href="{{ path('portfolio_settings_tradingsettings_show', {'id': setting.id}) }}"><span data-feather="search"></span></a> #}
                         {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
                             <a href="{{ path('portfolio_settings_tradingsettings_edit', {'id': setting.id}) }}"><span data-feather="edit-2"></span></a>
                             {# <form class="form-inline" id="row{{setting.id}}" method="post" action="{{ path('portfolio_settings_tradingsettings_delete', {'id': setting.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
