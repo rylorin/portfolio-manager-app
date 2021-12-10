@@ -24,7 +24,7 @@
               <th class="text-center">Ask</th>
               <th class="text-center">Money</th>
               <th class="text-center">Days</th>
-              <th class="text-center">Bid Yield</th>
+              <th class="text-center">Delta</th>
               <th>actions</th>
           </tr>
       </thead>
@@ -42,8 +42,8 @@
               <td class="text-right">{{ option.ask|my_decimal_format_2d }}</td>
               <td class="text-right">{{ option.moneyDepth|my_decimal_format_2d }}
                 ({{ (option.moneyDepth / option.strike)|my_percent_format }})</td>
-                <td class="text-right">{{ option.daysToMaturity }}</td>
-              <td class="text-right">{{ option.bidYieldToMaturity|my_percent_format }}</td>
+              <td class="text-right">{{ option.daysToMaturity|my_integer_format }}</td>
+              <td class="text-right">{{ option.delta|my_decimal_format_2d }}</td>
               <td>
                   <a href="{{ path('repository_option_show', {'id': option.id}) }}"><span data-feather="search"></span></a>
                   <a href="{{ path('repository_option_edit', {'id': option.id}) }}"><span data-feather="edit-2"></span></a>

@@ -37,6 +37,10 @@
             <td class="text-right">{{ option.ImpliedVolatility|my_percent_format }}</td>
         </tr>
         <tr>
+            <th>Delta</th>
+            <td class="text-right">{{ option.delta }}</td>
+        </tr>
+        <tr>
             <th>Ask</th>
             <td class="text-right">{{ option.ask|my_decimal_format_2d }}</td>
         </tr>
@@ -82,7 +86,7 @@
         </tr>
         <tr>
             <th>Days to expiration</th>
-            <td class="text-right {{ date_style }}">{{ option.daysToMaturity }}</td>
+            <td class="text-right {{ date_style }}">{{ option.daysToMaturity|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Strike</th>

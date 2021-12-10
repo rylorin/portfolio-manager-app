@@ -61,6 +61,13 @@ class AppExpireCommand extends Command
                     $this->em->remove($contract);
                 } else {
 //                    printf("%d positions, %d statements\n", sizeof($positions), sizeof($statements));
+                    $contract->setDelta(null);
+                    $contract->setPrice(null);
+                    $contract->setUpdated(null);
+                    $contract->setBid(null);
+                    $contract->setBidDate(null);
+                    $contract->setAsk(null);
+                    $contract->setAskDate(null);
                 }
                 $io->progressAdvance();
             }

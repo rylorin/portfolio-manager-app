@@ -21,6 +21,7 @@ class OptionType extends ContractType
             ->add('lastTradeDate')
             ->add('strike')
             ->add('callOrPut', ChoiceType::class, [ 'choices' => [ 'Call' => 'C', 'Put' => 'P' ]])
+            ->add('delta')
             ->add('multiplier')
         ;
     }

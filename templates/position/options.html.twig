@@ -62,12 +62,10 @@
               {% set row_style = 'background-color:Azure;' %}
               {% set row_class = 'table-success' %}
               {% set strike_class = 'text-success' %}
-              {% set position_assignable = 0 %}
             {% else %}
               {% set row_style = 'background-color:LightPink;' %}
               {% set row_class = 'table-danger' %}
               {% set strike_class = 'text-danger' %}
-              {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier %}
             {% endif %}
           {% elseif (position_iv / position.contract.strike) < -0.01 %}
             {% set money_label = 'Out-of-the-Money (OTM)' %}
@@ -75,28 +73,26 @@
               {% set row_style = 'background-color:Azure;' %}
               {% set row_class = 'table-success' %}
               {% set strike_class = 'text-success' %}
-              {% set position_assignable = 0 %}
             {% else %}
               {% set row_style = 'background-color:LightPink;' %}
               {% set row_class = 'table-danger' %}
               {% set strike_class = 'text-danger' %}
-              {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier %}
             {% endif %}
           {% else %}
             {% set money_label = 'At-the-Money (ATM)' %}
             {% set row_style = 'background-color:LavenderBlush;' %}
             {% set row_class = 'table-warning' %}
             {% set strike_class = 'text-warning' %}
-            {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier %}
           {% endif %}
 
           {% set position_engaged = -position.quantity * position.contract.strike * position.contract.multiplier %}
+          {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier * position.contract.delta %}
           {% set maturity = position.contract.daysToMaturity %}
           {% if position.contract.type == 'C' or position.quantity > 0 %}
             {% set position_engaged = 0 %}
             {% set position_assignable = 0 %}
-          {% elseif (position.contract.type == 'P') and (position.quantity < 0) and (position_iv < 0) %}
-            {% set position_assignable = 0 %}
+          {# {% elseif (position.contract.type == 'P') and (position.quantity < 0) and (position_iv < 0) %}
+            {% set position_assignable = 0 %} #}
           {% endif %}
 
           {# Sub-total #}

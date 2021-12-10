@@ -40,7 +40,7 @@
                     <td class='text-right'>{{ setting.stock.EpsTTM|my_decimal_format_2d }}</td>
                     <td class='text-right'>
                         {% if setting.stock.EpsTTM %}
-                            {{ (setting.stock.price / setting.stock.EpsTTM)|my_integer_format }}
+                            {{ (setting.stock.price / setting.stock.EpsTTM)|my_decimal_format_2d }}
                         {% else %}
                             -
                         {% endif %}

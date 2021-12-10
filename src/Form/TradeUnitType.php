@@ -31,19 +31,20 @@ class TradeUnitType extends AbstractType
             ])
           ->add('strategy', ChoiceType::class, [ 'choices' => TradeUnit::stategyMenuMapping ])
           ->add('openingDate', DateTimeType::class, [
-                'html5' => true,
-                'date_widget' => 'single_text',
-                'time_widget' => 'single_text', 'with_seconds' => true
-                ])
+            'html5' => true,
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text', 'with_seconds' => true
+            ])
           ->add('closingDate', DateTimeType::class, [
-              'required' => false,
-              'html5' => true,
-              'date_widget' => 'single_text',
-              'time_widget' => 'single_text', 'with_seconds' => true
-              ])
+            'required' => false,
+            'html5' => true,
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text', 'with_seconds' => true
+            ])
           ->add('status', ChoiceType::class, [ 'choices' => [
             'Open' => TradeUnit::OPEN_STATUS, 'Closed' => TradeUnit::CLOSE_STATUS ]])
           ->add('PnL')
+          ->add('risk')
           ->add('comment')
           ;
     }
