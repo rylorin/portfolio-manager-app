@@ -14,7 +14,7 @@
     {% set position_assignable = 0 %}
   {% else %}
     {% set row_style = 'background-color:LightPink;' %}
-    {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier %}
+    {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier * position.contract.delta %}
   {% endif %}
 {% elseif position.contract.moneyShortLabel == 'OTM' %}
   {% if position.quantity < 0 %}
@@ -22,7 +22,7 @@
     {% set position_assignable = 0 %}
   {% else %}
     {% set row_style = 'background-color:LightPink;' %}
-    {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier %}
+    {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier * position.contract.delta %}
   {% endif %}
 {% else %}
   {% set row_style = 'background-color:LavenderBlush;' %}
