@@ -39,43 +39,15 @@ class AppExpireCommand extends Command
     {
         $this
             ->setDescription('Remove expired options contracts or closed positions')
-            ->addOption('options', null, InputOption::VALUE_NONE, 'Remove expired options contracts')
             ->addOption('positions', null, InputOption::VALUE_NONE, 'Remove closed positions')
+            ->addOption('statements', null, InputOption::VALUE_NONE, 'Remove old statements')
+            ->addOption('options', null, InputOption::VALUE_NONE, 'Remove expired options contracts')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-
-        if ($input->getOption('options')) {
-            $now = (new \DateTime())->sub(new \DateInterval('P1D'));
-            $options = $this->em->getRepository('App:Option')->findByBeforeLastTradeDate($now);
-            $io->progressStart(sizeof($options));
-            // Expire options
-            foreach ($options as $contract) {
-                $positions = $contract->getPositions();
-                $statements = $this->em->getRepository('App:OptionTradeStatement')->findByContract($contract);
-                if (!sizeof($positions) && !sizeof($statements)) {
-//                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
-                    $this->em->remove($contract);
-                } else {
-//                    printf("%d positions, %d statements\n", sizeof($positions), sizeof($statements));
-                    $contract->setDelta(null);
-                    $contract->setPrice(null);
-                    $contract->setUpdated(null);
-                    $contract->setBid(null);
-                    $contract->setBidDate(null);
-                    $contract->setAsk(null);
-                    $contract->setAskDate(null);
-                }
-                $io->progressAdvance();
-            }
-            // save / write the changes to the database
-            $this->em->flush();
-            $io->progressFinish();
-            $io->success('Options contracts expired.');
-        }
 
         if ($input->getOption('positions')) {
             $data = $this->em->getRepository('App:Position')->findBySecType(
@@ -92,6 +64,35 @@ class AppExpireCommand extends Command
             $this->em->flush();
             $io->progressFinish();
             $io->success('Closed positions removed.');
+        }
+
+        if ($input->getOption('options')) {
+            $now = (new \DateTime())->sub(new \DateInterval('P1D'));
+            $options = $this->em->getRepository('App:Option')->findByBeforeLastTradeDate($now);
+            $io->progressStart(sizeof($options));
+            // Expire options
+            foreach ($options as $contract) {
+                $positions = $contract->getPositions();
+                $statements = $this->em->getRepository('App:OptionTradeStatement')->findByContract($contract);
+                if (!sizeof($positions) && !sizeof($statements)) {
+//                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
+                    $this->em->remove($contract);
+                } else {
+//                    printf("%d positions, %d statements\n", sizeof($positions), sizeof($statements));
+                    $contract->setPrice(null);
+                    $contract->setUpdated(null);
+                    $contract->setBid(null);
+                    $contract->setBidDate(null);
+                    $contract->setAsk(null);
+                    $contract->setAskDate(null);
+                    $contract->setDelta(null);
+                }
+                $io->progressAdvance();
+            }
+            // save / write the changes to the database
+            $this->em->flush();
+            $io->progressFinish();
+            $io->success('Options contracts expired.');
         }
 
         return 0;

@@ -7,9 +7,7 @@
                 <th>Stock</th>
                 <th>NAV ratio</th>
                 <th>Volatility</th>
-                <th>Dividend</th>
-                <th>Dividend %</th>
-                <th>EPS</th>
+                <th>Div. %</th>
                 <th>PER</th>
                 <th></th>
             </tr>
@@ -29,7 +27,6 @@
                     </td>
                     <td class='text-right'>{{ setting.NavRatio|my_percent_format }}</td>
                     <td class='text-right'>{{ setting.stock.HistoricalVolatility|my_percent_format }}</td>
-                    <td class='text-right'>{{ setting.stock.dividendTTM|my_decimal_format_2d }}</td>
                     <td class='text-right'>
                         {% if setting.stock.price %}
                             {{ (setting.stock.dividendTTM / setting.stock.price)|my_percent_format }}
@@ -37,7 +34,6 @@
                             -
                         {% endif %}
                     </td>
-                    <td class='text-right'>{{ setting.stock.EpsTTM|my_decimal_format_2d }}</td>
                     <td class='text-right'>
                         {% if setting.stock.EpsTTM %}
                             {{ (setting.stock.price / setting.stock.EpsTTM)|my_decimal_format_2d }}

@@ -24,7 +24,7 @@ abstract class Contract
     public const TYPE_OPTION = 'OPT';
     public const EXCHANGES = [
         'NYSE' => 'NYSE', 'NASDAQ' => 'NASDAQ', 'ARCA' => 'ARCA', 'IBIS2' => 'IBIS2', 'AMEX' => 'AMEX', 'CBOE' => 'CBOE',
-        'SBF' => 'SBF', 'AEB' => 'AEB', 'VSE' => 'VSE', 'BVME' => 'BVME', 'DTB' => 'DTB',
+        'SBF' => 'SBF', 'AEB' => 'AEB', 'VSE' => 'VSE', 'BVME' => 'BVME', 'DTB' => 'DTB', 'IBIS' => 'IBIS',
         'LSE' => 'LSE', 'ICEEU' => 'ICEEU',
         'TSEJ' => 'TSEJ', 'TSE' => 'TSE',
         'EBS' => 'EBS'
@@ -32,7 +32,7 @@ abstract class Contract
 
     // Trading View mappings
     protected const marketPlaceMapping = [
-      'SBF' => 'EURONEXT', 'AEB' => 'EURONEXT', 'IBIS2' => 'EURONEXT',
+      'SBF' => 'EURONEXT', 'AEB' => 'EURONEXT', 'IBIS2' => 'EURONEXT', 'IBIS' => 'XETR',
       'TSEJ' => 'TSE', 'TSE' => 'NEO', 'EBS' => 'SIX',
       'ARCA' => 'AMEX', 'PINK' => 'OTC'
     ];
@@ -123,6 +123,11 @@ abstract class Contract
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $bidDate;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $tickPrice;
 
     public function __construct(?string $symbol = null)
     {
@@ -360,6 +365,18 @@ abstract class Contract
     public function setBidDate(?\DateTimeInterface $bidDate): self
     {
         $this->bidDate = $bidDate;
+
+        return $this;
+    }
+
+    public function getTickPrice(): ?float
+    {
+        return $this->tickPrice;
+    }
+
+    public function setTickPrice(?float $tickPrice): self
+    {
+        $this->tickPrice = $tickPrice;
 
         return $this;
     }

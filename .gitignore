@@ -28,3 +28,4 @@
 .DS_Store
 /.ansible/
 /src/Migrations/
+.web-server-pid
