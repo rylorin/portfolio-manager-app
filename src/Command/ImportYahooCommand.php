@@ -165,9 +165,9 @@ class ImportYahooCommand extends Command
                 break;
               }
             }
+            $this->em->flush();
             $io->progressAdvance();
           }
-          $this->em->flush();
         }
 
         $io->progressFinish();
