@@ -15,6 +15,9 @@ doctrine:
             json:     Sonata\Doctrine\Types\JsonType
 # RYL            currency: Sonata\Component\Currency\CurrencyDoctrineType
 
+        options:
+            timeout: 60
+            
         # backtrace queries in profiler (increases memory usage per request)
         #profiling_collect_backtrace: '%kernel.debug%'
     orm:
