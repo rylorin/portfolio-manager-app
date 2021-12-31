@@ -216,7 +216,7 @@ class ImporterXml
 
       // create trade statement if not exits
       $statement = $this->em->getRepository('App:OptionTradeStatement')->findOneBy(
-        [ 'contract' => $option->getId(), 'portfolio' => $portfolio, 'date' => $date ]);
+        [ 'contract' => $option->getId(), 'portfolio' => $portfolio, 'date' => $date, 'tradeId' => null ]);
       if (!$statement) {
            $statement = (new OptionTradeStatement())
               ->setPortfolio($portfolio)
