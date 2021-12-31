@@ -136,12 +136,12 @@ class ImportYahooCommand extends Command
               //   print($quote->getSymbol() . '/' . $contract->getSymbol() . '/' . $contract->getId() . ' = ' . $contract->getPrice());
               //   printf("\n");
               // }
+              $this->em->flush();
               break;
             }
           }
           $io->progressAdvance();
         }
-        $this->em->flush();
         
         while (sizeof($query_options)) {
           $options_to_query = array();
@@ -162,10 +162,10 @@ class ImportYahooCommand extends Command
                 $contract->setUpdated($updated);
                 $contract->setAskDate($updated);
                 $contract->setBidDate($updated);
+                $this->em->flush();
                 break;
               }
             }
-            $this->em->flush();
             $io->progressAdvance();
           }
         }
