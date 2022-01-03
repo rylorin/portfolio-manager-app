@@ -1,8 +1,8 @@
 {
-    "name": "sonata-project/sandbox",
+    "name": "rylorin/sandbox",
     "description": "Sonata Project's sandbox (with ecommerce bundles)",
     "license": "MIT",
-    "abandoned": true,
+    "abandoned": false,
     "require": {
         "php": "^7.4",
         "ext-bcmath": "*",
@@ -30,7 +30,6 @@
         "sonata-project/doctrine-extensions": "^1.12.0",
         "sonata-project/doctrine-orm-admin-bundle": "^3.34.2",
         "sonata-project/easy-extends-bundle": "^2.5.0",
-        "sonata-project/ecommerce": "^3.5.2",
         "sonata-project/exporter": "^2.6.2",
         "sonata-project/form-extensions": "^1.9.0",
         "sonata-project/formatter-bundle": "^4.5.0",
