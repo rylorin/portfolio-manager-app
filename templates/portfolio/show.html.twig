@@ -84,9 +84,13 @@
         </nav>
     </div>
 </div>
+{% set settings = portfolio.tradingParameters %}
+{% if (settings|length) > 0 %}
+<div class="row">
+    <h2>Trading parameters ({{ settings|length }})</h2>
+</div>
 <div class="row">
     <div class="{{ item_size }}">
-        {% set settings = portfolio.tradingParameters %}
         {{ include('tradingsettings/_tradingsettings_table.html.twig') }}
         <nav>
             <ul class="pagination">
@@ -97,4 +101,5 @@
         </nav>
     </div>
 </div>
+{% endif %}
 {% endblock body %}
