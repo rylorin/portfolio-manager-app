@@ -1,4 +1,6 @@
 {% if settings is not null %}
+{% set rowcount = 0 %}
+{% set total_ratio = 0 %}
 <div class="table-responsive">
     <table class="table table-striped table-sm">
         <thead class="thead-dark">
@@ -53,11 +55,22 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% set rowcount = rowcount + 1 %}
+                {% set total_ratio = total_ratio + setting.NavRatio %}
             {% else %}
                 <tr>
                     <td colspan="7">no record found</td>
                 </tr>
             {% endfor %}
+            <tr class='bg-secondary'>
+                <td class="text-right">{{ rowcount }}</td>
+                <td>Total</td>
+                <td class="text-right {{ (total_ratio - portfolio.putRatio)|my_number_class_2colors }}">{{ total_ratio | my_percent_format }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
         </tbody>
     </table>
   </div>
