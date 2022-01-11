@@ -110,9 +110,9 @@ class ImportYahooCommand extends Command
         foreach ($result as $quote) {
           foreach ($stocks as $key => $contract) {
             if ($contract->getYahooTicker() == $quote->getSymbol()) {
-            $dv = new \DateInterval('PT' . ($quote->getExchangeDataDelayedBy() ? $quote->getExchangeDataDelayedBy() : 0) . 'M');
-            $updated = (new \DateTime())->sub($dv);
-            if (!$contract->getCurrency()) {
+              $dv = new \DateInterval('PT' . ($quote->getExchangeDataDelayedBy() ? $quote->getExchangeDataDelayedBy() : 0) . 'M');
+              $updated = (new \DateTime())->sub($dv);
+              if (!$contract->getCurrency()) {
                 if ($quote->getCurrency() == 'GBp') {
                         $contract->setCurrency('GBP');
                 } elseif ($quote->getCurrency()) {
@@ -178,7 +178,7 @@ class ImportYahooCommand extends Command
     private static function getYahooPrice($quote) {
       if ($quote->getMarketState() == 'PRE') {
         $price = $quote->getPreMarketPrice() ? $quote->getPreMarketPrice() : $quote->getRegularMarketPrice();
-    } elseif ($quote->getMarketState() == 'POST') {
+      } elseif ($quote->getMarketState() == 'POST') {
         $price = $quote->getPostMarketPrice() ? $quote->getPostMarketPrice() : $quote->getRegularMarketPrice();
       } elseif ($quote->getMarketState() == 'REGULAR') {
         $price = $quote->getRegularMarketPrice();
