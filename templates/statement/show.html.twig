@@ -34,13 +34,17 @@
             <tr>
                 <th>Stock</th>
                 <td>
-                  {% if portfolio is defined %}
+                {% if statement.stock %}
+                    {% if portfolio is defined %}
                     <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id, '_fragment': 'stmt' ~ statement.id }) }}">
                       {{ statement.stock }}
                     </a>
                   {% else %}
                     {{ statement.stock }}
                   {% endif %}
+                {% else %}
+                    -
+                {% endif %}
                 </td>
             </tr>
             <tr>

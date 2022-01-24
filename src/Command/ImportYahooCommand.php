@@ -73,7 +73,10 @@ class ImportYahooCommand extends Command
             $contract->setAsk(null);
             $contract->setBid(null);
             $contract->setPreviousClosePrice(null);
-          }
+            $contract->setUpdated(null);
+            $contract->setAskDate(null);
+            $contract->setBidDate(null);
+      }
         }
 
         $io->progressStart(sizeof($query_currencies) + sizeof($query_stocks) + sizeof($query_options));
