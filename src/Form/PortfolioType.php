@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PortfolioType extends AbstractType
 {
@@ -23,6 +24,10 @@ class PortfolioType extends AbstractType
             ->add('benchmark', null, ['required' => true])
             ->add('FindSymbolsSleep', IntegerType::class, ['required' => true])
             ->add('crawlerDays', IntegerType::class, ['required' => true])
+            ->add('CashStrategy', ChoiceType::class, [
+                'choices' => Portfolio::STRATEGIES,
+                'choice_label' => null,
+                ])
             ->add('AdjustCashSleep', IntegerType::class, ['required' => true])
             ->add('rollOptionsSleep', IntegerType::class, ['required' => true])
             ->add('rollDaysBefore', IntegerType::class, ['required' => true ])

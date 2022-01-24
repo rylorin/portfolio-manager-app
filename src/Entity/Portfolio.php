@@ -16,6 +16,20 @@ use App\Entity\TradeParameter;
  */
 class Portfolio
 {
+
+    public const STRATEGIES = [
+        'Off' => 0,
+        'Balance' => 1,
+        'Options P/L' => 2,
+        'Options risk' => 3,
+    ];
+    public const STRATEGIES_REV = [
+        0 => 'Off',
+        1 => 'Balance',
+        2 => 'Options P/L',
+        3 => 'Options risk',
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -127,6 +141,11 @@ class Portfolio
      * @ORM\Column(type="smallint", nullable=true)
      */
     private $crawlerDays;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $CashStrategy;
 
     public function __construct()
     {
@@ -522,4 +541,22 @@ class Portfolio
 
         return $this;
     }
+
+    public function getCashStrategy(): ?int
+    {
+        return $this->CashStrategy;
+    }
+
+    public function setCashStrategy(?int $CashStrategy): self
+    {
+        $this->CashStrategy = $CashStrategy;
+
+        return $this;
+    }
+
+    public function getCashStrategyName(): ?string
+    {
+        return $this->CashStrategy == null ? Portfolio::STRATEGIES_REV[0] : Portfolio::STRATEGIES_REV[$this->CashStrategy];
+    }
+
 }
