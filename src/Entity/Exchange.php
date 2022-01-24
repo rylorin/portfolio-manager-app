@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\MarketRepository;
+use App\Repository\ExchangeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=MarketRepository::class)
+ * @ORM\Entity(repositoryClass=ExchangeRepository::class)
+ * @ORM\Table(name="market")
  */
-class Market
+class Exchange
 {
     /**
      * @ORM\Id
