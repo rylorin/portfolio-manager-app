@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OpenOrder{% endblock %}
+
+{% block body %}
+    <h1>OpenOrder</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ open_order.id }}</td>
+            </tr>
+            <tr>
+                <th>PermId</th>
+                <td>{{ open_order.PermId }}</td>
+            </tr>
+            <tr>
+                <th>ClientId</th>
+                <td>{{ open_order.ClientId }}</td>
+            </tr>
+            <tr>
+                <th>OrderId</th>
+                <td>{{ open_order.OrderId }}</td>
+            </tr>
+            <tr>
+                <th>ActionType</th>
+                <td>{{ open_order.ActionType }}</td>
+            </tr>
+            <tr>
+                <th>TotalQty</th>
+                <td>{{ open_order.TotalQty }}</td>
+            </tr>
+            <tr>
+                <th>CashQty</th>
+                <td>{{ open_order.CashQty }}</td>
+            </tr>
+            <tr>
+                <th>LmtPrice</th>
+                <td>{{ open_order.LmtPrice }}</td>
+            </tr>
+            <tr>
+                <th>AuxPrice</th>
+                <td>{{ open_order.AuxPrice }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ open_order.Status }}</td>
+            </tr>
+            <tr>
+                <th>RemainingQty</th>
+                <td>{{ open_order.RemainingQty }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('open_order_index') }}">back to list</a>
+
+    <a href="{{ path('open_order_edit', {'id': open_order.id}) }}">edit</a>
+
+    {{ include('open_order/_delete_form.html.twig') }}
+{% endblock %}
