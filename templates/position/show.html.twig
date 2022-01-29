@@ -31,7 +31,6 @@
     	{% else %}
         Contract type {{ type }} not supported
       {% endif %}
-
       <nav><ul class="pagination">
           <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_positions_index', {'id': position.portfolio.id}) }}"><span data-feather="arrow-left"></span></a></li>
           <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_position_edit', {'id': position.id}) }}"><span data-feather="edit-2"></span></a></li>
