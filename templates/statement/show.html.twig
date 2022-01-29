@@ -31,23 +31,21 @@
                     <th>Amount</th>
                     <td>{{ statement.amount|my_decimal_format_2d }}</td>
                 </tr>
+                {% if statement.stock %}
                 <tr>
                     <th>Stock</th>
                     <td>
-                        {% if statement.stock %}
-                            {% if portfolio is defined %}
-                            <a
-                                href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id, '_fragment': 'stmt' ~ statement.id }) }}">
-                                {{ statement.stock }}
-                            </a>
-                            {% else %}
+                        {% if portfolio is defined %}
+                        <a
+                            href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id, '_fragment': 'stmt' ~ statement.id }) }}">
                             {{ statement.stock }}
-                            {% endif %}
+                        </a>
                         {% else %}
-                        -
+                        {{ statement.stock }}
                         {% endif %}
                     </td>
                 </tr>
+                {% endif %}
                 <tr>
                     <th>Trade Unit</th>
                     <td>
@@ -68,18 +66,12 @@
                     <th>Fx rate</th>
                     <td>{{ statement.fxRateToBase }}</td>
                 </tr>
-                {% if (statement.statementType == 'Tax') or (statement.statementType == 'Dividend') %}
+                {% if statement.country is defined %}
                 <tr>
                     <th>Country</th>
                     <td>{{ statement.country }}</td>
                 </tr>
                 {% endif %}
-                {# {% if statement.contract %}
-                <tr>
-                    <th>Contract</th>
-                    <td>{{ statement.contract }}</td>
-                </tr>
-                {% endif %} #}
                 {% if statement.StatusText is defined %}
                 <tr>
                     <th>Status</th>
@@ -135,10 +127,11 @@
     <div class="col-6">
         {% if (statement.statementType == 'TradeOption') %}
             {% set option = statement.contract %}
-            {% set stock = statement.contract.stock %}
+            {# {% set stock = statement.contract.stock %} #}
             {{ include('option/_option_contract.html.twig') }}
-            {{ include('stock/_stock_contract.html.twig') }}
-        {% elseif statement.stock %}
+            {# {{ include('stock/_stock_contract.html.twig') }} #}
+        {% endif %}
+        {% if statement.stock %}
             {% set stock = statement.stock %}
             {{ include('stock/_stock_contract.html.twig') }}
         {% endif %}
