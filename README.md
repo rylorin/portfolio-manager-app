@@ -1,6 +1,6 @@
 # Sonata Sandbox
 
-## WARNING: This repository is abandoned
+## WARNING: This repository is NOT abandoned
 
 There is no active support on it.
 
