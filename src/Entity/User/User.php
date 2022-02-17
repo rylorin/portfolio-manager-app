@@ -15,7 +15,7 @@ namespace App\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Sonata\UserBundle\Entity\BaseUser as BaseUser;
+use Sonata\UserBundle\Entity\BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Portfolio;
 

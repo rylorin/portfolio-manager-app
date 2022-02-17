@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Page;
 
-use Sonata\PageBundle\Entity\BasePage as BasePage;
+use Sonata\PageBundle\Entity\BasePage;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

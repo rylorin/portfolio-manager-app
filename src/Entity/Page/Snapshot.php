@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Page;
 
-use Sonata\PageBundle\Entity\BaseSnapshot as BaseSnapshot;
+use Sonata\PageBundle\Entity\BaseSnapshot;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

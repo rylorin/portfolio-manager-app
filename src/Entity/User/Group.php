@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity\User;
 
-use Sonata\UserBundle\Entity\BaseGroup as BaseGroup;
+use Sonata\UserBundle\Entity\BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
