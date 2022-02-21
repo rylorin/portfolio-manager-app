@@ -21,7 +21,11 @@
                 </tr>
                 <tr>
                     <th>Date</th>
-                    <td>{{ statement.date ? statement.date|date('d-m-Y H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('portfolio_statements_history', {'portfolio': portfolio.id, 'year': statement.date|date('Y'), 'month': statement.date|date('m')}) }}">
+                            {{ statement.date ? statement.date|date('d-m-Y H:i:s') : '' }}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <th>Currency</th>
