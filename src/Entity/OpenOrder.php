@@ -22,15 +22,15 @@ class OpenOrder
      */
     private $PermId;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $ClientId;
+    // /**
+    //  * @ORM\Column(type="integer", nullable=true)
+    //  */
+    // private $ClientId;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $OrderId;
+    // /**
+    //  * @ORM\Column(type="integer", nullable=true)
+    //  */
+    // private $OrderId;
 
     /**
      * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="openOrders")
@@ -79,6 +79,11 @@ class OpenOrder
      */
     private $RemainingQty;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,11 +97,11 @@ class OpenOrder
     public function setPermId(int $PermId): self
     {
         $this->PermId = $PermId;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
-    public function getClientId(): ?int
+/*     public function getClientId(): ?int
     {
         return $this->ClientId;
     }
@@ -119,7 +124,7 @@ class OpenOrder
 
         return $this;
     }
-
+ */
     public function getAccount(): ?Portfolio
     {
         return $this->Account;
@@ -128,7 +133,7 @@ class OpenOrder
     public function setAccount(?Portfolio $Account): self
     {
         $this->Account = $Account;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -140,7 +145,7 @@ class OpenOrder
     public function setContract(?Contract $contract): self
     {
         $this->contract = $contract;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -152,7 +157,7 @@ class OpenOrder
     public function setActionType(string $ActionType): self
     {
         $this->ActionType = $ActionType;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -164,7 +169,7 @@ class OpenOrder
     public function setTotalQty(?float $TotalQty): self
     {
         $this->TotalQty = $TotalQty;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -176,7 +181,7 @@ class OpenOrder
     public function setCashQty(?float $CashQty): self
     {
         $this->CashQty = $CashQty;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -188,7 +193,7 @@ class OpenOrder
     public function setLmtPrice(?float $LmtPrice): self
     {
         $this->LmtPrice = $LmtPrice;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -200,7 +205,7 @@ class OpenOrder
     public function setAuxPrice(?float $AuxPrice): self
     {
         $this->AuxPrice = $AuxPrice;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -212,7 +217,7 @@ class OpenOrder
     public function setStatus(string $Status): self
     {
         $this->Status = $Status;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -224,7 +229,8 @@ class OpenOrder
     public function setRemainingQty(?float $RemainingQty): self
     {
         $this->RemainingQty = $RemainingQty;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
+    
 }

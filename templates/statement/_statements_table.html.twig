@@ -19,15 +19,21 @@
     </thead>
     <tbody>
       {% for statement in statements %}
-      <tr id="stmt{{ statement.id }}">
+      <tr>
+        {% set date = '' %}
         {% if statement.fxRateToBase %}
           {% set fxRate = statement.fxRateToBase %}
         {% else %}
           {% set fxRate = currencies[statement.currency] %}
         {% endif %}
-        <td><a href="{{ path('portfolio_statement_show', {'id': statement.id}) }}">{{ statement.id }}</a></td>
+        <td id="stmt{{ statement.id }}"><a href="{{ path('portfolio_statement_show', {'id': statement.id}) }}">{{ statement.id }}</a></td>
         <td data-toggle="tooltip" data-placement="right"
-          title="{{ statement.date ? statement.date|date('H:i:s') : '' }}">
+          title="{{ statement.date ? statement.date|date('H:i:s') : '' }}"
+          {% if (statement.date|date('Ymd')) != date %}
+            {% set date = statement.date|date('Ymd') %}
+            id="date{{ date }}"
+          {% endif %}
+          >
           {{ statement.date ? statement.date|date('d-m-Y') : '' }}
         </td>
         <td>{{ statement.currency }}</td>

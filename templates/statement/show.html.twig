@@ -22,7 +22,7 @@
                 <tr>
                     <th>Date</th>
                     <td>
-                        <a href="{{ path('portfolio_statements_history', {'portfolio': portfolio.id, 'year': statement.date|date('Y'), 'month': statement.date|date('m')}) }}">
+                        <a href="{{ path('portfolio_statements_history', {'portfolio': portfolio.id, 'year': statement.date|date('Y'), 'month': statement.date|date('m'), '_fragment': 'date' ~ statement.date|date('Ymd') }) }}">
                             {{ statement.date ? statement.date|date('d-m-Y H:i:s') : '' }}
                         </a>
                     </td>
