@@ -214,7 +214,7 @@ class Option extends Contract
       return $this->stock->getDescription();
     }
 */
-    public function getMultiplier(): ?int
+    public function getMultiplier(): int
     {
         return $this->multiplier ? $this->multiplier : 100;
     }

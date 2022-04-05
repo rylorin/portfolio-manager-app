@@ -47,6 +47,11 @@ class Position
      */
     private $cost;
 
+    /**
+     * @ORM\Column(type="datetime", name="updatedAt")
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->openDate = new \DateTime();
@@ -65,6 +70,7 @@ class Position
     public function setContract(?Contract $contract): self
     {
         $this->contract = $contract;
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -76,6 +82,7 @@ class Position
     public function setQuantity(float $pos): self
     {
         $this->quantity = $pos;
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -87,6 +94,7 @@ class Position
     public function setCost(?float $cost): self
     {
         $this->cost = $cost;
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -98,6 +106,7 @@ class Position
     public function setPortfolio(?Portfolio $portfolio): self
     {
         $this->portfolio = $portfolio;
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -109,6 +118,7 @@ class Position
     public function setOpenDate(\DateTimeInterface $openDate): self
     {
         $this->openDate = $openDate;
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 

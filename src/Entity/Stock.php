@@ -175,10 +175,6 @@ class Stock extends Contract
         return $this;
     }
 
-    public function getMultiplier(): int {
-      return 1;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;

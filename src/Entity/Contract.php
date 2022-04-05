@@ -15,13 +15,15 @@ use App\Repository\ContractRepository;
  * @ORM\DiscriminatorColumn(name="secType", type="string", length=4)
  * @ORM\DiscriminatorMap({
  *     "STK"="Stock",
- *     "OPT"="Option"
+ *     "OPT"="Option",
+ *     "CASH"="CashContract"
  * })
  **/
 abstract class Contract
 {
     public const TYPE_STOCK = 'STK';
     public const TYPE_OPTION = 'OPT';
+    public const TYPE_CASH = 'CASH';
     public const EXCHANGES = [
         'NYSE' => 'NYSE', 'NASDAQ' => 'NASDAQ', 'ARCA' => 'ARCA', 'IBIS2' => 'IBIS2', 'AMEX' => 'AMEX', 'CBOE' => 'CBOE',
         'SBF' => 'SBF', 'AEB' => 'AEB', 'VSE' => 'VSE', 'BVME' => 'BVME', 'DTB' => 'DTB', 'IBIS' => 'IBIS',
@@ -110,7 +112,7 @@ abstract class Contract
     private $ApiReqId;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
      */
     private $updated;
 
@@ -129,10 +131,16 @@ abstract class Contract
      */
     private $tickPrice;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    private $createdAt;
+
     public function __construct(?string $symbol = null)
     {
         $this->positions = new ArrayCollection();
         $this->symbol = $symbol;
+        $this->createdAt = new \DateTime();
     }
 
     public function __toString()
@@ -155,7 +163,7 @@ abstract class Contract
     public function setConId(?int $contractIB): self
     {
         $this->conId = $contractIB;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -167,7 +175,7 @@ abstract class Contract
     public function setSymbol(?string $symbol): self
     {
         $this->symbol = $symbol;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -179,7 +187,7 @@ abstract class Contract
     public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -222,6 +230,7 @@ abstract class Contract
     public function setExchange(?string $exchange): self
     {
         $this->exchange = $exchange;
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -247,7 +256,7 @@ abstract class Contract
     public function setName(?string $name): self
     {
         $this->name = $name;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -259,7 +268,7 @@ abstract class Contract
     public function setFiftyTwoWeekLow(?float $fiftyTwoWeekLow): self
     {
         $this->fiftyTwoWeekLow = $fiftyTwoWeekLow;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -271,7 +280,7 @@ abstract class Contract
     public function setFiftyTwoWeekHigh(?float $fiftyTwoWeekHigh): self
     {
         $this->fiftyTwoWeekHigh = $fiftyTwoWeekHigh;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -283,7 +292,7 @@ abstract class Contract
     public function setPrice(?float $price): self
     {
         $this->price = $price;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -295,6 +304,7 @@ abstract class Contract
     public function setBid(?float $bid): self
     {
         $this->bid = $bid;
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -306,6 +316,7 @@ abstract class Contract
     public function setAsk(?float $ask): self
     {
         $this->ask = $ask;
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -317,6 +328,7 @@ abstract class Contract
     public function setPreviousClosePrice(?float $previousClosePrice): self
     {
         $this->previousClosePrice = $previousClosePrice;
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -377,8 +389,12 @@ abstract class Contract
     public function setTickPrice(?float $tickPrice): self
     {
         $this->tickPrice = $tickPrice;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
-}
+    public function getMultiplier(): int {
+        return 1;
+      }
+  
+  }
