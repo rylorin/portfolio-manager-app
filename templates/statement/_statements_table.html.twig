@@ -36,9 +36,11 @@
           >
           {{ statement.date ? statement.date|date('d-m-Y') : '' }}
         </td>
-        <td>{{ statement.currency }}</td>
-        {% set amount_total = amount_total + statement.amount * fxRate %}
-        <td class="text-right">{{ statement.amount|my_decimal_format_2d }}</td>
+        <td>{{ statement.currency }}{% if fxRate != 1 %} ({{fxRate}}){% endif %}</td>
+        <td class="text-right">
+          {% set amount_total = amount_total + statement.amount * fxRate %}
+          {{ statement.amount|my_decimal_format_2d }}
+        </td>
         <td class="text-right">
           {% if statement.statementType == 'Trade' or statement.statementType == 'TradeOption' %}
             {% set total_pnl = total_pnl + statement.realizedPNL * fxRate %}

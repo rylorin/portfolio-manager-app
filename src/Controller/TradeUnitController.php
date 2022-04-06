@@ -70,17 +70,22 @@ class TradeUnitController extends AbstractController
       foreach ($currencies as $currency) {
           $baserate[$currency->getCurrency()] = 1.0 / $currency->getRate();
       }
-      $trades = $entityManager->getRepository('App:TradeUnit')->findTradeUnits(
-        [ 'q.portfolio' => $portfolio ],
+      $closed_trades = $entityManager->getRepository('App:TradeUnit')->findTradeUnits(
+        [ 'q.portfolio' => $portfolio, 'q.status' => TradeUnit::CLOSE_STATUS ],
+        [ 'q.closingDate' => 'DESC' ]
+      );
+      $open_trades = $entityManager->getRepository('App:TradeUnit')->findTradeUnits(
+        [ 'q.portfolio' => $portfolio, 'q.status' => TradeUnit::OPEN_STATUS ],
         [ 'q.openingDate' => 'DESC' ]
       );
 
-      $stats = $this->computeStats($trades, $baserate);
+      $stats = $this->computeStats($closed_trades, $baserate);
 
       return $this->render('tradeunit/index.html.twig', [
           'portfolio' => $portfolio,
           'currencies' => $baserate,
-          'trades' => $trades,
+          'closed_trades' => $closed_trades,
+          'open_trades' => $open_trades,
           'stats' => $stats,
       ]);
     }

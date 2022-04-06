@@ -96,14 +96,26 @@
             <td class="text-right">{{ total_trades_count }}</td>
             <td class="text-right">{{ total_trades_closed }}</td>
             <td class="text-right">
-              {{ (total_trades_won / total_trades_closed) | my_percent_format }}
+              {% if total_trades_closed %}
+                {{ (total_trades_won / total_trades_closed) | my_percent_format }}
+              {% else %}
+                -
+              {% endif %}
             </td>
             <td class="text-right">
-              {{ (total_trades_duration / total_trades_closed) | my_integer_format }}
+              {% if total_trades_closed %}
+                {{ (total_trades_duration / total_trades_closed) | my_integer_format }}
+              {% else %}
+                -
+              {% endif %}
             </td>
             <td></td>
             <td class="{{ total_trades_pnl|my_number_class_2colors }}">
-              {{ (total_trades_pnl / total_trades_closed) | my_integer_format }}
+              {% if total_trades_closed %}
+                {{ (total_trades_pnl / total_trades_closed) | my_integer_format }}
+              {% else %}
+                -
+              {% endif %}
             </td>
             <td></td>
         		<td class="{{ total_trades_pnl|my_number_class_2colors }}">
@@ -118,7 +130,13 @@
   {% if (stats|length) > 1 %}
     <canvas class="my-4 w-100" id="myChart2" width="900" height="380"></canvas>
   {% endif %}
-  <h2>All Trades ({{ trades|length }})</h2>
+
+  <h2>Open trades ({{ open_trades|length }})</h2>
+  {% set trades = open_trades %}
+  {% include('tradeunit/_tradeunits_table.html.twig') %}
+
+  <h2>Closed trades ({{ closed_trades|length }})</h2>
+  {% set trades = closed_trades %}
   {% include('tradeunit/_tradeunits_table.html.twig') %}
 
   <script>
