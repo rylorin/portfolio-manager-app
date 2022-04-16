@@ -8,6 +8,7 @@
                 <th>Id</th>
                 <th>Stock</th>
                 <th>NAV ratio</th>
+                <th>Roll strat</th>
                 <th>Volatility</th>
                 <th>Div. %</th>
                 <th>PER</th>
@@ -28,6 +29,7 @@
                         {% endif %}
                     </td>
                     <td class='text-right'>{{ setting.NavRatio|my_percent_format }}</td>
+                    <td>{{ setting.rollStrategyName }}</td>
                     <td class='text-right'>{{ setting.stock.HistoricalVolatility|my_percent_format }}</td>
                     <td class='text-right'>
                         {% if setting.stock.price %}

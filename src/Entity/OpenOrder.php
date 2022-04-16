@@ -34,7 +34,7 @@ class OpenOrder
 
     /**
      * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="openOrders")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, name="portfolio_id")
      */
     private $Account;
 

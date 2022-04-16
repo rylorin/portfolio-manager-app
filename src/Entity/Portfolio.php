@@ -557,7 +557,7 @@ class Portfolio
 
     public function getCashStrategyName(): ?string
     {
-        return $this->CashStrategy == null ? Portfolio::STRATEGIES_REV[0] : Portfolio::STRATEGIES_REV[$this->CashStrategy];
+        return Portfolio::STRATEGIES_REV[$this->CashStrategy];
     }
 
 }

@@ -11,6 +11,18 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TradeParameter
 {
+    public const ROLLSTRATEGIES = [
+        'Off' => 0,
+        'Defensive' => 1,
+        'Agressive' => 2,
+    ];
+    public const ROLLSTRATEGIES_REV = [
+        null => 'Off',
+        0 => 'Off',
+        1 => 'Defensive',
+        2 => 'Agressive',
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -33,7 +45,27 @@ class TradeParameter
     /**
      * @ORM\Column(type="float")
      */
-    private $NavRatio;
+    private $navRatio;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $rollStrategy;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
+     */
+    private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -48,7 +80,7 @@ class TradeParameter
     public function setStock(?Stock $stock): self
     {
         $this->stock = $stock;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -60,19 +92,37 @@ class TradeParameter
     public function setPortfolio(?Portfolio $portfolio): self
     {
         $this->portfolio = $portfolio;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
     public function getNavRatio(): ?float
     {
-        return $this->NavRatio;
+        return $this->navRatio;
     }
 
     public function setNavRatio(float $NavRatio): self
     {
-        $this->NavRatio = $NavRatio;
-
+        $this->navRatio = $NavRatio;
+        $this->updatedAt = new \DateTime();
         return $this;
     }
+
+    public function getRollStrategy(): ?int
+    {
+        return $this->rollStrategy;
+    }
+
+    public function setRollStrategy(int $rollStrategy): self
+    {
+        $this->rollStrategy = $rollStrategy;
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    public function getRollStrategyName(): ?string
+    {
+        return TradeParameter::ROLLSTRATEGIES_REV[$this->rollStrategy];
+    }
+
 }

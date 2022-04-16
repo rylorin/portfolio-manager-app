@@ -286,7 +286,11 @@ abstract class Contract
 
     public function getPrice(): ?float
     {
-        return $this->price;
+        $result = null;
+        if ($this->ask && $this->bid) $result = ($this->ask + $this->bid) / 2;
+        elseif ($this->price) $result = $this->price;
+        else $result = $this->previousClosePrice;
+        return $result;
     }
 
     public function setPrice(?float $price): self
