@@ -36,7 +36,11 @@ class TradeParameterType extends AbstractType
                 'choices' => TradeParameter::ROLLSTRATEGIES,
                 'choice_label' => null,
                 ])
-          ;
+            ->add('ccStrategy', ChoiceType::class, [
+                'choices' => TradeParameter::CCSTRATEGIES,
+                'choice_label' => null,
+                ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

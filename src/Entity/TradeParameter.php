@@ -22,6 +22,15 @@ class TradeParameter
         1 => 'Defensive',
         2 => 'Agressive',
     ];
+    public const CCSTRATEGIES = [
+        'Off' => 0,
+        'On' => 1,
+    ];
+    public const CCSTRATEGIES_REV = [
+        null => 'Off',
+        0 => 'Off',
+        1 => 'On',
+    ];
 
     /**
      * @ORM\Id
@@ -51,6 +60,11 @@ class TradeParameter
      * @ORM\Column(type="smallint", nullable=true)
      */
     private $rollStrategy;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $ccStrategy;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, name="createdAt")
@@ -123,6 +137,23 @@ class TradeParameter
     public function getRollStrategyName(): ?string
     {
         return TradeParameter::ROLLSTRATEGIES_REV[$this->rollStrategy];
+    }
+
+    public function getCcStrategy(): ?int
+    {
+        return $this->ccStrategy;
+    }
+
+    public function setCcStrategy(int $ccStrategy): self
+    {
+        $this->ccStrategy = $ccStrategy;
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    public function getCcStrategyName(): ?string
+    {
+        return TradeParameter::CCSTRATEGIES_REV[$this->ccStrategy];
     }
 
 }
