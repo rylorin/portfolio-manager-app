@@ -31,6 +31,15 @@ class TradeParameter
         0 => 'Off',
         1 => 'On',
     ];
+    public const CSPSTRATEGIES = [
+        'Off' => 0,
+        'On' => 1,
+    ];
+    public const CSPSTRATEGIES_REV = [
+        null => 'Off',
+        0 => 'Off',
+        1 => 'On',
+    ];
 
     /**
      * @ORM\Id
@@ -50,6 +59,11 @@ class TradeParameter
      * @ORM\JoinColumn(nullable=false)
      */
     private $portfolio;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $cspStrategy;
 
     /**
      * @ORM\Column(type="float")
@@ -108,6 +122,23 @@ class TradeParameter
         $this->portfolio = $portfolio;
         $this->updatedAt = new \DateTime();
         return $this;
+    }
+
+    public function getCspStrategy(): ?int
+    {
+        return $this->cspStrategy;
+    }
+
+    public function setCspStrategy(int $cspStrategy): self
+    {
+        $this->cspStrategy = $cspStrategy;
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    public function getCspStrategyName(): ?string
+    {
+        return TradeParameter::CSPSTRATEGIES_REV[$this->cspStrategy];
     }
 
     public function getNavRatio(): ?float

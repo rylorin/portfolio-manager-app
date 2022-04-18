@@ -31,6 +31,10 @@ class TradeParameterType extends AbstractType
             // 'expanded' => true,
             'required' => true
             ])
+            ->add('cspStrategy', ChoiceType::class, [
+                'choices' => TradeParameter::CSPSTRATEGIES,
+                'choice_label' => null,
+                ])
             ->add('navRatio', PercentType::class, [ 'required' => true, 'scale' => 1 ])
             ->add('rollStrategy', ChoiceType::class, [
                 'choices' => TradeParameter::ROLLSTRATEGIES,

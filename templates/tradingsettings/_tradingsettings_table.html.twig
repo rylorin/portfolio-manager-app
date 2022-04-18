@@ -7,6 +7,7 @@
             <tr class="text-center">
                 <th>Id</th>
                 <th>Stock</th>
+                <th>Csp strat</th>
                 <th>NAV ratio</th>
                 <th>Roll strat</th>
                 <th>Cc strat</th>
@@ -29,7 +30,15 @@
                             N/A
                         {% endif %}
                     </td>
-                    <td class='text-right'>{{ setting.NavRatio|my_percent_format }}</td>
+                    {% if setting.cspStrategy %}
+                        <td>
+                            {{ setting.cspStrategyName }}
+                        </td>
+                        <td class='text-right'>{{ setting.NavRatio|my_percent_format }}</td>
+                        {% else %}
+                        <td class='text-center'>-</td>
+                        <td class='text-center'>-</td>
+                    {% endif %}
                     <td>
                         {% if setting.rollStrategy %}
                             {{ setting.rollStrategyName }}
@@ -81,6 +90,7 @@
             <tr class='bg-secondary'>
                 <td class="text-right">{{ rowcount }}</td>
                 <td>Total</td>
+                <td></td>
                 <td class="text-right {{ (total_ratio - portfolio.putRatio)|my_number_class_2colors }}">{{ total_ratio | my_percent_format }}</td>
                 <td></td>
                 <td></td>
