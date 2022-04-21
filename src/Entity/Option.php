@@ -75,10 +75,21 @@ class Option extends Contract
      */
     private $Theta;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         parent::__construct();
         $this->multiplier = 100;
+        $this->createdAt = new \DateTime();
     }
 
     public function __toString()
@@ -121,6 +132,7 @@ class Option extends Contract
     {
         $this->strike = $strike;
         $this->updateSymbol();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -134,6 +146,7 @@ class Option extends Contract
         $this->stock = $stock;
         $this->currency = $stock ? $stock->getCurrency() : null;
         $this->updateSymbol();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -146,6 +159,7 @@ class Option extends Contract
     {
         $this->lastTradeDate = $lastTradeDateOrContractMonth;
         $this->updateSymbol();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -173,6 +187,7 @@ class Option extends Contract
     {
         $this->callOrPut = $callOrPut;
         $this->updateSymbol();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -185,6 +200,7 @@ class Option extends Contract
     {
     	$this->callOrPut = $callOrPut;
     	$this->updateSymbol();
+      $this->updatedAt = new \DateTime();
     	return $this;
     }
 
@@ -222,6 +238,7 @@ class Option extends Contract
     public function setMultiplier(int $multiplier): self
     {
         $this->multiplier = $multiplier;
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -282,7 +299,7 @@ class Option extends Contract
     public function setImpliedVolatility(?float $ImpliedVolatility): self
     {
         $this->ImpliedVolatility = $ImpliedVolatility;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -294,7 +311,7 @@ class Option extends Contract
     public function setDelta(?float $Delta): self
     {
         $this->Delta = $Delta;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -306,7 +323,7 @@ class Option extends Contract
     public function setPvDividend(?float $pvDividend): self
     {
         $this->pvDividend = $pvDividend;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -318,7 +335,7 @@ class Option extends Contract
     public function setGamma(?float $Gamma): self
     {
         $this->Gamma = $Gamma;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -330,7 +347,7 @@ class Option extends Contract
     public function setVega(?float $Vega): self
     {
         $this->Vega = $Vega;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -342,7 +359,7 @@ class Option extends Contract
     public function setTheta(?float $Theta): self
     {
         $this->Theta = $Theta;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 

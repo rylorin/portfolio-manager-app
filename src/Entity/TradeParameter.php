@@ -73,7 +73,12 @@ class TradeParameter
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $rollStrategy;
+    private $rollPutStrategy;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $rollCallStrategy;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
@@ -153,21 +158,38 @@ class TradeParameter
         return $this;
     }
 
-    public function getRollStrategy(): ?int
+    public function getRollPutStrategy(): ?int
     {
-        return $this->rollStrategy;
+        return $this->rollPutStrategy;
     }
 
-    public function setRollStrategy(int $rollStrategy): self
+    public function setRollPutStrategy(int $rollStrategy): self
     {
-        $this->rollStrategy = $rollStrategy;
+        $this->rollPutStrategy = $rollStrategy;
         $this->updatedAt = new \DateTime();
         return $this;
     }
 
-    public function getRollStrategyName(): ?string
+    public function getRollPutStrategyName(): ?string
     {
-        return TradeParameter::ROLLSTRATEGIES_REV[$this->rollStrategy];
+        return TradeParameter::ROLLSTRATEGIES_REV[$this->rollPutStrategy];
+    }
+
+    public function getRollCallStrategy(): ?int
+    {
+        return $this->rollCallStrategy;
+    }
+
+    public function setRollCallStrategy(int $rollStrategy): self
+    {
+        $this->rollCallStrategy = $rollStrategy;
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    public function getRollCallStrategyName(): ?string
+    {
+        return TradeParameter::ROLLSTRATEGIES_REV[$this->rollCallStrategy];
     }
 
     public function getCcStrategy(): ?int

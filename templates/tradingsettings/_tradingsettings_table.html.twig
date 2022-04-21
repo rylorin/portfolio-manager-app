@@ -9,7 +9,8 @@
                 <th>Stock</th>
                 <th>Csp strat</th>
                 <th>NAV ratio</th>
-                <th>Roll strat</th>
+                <th>Roll Put strat</th>
+                <th>Roll Call strat</th>
                 <th>Cc strat</th>
                 <th>Volatility</th>
                 <th>Div. %</th>
@@ -40,8 +41,15 @@
                         <td class='text-center'>-</td>
                     {% endif %}
                     <td>
-                        {% if setting.rollStrategy %}
-                            {{ setting.rollStrategyName }}
+                        {% if setting.rollPutStrategy %}
+                            {{ setting.rollPutStrategyName }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if setting.rollCallStrategy %}
+                            {{ setting.rollCallStrategyName }}
                         {% else %}
                             -
                         {% endif %}
@@ -92,6 +100,7 @@
                 <td>Total</td>
                 <td></td>
                 <td class="text-right {{ (total_ratio - portfolio.putRatio)|my_number_class_2colors }}">{{ total_ratio | my_percent_format }}</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

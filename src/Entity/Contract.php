@@ -112,11 +112,6 @@ abstract class Contract
     private $ApiReqId;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
-     */
-    private $updated;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $askDate;
@@ -135,6 +130,11 @@ abstract class Contract
      * @ORM\Column(type="datetime", nullable=true, name="createdAt")
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
+     */
+    private $updatedAt;
 
     public function __construct(?string $symbol = null)
     {

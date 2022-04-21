@@ -36,7 +36,11 @@ class TradeParameterType extends AbstractType
                 'choice_label' => null,
                 ])
             ->add('navRatio', PercentType::class, [ 'required' => true, 'scale' => 1 ])
-            ->add('rollStrategy', ChoiceType::class, [
+            ->add('rollPutStrategy', ChoiceType::class, [
+                'choices' => TradeParameter::ROLLSTRATEGIES,
+                'choice_label' => null,
+                ])
+            ->add('rollCallStrategy', ChoiceType::class, [
                 'choices' => TradeParameter::ROLLSTRATEGIES,
                 'choice_label' => null,
                 ])
