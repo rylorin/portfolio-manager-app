@@ -80,11 +80,8 @@ class AppExpireCommand extends Command
                 } else {
 //                    printf("%d positions, %d statements\n", sizeof($positions), sizeof($statements));
                     $contract->setPrice(null);
-                    $contract->setUpdated(null);
                     $contract->setBid(null);
-                    $contract->setBidDate(null);
                     $contract->setAsk(null);
-                    $contract->setAskDate(null);
                     $contract->setDelta(null);
                 }
                 $io->progressAdvance();

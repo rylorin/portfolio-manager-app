@@ -30,36 +30,20 @@
             <td class="text-right">{{ stock.ask|my_decimal_format_2d }}</td>
         </tr>
         <tr>
-            <th>Updated</th>
-            <td class="text-right">
-                {% if stock.askDate %}
-                    {{ stock.askDate|date('d-m-Y H:i:s') }}
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
             <th>Price</th>
             <td class="{{ stock.changePercent|my_number_class_2colors }} font-weight-bold">{{ stock.price|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Updated</th>
             <td class="text-right">
-                {% if stock.updated %}
-                    {{ stock.updated|date('d-m-Y H:i:s') }}
+                {% if stock.updatedAt %}
+                    {{ stock.updatedAt|date('d-m-Y H:i:s') }}
                 {% endif %}
             </td>
         </tr>
         <tr>
             <th>Bid</th>
             <td class="text-right">{{ stock.bid|my_decimal_format_2d }}</td>
-        </tr>
-        <tr>
-            <th>Updated</th>
-            <td class="text-right">
-                {% if stock.bidDate %}
-                    {{ stock.bidDate|date('d-m-Y H:i:s') }}
-                {% endif %}
-                </td>
         </tr>
         <tr>
             <th>Previous close</th>

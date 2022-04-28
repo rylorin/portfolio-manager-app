@@ -32,29 +32,29 @@
                         {% endif %}
                     </td>
                     {% if setting.cspStrategy %}
-                        <td>
+                        <td class='text-center'>
                             {{ setting.cspStrategyName }}
                         </td>
                         <td class='text-right'>{{ setting.NavRatio|my_percent_format }}</td>
                         {% else %}
                         <td class='text-center'>-</td>
-                        <td class='text-center'>-</td>
+                        <td class='text-right'>-</td>
                     {% endif %}
-                    <td>
+                    <td class='text-center'>
                         {% if setting.rollPutStrategy %}
                             {{ setting.rollPutStrategyName }}
                         {% else %}
                             -
                         {% endif %}
                     </td>
-                    <td>
+                    <td class='text-center'>
                         {% if setting.rollCallStrategy %}
                             {{ setting.rollCallStrategyName }}
                         {% else %}
                             -
                         {% endif %}
                     </td>
-                    <td>
+                    <td class='text-center'>
                         {% if setting.ccStrategy %}
                             {{ setting.ccStrategyName }}
                         {% else %}

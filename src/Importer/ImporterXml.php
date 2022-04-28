@@ -412,7 +412,6 @@ class ImporterXml
   public function processSecurityInfo(\SimpleXMLElement $xml): void
   {
     if ($xml->attributes()->assetCategory == "STK") {
-      // print_r($xml);
       $this->findOrCreateStock($xml);
     } elseif ($xml->attributes()->assetCategory == "OPT") {
       $this->findOrCreateOption($xml);

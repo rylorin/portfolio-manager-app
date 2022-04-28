@@ -349,18 +349,6 @@ abstract class Contract
         return $this->ApiReqId;
     }
 
-    public function getUpdated(): ?\DateTimeInterface
-    {
-        return $this->updated;
-    }
-
-    public function setUpdated(?\DateTimeInterface $updated): self
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
     public function getAskDate(): ?\DateTimeInterface
     {
         return $this->askDate;
@@ -399,6 +387,18 @@ abstract class Contract
 
     public function getMultiplier(): int {
         return 1;
-      }
+    }
   
-  }
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+  
+      // public function setUpdated(?\DateTimeInterface $updated): self
+      // {
+      //     $this->updated = $updated;
+  
+      //     return $this;
+      // }
+  
+}

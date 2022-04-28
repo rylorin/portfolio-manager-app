@@ -45,36 +45,20 @@
             <td class="text-right">{{ option.ask|my_decimal_format_2d }}</td>
         </tr>
         <tr>
-            <th>Updated</th>
-            <td class="text-right">
-                {% if option.askDate %}
-                    {{ option.askDate|date('d-m-Y H:i:s') }}
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
             <th>Premium</th>
             <td class="text-right font-weight-bold">{{ option.price|my_decimal_format_2d }}</td>
         </tr>
         <tr>
             <th>Updated</th>
             <td class="text-right">
-                {% if option.updated %}
-                    {{ option.updated|date('d-m-Y H:i:s') }}
+                {% if option.updatedAt %}
+                    {{ option.updatedAt|date('d-m-Y H:i:s') }}
                 {% endif %}
             </td>
         </tr>
         <tr>
             <th>Bid</th>
             <td class="text-right">{{ option.bid|my_decimal_format_2d }}</td>
-        </tr>
-        <tr>
-            <th>Updated</th>
-            <td class="text-right">
-                {% if option.bidDate %}
-                    {{ option.bidDate|date('d-m-Y H:i:s') }}
-                {% endif %}
-            </td>
         </tr>
         <tr>
             <th>Previous Close Price</th>
