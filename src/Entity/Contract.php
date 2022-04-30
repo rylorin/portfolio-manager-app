@@ -337,11 +337,12 @@ abstract class Contract
     }
 
     public static function normalizeSymbol(string $symbol): string {
-      $symbol = str_replace('.T', '', str_replace(' ', '-', trim($symbol)));
-      if ($symbol[strlen($symbol)-1] == 'd') {
-        $symbol = substr($symbol, 0, -1);
-      }
-      return $symbol;
+        // print_r($symbol);
+        $symbol = str_replace('.T', '', str_replace(' ', '-', trim($symbol)));
+        if ($symbol[strlen($symbol)-1] == 'd') {
+            $symbol = substr($symbol, 0, -1);
+        }
+        return $symbol;
     }
 
     public function getApiReqId(): ?int

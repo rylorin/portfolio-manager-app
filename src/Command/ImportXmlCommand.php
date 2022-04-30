@@ -50,31 +50,35 @@ class ImportXmlCommand extends Command
 
       $xml = simplexml_load_file($file);
       if ($xml) {
-        $report = $xml->attributes()->queryName;
+          $report = $xml->attributes()->queryName;
 
-        $importer = new ImporterXml($this->em);
+          $importer = new ImporterXml($this->em);
 
-        if (isset($xml->FlexStatements->FlexStatement->Trades)) {
-          $trades_count = sizeof($xml->FlexStatements->FlexStatement->Trades->Trade);
-        } else {
-          $trades_count = 0;
-        }
-        if (isset($xml->FlexStatements->FlexStatement->SecuritiesInfo)) {
-          $securities_count = sizeof($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo);
-        } else {
-          $securities_count = 0;
-        }
-        if (isset($xml->FlexStatements->FlexStatement->CashTransactions)) {
-          $cash_count = sizeof($xml->FlexStatements->FlexStatement->CashTransactions->CashTransaction);
-        } else {
-          $cash_count = 0;
-        }
-        if (isset($xml->FlexStatements->FlexStatement->TransactionTaxes)) {
-          $taxes_count = sizeof($xml->FlexStatements->FlexStatement->TransactionTaxes->TransactionTax);
-        } else {
-          $taxes_count = 0;
-        }
-        if (($trades_count + $securities_count + $cash_count + $taxes_count) > 0) {
+          if (isset($xml->FlexStatements->FlexStatement->Trades)) {
+            $trades_count = sizeof($xml->FlexStatements->FlexStatement->Trades->Trade);
+          } else {
+            $trades_count = 0;
+          }
+          if (isset($xml->FlexStatements->FlexStatement->SecuritiesInfo)) {
+            $securities_count = sizeof($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo);
+          } else {
+            $securities_count = 0;
+          }
+          if (isset($xml->FlexStatements->FlexStatement->CashTransactions)) {
+            $cash_count = sizeof($xml->FlexStatements->FlexStatement->CashTransactions->CashTransaction);
+          } else {
+            $cash_count = 0;
+          }
+          if (isset($xml->FlexStatements->FlexStatement->TransactionTaxes)) {
+            $taxes_count = sizeof($xml->FlexStatements->FlexStatement->TransactionTaxes->TransactionTax);
+          } else {
+            $taxes_count = 0;
+          }
+          if (isset($xml->FlexStatements->FlexStatement->CorporateActions)) {
+            $corporates_count = sizeof($xml->FlexStatements->FlexStatement->CorporateActions->CorporateAction);
+          } else {
+            $corporates_count = 0;
+          }
           $io->progressStart($trades_count + $securities_count + $cash_count + $taxes_count);
           for ($i=0; $i < $securities_count; $i++) {
             $importer->processSecurityInfo($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo[$i]);
@@ -92,12 +96,13 @@ class ImportXmlCommand extends Command
             $importer->processTransactionTax($xml->FlexStatements->FlexStatement->TransactionTaxes->TransactionTax[$i]);
             $io->progressAdvance();
           }
+          for ($i=0; $i < $corporates_count; $i++) {
+            $importer->processCorporateAction($xml->FlexStatements->FlexStatement->CorporateActions->CorporateAction[$i]);
+            $io->progressAdvance();
+          }
           $io->progressFinish();
           $io->success($report . ' report loaded!');
         }
-      } else {
-        $io->error('Can not load file.');
-      }
-      return 0;
+        return 0;
     }
 }

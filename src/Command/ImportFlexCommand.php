@@ -78,29 +78,34 @@ class ImportFlexCommand extends Command
         } else {
           $taxes_count = 0;
         }
-        if (($trades_count + $securities_count + $cash_count + $taxes_count) > 0) {
-          $io->progressStart($trades_count + $securities_count + $cash_count + $taxes_count);
-          for ($i=0; $i < $securities_count; $i++) {
-            $importer->processSecurityInfo($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo[$i]);
-            $io->progressAdvance();
-          }
-          for ($i=0; $i < $trades_count; $i++) {
-            $importer->processTrade($xml->FlexStatements->FlexStatement->Trades->Trade[$i]);
-            $io->progressAdvance();
-          }
-          for ($i=0; $i < $cash_count; $i++) {
-            $importer->processCashTransaction($xml->FlexStatements->FlexStatement->CashTransactions->CashTransaction[$i]);
-            $io->progressAdvance();
-          }
-          for ($i=0; $i < $taxes_count; $i++) {
-            $importer->processTransactionTax($xml->FlexStatements->FlexStatement->TransactionTaxes->TransactionTax[$i]);
-            $io->progressAdvance();
-          }
-          $io->progressFinish();
-          $io->success($report . ' report loaded!');
+        if (isset($xml->FlexStatements->FlexStatement->CorporateActions)) {
+          $corporates_count = sizeof($xml->FlexStatements->FlexStatement->CorporateActions->CorporateAction);
         } else {
-          $io->error($xml->ErrorMessage);
+          $corporates_count = 0;
         }
+        $io->progressStart($trades_count + $securities_count + $cash_count + $taxes_count);
+        for ($i=0; $i < $securities_count; $i++) {
+          $importer->processSecurityInfo($xml->FlexStatements->FlexStatement->SecuritiesInfo->SecurityInfo[$i]);
+          $io->progressAdvance();
+        }
+        for ($i=0; $i < $trades_count; $i++) {
+          $importer->processTrade($xml->FlexStatements->FlexStatement->Trades->Trade[$i]);
+          $io->progressAdvance();
+        }
+        for ($i=0; $i < $cash_count; $i++) {
+          $importer->processCashTransaction($xml->FlexStatements->FlexStatement->CashTransactions->CashTransaction[$i]);
+          $io->progressAdvance();
+        }
+        for ($i=0; $i < $taxes_count; $i++) {
+          $importer->processTransactionTax($xml->FlexStatements->FlexStatement->TransactionTaxes->TransactionTax[$i]);
+          $io->progressAdvance();
+        }
+        for ($i=0; $i < $corporates_count; $i++) {
+          $importer->processCorporateAction($xml->FlexStatements->FlexStatement->CorporateActions->CorporateAction[$i]);
+          $io->progressAdvance();
+        }
+        $io->progressFinish();
+        $io->success($report . ' report loaded!');
       } elseif ($xml) {
         $io->error($xml->ErrorMessage);
       } else {

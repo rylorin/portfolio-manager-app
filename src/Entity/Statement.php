@@ -18,6 +18,7 @@ use App\Repository\StatementRepository;
  *     "Tax"="TaxStatement",
  *     "Interest"="InterestStatement",
  *     "TransactionFee"="FeeStatement",
+ *     "CorporateStatement"="CorporateStatement",
  * })
  */
 abstract class Statement
@@ -28,6 +29,7 @@ abstract class Statement
     const TYPE_TAX = 'Tax';
     const TYPE_INTEREST = 'Interest';
     const TYPE_FEE = 'TransactionFee';
+    const TYPE_CORPORATE = 'CorporateStatement';
 
     // trades statuses
     public const OPEN_STATUS = 1;
@@ -83,9 +85,9 @@ abstract class Statement
     private $tradeUnit;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, name="transaction_id")
      */
-    private $tradeId;
+    private $transactionID;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -197,13 +199,12 @@ abstract class Statement
 
     public function getTransactionId(): ?int
     {
-        return $this->tradeId;
+        return $this->transactionID;
     }
 
     public function setTransactionId(?int $tradeId): self
     {
-        $this->tradeId = $tradeId;
-
+        $this->transactionID = $tradeId;
         return $this;
     }
 
