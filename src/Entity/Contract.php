@@ -390,16 +390,26 @@ abstract class Contract
         return 1;
     }
   
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+  
+    private function setCreatedAt(?\DateTimeInterface $updated): self
+    {
+        $this->createdAt = $updated;
+        return $this;
+    }
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
   
-      // public function setUpdated(?\DateTimeInterface $updated): self
-      // {
-      //     $this->updated = $updated;
-  
-      //     return $this;
-      // }
+    private function setUpdatedAt(?\DateTimeInterface $updated): self
+    {
+        $this->updatedAt = $updated;
+        return $this;
+    }
   
 }

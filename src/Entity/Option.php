@@ -75,16 +75,6 @@ class Option extends Contract
      */
     private $Theta;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
-     */
-    private $updatedAt;
-
     public function __construct()
     {
         parent::__construct();
@@ -146,7 +136,7 @@ class Option extends Contract
         $this->stock = $stock;
         $this->currency = $stock ? $stock->getCurrency() : null;
         $this->updateSymbol();
-        $this->updatedAt = new \DateTime();
+        $this->updatedAtX = new \DateTime();
         return $this;
     }
 
@@ -213,23 +203,7 @@ class Option extends Contract
           return sprintf("InvalidId(%d)", $this->getId());
         }
     }
-/*
-    public function getExchange(): ?string
-    {
-        $s = parent::getExchange();
-        if ($s) {
-            return $s;
-        } elseif ($this->getStock()) {
-            return $this->getStock()->getExchange();
-        } else {
-          return null;
-        }
-    }
 
-    public function getDescription(): ?string {
-      return $this->stock->getDescription();
-    }
-*/
     public function getMultiplier(): int
     {
         return $this->multiplier ? $this->multiplier : 100;
@@ -361,11 +335,6 @@ class Option extends Contract
         $this->Theta = $Theta;
         $this->updatedAt = new \DateTime();
         return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
     }
 
   }

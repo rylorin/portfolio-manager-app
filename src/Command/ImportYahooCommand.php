@@ -73,9 +73,9 @@ class ImportYahooCommand extends Command
             $contract->setAsk(null);
             $contract->setBid(null);
             $contract->setPreviousClosePrice(null);
-            $contract->setUpdated(null);
-            $contract->setAskDate(null);
-            $contract->setBidDate(null);
+            // $contract->setUpdated(null);
+            // $contract->setAskDate(null);
+            // $contract->setBidDate(null);
       }
         }
 
@@ -132,7 +132,7 @@ class ImportYahooCommand extends Command
               $contract->setFiftyTwoWeekHigh($quote->getFiftyTwoWeekHigh());
               $contract->setEpsTTM($quote->getEpsTrailingTwelveMonths());
               $contract->setEpsForward($quote->getEpsForward());
-              $contract->setUpdated($updated);
+              // $contract->setUpdated($updated);
               // if ($quote->getSymbol() == 'SPY') {
               //   printf("\n");
               //   print_r($quote);
@@ -162,9 +162,9 @@ class ImportYahooCommand extends Command
                 $contract->setAsk(($quote->getCurrency() == 'GBp') ? ($quote->getAsk() / 100) : $quote->getAsk());
                 $contract->setBid(($quote->getCurrency() == 'GBp') ? ($quote->getBid() / 100) : $quote->getBid());
                 $contract->setPreviousClosePrice(($quote->getCurrency() == 'GBp') ? ($quote->getRegularMarketPreviousClose() / 100) : $quote->getRegularMarketPreviousClose());
-                $contract->setUpdated($updated);
-                $contract->setAskDate($updated);
-                $contract->setBidDate($updated);
+                // $contract->setUpdated($updated);
+                // $contract->setAskDate($updated);
+                // $contract->setBidDate($updated);
                 $this->em->flush();
                 break;
               }

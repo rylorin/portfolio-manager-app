@@ -80,7 +80,12 @@ class OpenOrder
     private $RemainingQty;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
      */
     private $updatedAt;
 
@@ -233,4 +238,26 @@ class OpenOrder
         return $this;
     }
     
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+  
+    private function setCreated(?\DateTimeInterface $updated): self
+    {
+        $this->created = $updated;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+  
+    private function setUpdated(?\DateTimeInterface $updated): self
+    {
+        $this->updated = $updated;
+        return $this;
+    }
+
 }
