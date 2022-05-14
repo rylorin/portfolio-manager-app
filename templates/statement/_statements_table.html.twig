@@ -36,7 +36,7 @@
           >
           {{ statement.date ? statement.date|date('d-m-Y') : '' }}
         </td>
-        <td>{{ statement.currency }}{% if fxRate != 1 %} ({{fxRate}}){% endif %}</td>
+        <td>{{ statement.currency }}{% if fxRate != 1 %} ({{ fxRate | number_format(3) }}){% endif %}</td>
         <td class="text-right">
           {% set amount_total = amount_total + statement.amount * fxRate %}
           {{ statement.amount|my_decimal_format_2d }}
