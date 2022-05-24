@@ -40,6 +40,16 @@ class Balance
      */
     private $portfolio;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
+     */
+    private $updatedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,7 +63,7 @@ class Balance
     public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -65,7 +75,7 @@ class Balance
     public function setQuantity(?float $quantity): self
     {
         $this->quantity = $quantity;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -77,7 +87,18 @@ class Balance
     public function setPortfolio(?Portfolio $portfolio): self
     {
         $this->portfolio = $portfolio;
-
+        $this->updated = new \DateTime();
         return $this;
     }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+  
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
 }
