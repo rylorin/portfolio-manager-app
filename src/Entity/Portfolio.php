@@ -20,14 +20,14 @@ class Portfolio
     public const STRATEGIES = [
         'Off' => 0,
         'Balance' => 1,
-        'Options P/L' => 2,
+        'Options value' => 2,
         'Options risk' => 3,
     ];
     public const STRATEGIES_REV = [
         null => 'Off',
         0 => 'Off',
         1 => 'Balance',
-        2 => 'Options P/L',
+        2 => 'Options value',
         3 => 'Options risk',
     ];
 
