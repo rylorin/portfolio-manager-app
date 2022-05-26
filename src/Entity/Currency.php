@@ -20,6 +20,16 @@ class Currency
     private $id;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
+     */
+    private $updatedAt;
+
+    /**
      * @ORM\Column(type="string", length=3)
      */
     private $base;
@@ -33,6 +43,11 @@ class Currency
      * @ORM\Column(type="float", nullable=true)
      */
     private $rate;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function __toString()
     {
@@ -52,7 +67,7 @@ class Currency
     public function setBase(string $base): self
     {
         $this->base = $base;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -64,7 +79,7 @@ class Currency
     public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
-
+        $this->updated = new \DateTime();
         return $this;
     }
 
@@ -76,7 +91,18 @@ class Currency
     public function setRate(?float $rate): self
     {
         $this->rate = $rate;
-
+        $this->updated = new \DateTime();
         return $this;
     }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+  
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+  
 }
