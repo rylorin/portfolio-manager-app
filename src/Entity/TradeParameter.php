@@ -25,11 +25,14 @@ class TradeParameter
     public const CCSTRATEGIES = [
         'Off' => 0,
         'On' => 1,
+        'Defensive' => 1,
+        'Agressive' => 2,
     ];
     public const CCSTRATEGIES_REV = [
         null => 'Off',
         0 => 'Off',
-        1 => 'On',
+        1 => 'Defensive',
+        2 => 'Agressive',
     ];
     public const CSPSTRATEGIES = [
         'Off' => 0,
@@ -47,6 +50,16 @@ class TradeParameter
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
+     */
+    private $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Stock::class)
@@ -84,16 +97,6 @@ class TradeParameter
      * @ORM\Column(type="smallint", nullable=true)
      */
     private $ccStrategy;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
-     */
-    private $updatedAt;
 
     public function __construct()
     {
