@@ -24,7 +24,6 @@ class TradeParameter
     ];
     public const CCSTRATEGIES = [
         'Off' => 0,
-        'On' => 1,
         'Defensive' => 1,
         'Agressive' => 2,
     ];
