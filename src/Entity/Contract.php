@@ -16,7 +16,8 @@ use App\Repository\ContractRepository;
  * @ORM\DiscriminatorMap({
  *     "STK"="Stock",
  *     "OPT"="Option",
- *     "CASH"="CashContract"
+ *     "CASH"="CashContract",
+ *     "BAG"="BagContract"
  * })
  **/
 abstract class Contract
@@ -24,6 +25,7 @@ abstract class Contract
     public const TYPE_STOCK = 'STK';
     public const TYPE_OPTION = 'OPT';
     public const TYPE_CASH = 'CASH';
+    public const TYPE_BAG = 'BAG';
     public const EXCHANGES = [
         'NYSE' => 'NYSE', 'NASDAQ' => 'NASDAQ', 'ARCA' => 'ARCA', 'IBIS2' => 'IBIS2', 'AMEX' => 'AMEX', 'CBOE' => 'CBOE',
         'SBF' => 'SBF', 'AEB' => 'AEB', 'VSE' => 'VSE', 'BVME' => 'BVME', 'DTB' => 'DTB', 'IBIS' => 'IBIS',
@@ -345,34 +347,34 @@ abstract class Contract
         return $symbol;
     }
 
-    public function getApiReqId(): ?int
-    {
-        return $this->ApiReqId;
-    }
+    // public function getApiReqId(): ?int
+    // {
+    //     return $this->ApiReqId;
+    // }
 
-    public function getAskDate(): ?\DateTimeInterface
-    {
-        return $this->askDate;
-    }
+    // public function getAskDate(): ?\DateTimeInterface
+    // {
+    //     return $this->askDate;
+    // }
 
-    public function setAskDate(?\DateTimeInterface $askDate): self
-    {
-        $this->askDate = $askDate;
+    // public function setAskDate(?\DateTimeInterface $askDate): self
+    // {
+    //     $this->askDate = $askDate;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getBidDate(): ?\DateTimeInterface
-    {
-        return $this->bidDate;
-    }
+    // public function getBidDate(): ?\DateTimeInterface
+    // {
+    //     return $this->bidDate;
+    // }
 
-    public function setBidDate(?\DateTimeInterface $bidDate): self
-    {
-        $this->bidDate = $bidDate;
+    // public function setBidDate(?\DateTimeInterface $bidDate): self
+    // {
+    //     $this->bidDate = $bidDate;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getTickPrice(): ?float
     {

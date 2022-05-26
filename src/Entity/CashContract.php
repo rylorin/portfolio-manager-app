@@ -11,12 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CashContract extends Contract {
 
-    public function getSecType(): string {
-        return Contract::TYPE_CASH;
-      }  
+  public function getSecType(): string {
+    return Contract::TYPE_CASH;
+  }  
+
+  public function getYahooTicker(): ?string {
+    return $this->symbol;
+  }
   
-      public function getYahooTicker(): string {
-          return $this->symbol;
-      }
-  
-    }
+}
