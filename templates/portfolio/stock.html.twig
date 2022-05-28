@@ -30,8 +30,15 @@
         {% include('position/_positions_table.html.twig') %}
     {% endif %}
 
-    {% if (trades is defined) and (trades|length) > 0 %}
-        <h2>Trades ({{ trades|length }})</h2>
+    {% if (open_trades is defined) and (open_trades|length) > 0 %}
+        {% set trades = open_trades %}
+        <h2>Open Trades ({{ trades|length }})</h2>
+        {% include('tradeunit/_tradeunits_table.html.twig') %}
+    {% endif %}
+
+    {% if (closed_trades is defined) and (closed_trades|length) > 0 %}
+        {% set trades = closed_trades %}
+        <h2>Closed Trades ({{ trades|length }})</h2>
         {% include('tradeunit/_tradeunits_table.html.twig') %}
     {% endif %}
 

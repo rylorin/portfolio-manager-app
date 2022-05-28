@@ -14,6 +14,7 @@ use App\Entity\Contract;
 use App\Entity\Option;
 use App\Entity\Statement;
 use App\Entity\Stock;
+use App\Entity\TradeUnit;
 use App\Form\PortfolioType;
 use App\Repository\PortfolioRepository;
 
@@ -195,8 +196,12 @@ class PortfolioController extends AbstractController
             [ 'q.portfolio' => $portfolio, 'q.stock' => $stock ],
             [ 'q.date' => 'ASC' ]
           ),
-          'trades' => $entityManager->getRepository('App:TradeUnit')->findTradeUnits(
-            [ 'q.portfolio' => $portfolio, 'q.symbol' => $stock ],
+          'open_trades' => $entityManager->getRepository('App:TradeUnit')->findTradeUnits(
+            [ 'q.portfolio' => $portfolio, 'q.symbol' => $stock, 'q.status' => TradeUnit::OPEN_STATUS ],
+            [ 'q.openingDate' => 'DESC' ]
+          ),
+          'closed_trades' => $entityManager->getRepository('App:TradeUnit')->findTradeUnits(
+            [ 'q.portfolio' => $portfolio, 'q.symbol' => $stock, 'q.status' => TradeUnit::CLOSE_STATUS ],
             [ 'q.openingDate' => 'DESC' ]
           ),
       ]);

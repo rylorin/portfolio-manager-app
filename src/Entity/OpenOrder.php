@@ -18,19 +18,29 @@ class OpenOrder
     private $id;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
+     */
+    private $updatedAt;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $PermId;
 
-    // /**
-    //  * @ORM\Column(type="integer", nullable=true)
-    //  */
-    // private $ClientId;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ClientId;
 
-    // /**
-    //  * @ORM\Column(type="integer", nullable=true)
-    //  */
-    // private $OrderId;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $OrderId;
 
     /**
      * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="openOrders")
@@ -79,16 +89,6 @@ class OpenOrder
      */
     private $RemainingQty;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
-     */
-    private $updatedAt;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -106,7 +106,7 @@ class OpenOrder
         return $this;
     }
 
-/*     public function getClientId(): ?int
+     public function getClientId(): ?int
     {
         return $this->ClientId;
     }
@@ -114,7 +114,7 @@ class OpenOrder
     public function setClientId(int $ClientId): self
     {
         $this->ClientId = $ClientId;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -126,10 +126,10 @@ class OpenOrder
     public function setOrderId(int $OrderId): self
     {
         $this->OrderId = $OrderId;
-
+        $this->updatedAt = new \DateTime();
         return $this;
     }
- */
+ 
     public function getAccount(): ?Portfolio
     {
         return $this->Account;
