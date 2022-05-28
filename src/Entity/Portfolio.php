@@ -106,7 +106,7 @@ class Portfolio
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $FindSymbolsSleep;
+    // private $FindSymbolsSleep;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
@@ -141,7 +141,7 @@ class Portfolio
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $crawlerDays;
+    // private $crawlerDays;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
@@ -447,17 +447,17 @@ class Portfolio
         return $this;
     }
 
-    public function getFindSymbolsSleep(): ?int
-    {
-        return $this->FindSymbolsSleep;
-    }
+    // public function getFindSymbolsSleep(): ?int
+    // {
+    //     return $this->FindSymbolsSleep;
+    // }
 
-    public function setFindSymbolsSleep(?int $FindSymbolsSleep): self
-    {
-        $this->FindSymbolsSleep = $FindSymbolsSleep;
+    // public function setFindSymbolsSleep(?int $FindSymbolsSleep): self
+    // {
+    //     $this->FindSymbolsSleep = $FindSymbolsSleep;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getAdjustCashSleep(): ?int
     {
@@ -531,17 +531,17 @@ class Portfolio
         return $this;
     }
 
-    public function getCrawlerDays(): ?int
-    {
-        return $this->crawlerDays;
-    }
+    // public function getCrawlerDays(): ?int
+    // {
+    //     return $this->crawlerDays;
+    // }
 
-    public function setCrawlerDays(?int $crawlerDays): self
-    {
-        $this->crawlerDays = $crawlerDays;
+    // public function setCrawlerDays(?int $crawlerDays): self
+    // {
+    //     $this->crawlerDays = $crawlerDays;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getCashStrategy(): ?int
     {
