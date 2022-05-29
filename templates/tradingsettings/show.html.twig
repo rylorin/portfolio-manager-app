@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Setting
+	{{ setting.id }}
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+        <div class="col-6">
+            <table class="table">
+                <tbody>
+				<tr>
+					<th>Stock</th>
+					<td>
+						{%if setting.stock is not null %}
+							<a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': setting.stock.id}) }}">
+								{{ setting.stock }}
+							</a>
+						{% else %}
+							N/A
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>CSP strategy</th>
+					<td class='text-center'>
+						{{ setting.cspStrategyName }}
+					</td>
+				</tr>
+				<tr>
+					<th>CSP %</th>
+					{% if setting.cspStrategy %}
+						<td class='text-right'>{{ setting.NavRatio|my_percent_format }}</td>
+					{% else %}
+						<td class='text-right'>-</td>
+					{% endif %}
+				</tr>
+				<tr>
+					<th>Roll put strat</th>
+					<td class='text-center'>
+						{% if setting.rollPutStrategy %}
+							{{ setting.rollPutStrategyName }}
+						{% else %}
+							-
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Roll call strat</th>
+					<td class='text-center'>
+						{% if setting.rollCallStrategy %}
+							{{ setting.rollCallStrategyName }}
+						{% else %}
+							-
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>CC strategy</th>
+					<td class='text-center'>
+						{% if setting.ccStrategy %}
+							{{ setting.ccStrategyName }}
+						{% else %}
+							-
+						{% endif %}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<nav>
+			<ul class="pagination">
+				<li class="page-item">
+					<a class="page-link mb-3" href="{{ path('portfolio_settings_show', {'id': setting.portfolio.id}) }}">
+						<span data-feather="arrow-left"></span>
+					</a>
+				</li>
+				{% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
+					<li class="page-item">
+						<a class="page-link mb-3" href="{{ path('portfolio_settings_tradingsettings_edit', {'id': setting.id}) }}">
+							<span data-feather="edit-2"></span>
+						</a>
+					</li>
+					<li class="page-item">{{ include('tradingsettings/_delete_form.html.twig') }}</li>
+				{% endif %}
+			</ul>
+		</nav>
+    </div>
+</div>
+{% endblock %}

@@ -49,7 +49,7 @@ class TradeSettingController extends AbstractController
         return $this->render('tradingsettings/new.html.twig', [
             'setting' => $TradeParameter,
             'form' => $form->createView(),
-            'portfolio' => $portfolio
+            'portfolio' => $portfolio,
         ]);
     }
 
@@ -59,7 +59,8 @@ class TradeSettingController extends AbstractController
     public function show(TradeParameter $TradeParameter): Response
     {
         return $this->render('tradingsettings/show.html.twig', [
-            'TradeParameter' => $TradeParameter,
+            'setting' => $TradeParameter,
+            'portfolio' => $TradeParameter->getPortfolio(),
         ]);
     }
 
@@ -80,6 +81,7 @@ class TradeSettingController extends AbstractController
         return $this->render('tradingsettings/edit.html.twig', [
             'setting' => $TradeParameter,
             'form' => $form->createView(),
+            'portfolio' => $TradeParameter->getPortfolio(),
         ]);
     }
 
