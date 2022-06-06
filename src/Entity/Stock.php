@@ -108,7 +108,7 @@ class Stock extends Contract
 
     public function getYahooTicker(): ?string
     {
-        $ticker = str_replace('-PR', '-P',$this->getSymbol());
+        $ticker = str_replace('-PR', '-P', $this->getSymbol());
         $exchange = $this->getExchange();
         if (($exchange == 'SBF') or ($exchange == 'IBIS2')) {
             $ticker = $ticker . '.PA';
