@@ -1,4 +1,4 @@
-<form class="form-inline" id="row{{portfolio.id}}" method="post" action="{{ path('portfolio_delete', {'id': portfolio.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+<form class="form-inline" id="row{{portfolio.id}}" method="post" action="{{ path('portfolio_delete', {'id': portfolio.id}) }}" onsubmit="confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ portfolio.id) }}">
     <a class="page-link mb-3" href="#" onclick="delete_item('row{{portfolio.id}}')"><span data-feather='trash-2'></span></a>
