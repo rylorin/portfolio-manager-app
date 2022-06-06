@@ -71,7 +71,10 @@ class CustomFilters extends \Twig_Extension {
     }
 
     public function to_tws_symbol($input) {
-        return str_replace('-', '.', str_replace('-PR', '/P', $input));
+        $input = str_replace('-PR', '/P', $input);
+        $input = str_replace('-B', '.B', $input);
+        $input = str_replace(' B', '.B', $input);
+        return $input;
     }
 
     public function masq($input) {
