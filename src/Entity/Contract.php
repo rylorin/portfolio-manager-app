@@ -108,20 +108,20 @@ abstract class Contract
      */
     private $previousClosePrice;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $ApiReqId;
+    // /**
+    //  * @ORM\Column(type="integer", nullable=true)
+    //  */
+    // private $ApiReqId;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $askDate;
+    // /**
+    //  * @ORM\Column(type="datetime", nullable=true)
+    //  */
+    // private $askDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $bidDate;
+    // /**
+    //  * @ORM\Column(type="datetime", nullable=true)
+    //  */
+    // private $bidDate;
 
     /**
      * @ORM\Column(type="float", nullable=true)
