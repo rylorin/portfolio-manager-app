@@ -36,7 +36,7 @@
           >
           {{ statement.date ? statement.date|date('d-m-Y') : '' }}
         </td>
-        <td>{{ statement.currency }}{% if fxRate != 1 %} ({{ fxRate | number_format(3) }}){% endif %}</td>
+        <td>{{ statement.currency }}{% if fxRate != 1 %} ({{ fxRate | number_format(2) }}){% endif %}</td>
         <td class="text-right">
           {% set amount_total = amount_total + statement.amount * fxRate %}
           {{ statement.amount|my_decimal_format_2d }}
@@ -61,7 +61,7 @@
         <td>
           {%if statement.stock is not null %}
           <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id}) }}">
-            {{ statement.stock }}
+            {{ statement.stock|u.truncate(8, '...') }}
           </a>
           {% else %}
             N/A
