@@ -93,8 +93,8 @@
         <tfoot class="font-weight-bold">
         	<tr>
             <td>Total</td>
-            <td class="text-right">{{ total_trades_count }}</td>
-            <td class="text-right">{{ total_trades_closed }}</td>
+            <td class="text-right">{{ total_trades_count | my_integer_format }}</td>
+            <td class="text-right">{{ total_trades_closed | my_integer_format }}</td>
             <td class="text-right">
               {% if total_trades_closed %}
                 {{ (total_trades_won / total_trades_closed) | my_percent_format }}
