@@ -11,6 +11,7 @@
       {% set total_options_cost = 0 %}
       {% set total_options_engaged = 0 %}
       {% set total_options_assignable = 0 %}
+      {% set total_options_count = 0 %}
       {% set sub_total_options_count = 0 %}
       {% set sub_total_options_cost = 0 %}
       {% set sub_total_options_engaged = 0 %}
@@ -109,7 +110,13 @@
             {% set sub_total_options_value = 0 %}
             {% set sub_total_options_pnl = 0 %}
           {% endif %}
-          {% set sub_total_options_count = sub_total_options_count + position.quantity %}
+          {% if position.quantity > 0 %}
+            {% set sub_total_options_count = sub_total_options_count + position.quantity %}
+            {% set total_options_count = total_options_count + position.quantity %}
+          {% else %}
+            {% set sub_total_options_count = sub_total_options_count - position.quantity %}
+            {% set total_options_count = total_options_count - position.quantity %}
+          {% endif %}
           {% set sub_total_options_cost = sub_total_options_cost + position.cost * currencies[position.contract.currency] %}
           {% set sub_total_options_value = sub_total_options_value + position_value * currencies[position.contract.currency] %}
           {% set sub_total_options_pnl = sub_total_options_pnl + position_pnl * currencies[position.contract.currency] %}
@@ -162,7 +169,7 @@
       </tbody>
       <tfoot class='font-weight-bold'>
       	<tr>
-          	<td></td>
+          	<td class="text-right" >{{ total_options_count }}</td>
           	<td>Total in</td>
           	<td></td>
           	<td></td>
