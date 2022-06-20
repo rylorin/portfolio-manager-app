@@ -25,7 +25,7 @@ class ContractType extends AbstractType
             ->add('bid')
             ->add('price')
             ->add('ask')
-            ->add('updated')
+            // ->add('updatedAt')
             ;
     }
 

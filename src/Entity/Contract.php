@@ -49,6 +49,16 @@ abstract class Contract
     private $id;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
+     */
+    protected $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
+     */
+    protected $updatedAt;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $conId;
@@ -127,16 +137,6 @@ abstract class Contract
      * @ORM\Column(type="float", nullable=true)
      */
     private $tickPrice;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="createdAt")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
-     */
-    private $updatedAt;
 
     public function __construct(?string $symbol = null)
     {

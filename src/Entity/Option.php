@@ -101,6 +101,17 @@ class Option extends Contract
         );
     }
 
+    // public function getUpdatedAt(): ?\DateTimeInterface
+    // {
+    //     return $this->updatedAt;
+    // }
+  
+    // private function setUpdatedAt(?\DateTimeInterface $updated): self
+    // {
+    //     $this->updatedAt = $updated;
+    //     return $this;
+    // }
+
     private function updateSymbol(): void
     {
         if (/* 17-03-2021 !$this->getSymbol() && */ $this->stock && $this->lastTradeDate && $this->strike && $this->callOrPut) {
@@ -136,7 +147,7 @@ class Option extends Contract
         $this->stock = $stock;
         $this->currency = $stock ? $stock->getCurrency() : null;
         $this->updateSymbol();
-        $this->updatedAtX = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
