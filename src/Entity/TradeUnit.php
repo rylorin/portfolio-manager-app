@@ -210,6 +210,7 @@ class TradeUnit
         $this->status = TradeUnit::CLOSE_STATUS;
         $this->closingDate = $closingDate;
       }
+      if ($this->status == TradeUnit::OPEN_STATUS) $this->closingDate = null;
       return $this;
     }
 
@@ -391,7 +392,7 @@ class TradeUnit
 
     public function getRisk(): ?int
     {
-      if (!$this->risk) $this->updateTradeUnit();
+      // if (!$this->risk) $this->updateTradeUnit();
       return (int)$this->risk;
     }
 

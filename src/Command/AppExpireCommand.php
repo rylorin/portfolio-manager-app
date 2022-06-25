@@ -42,6 +42,7 @@ class AppExpireCommand extends Command
             ->addOption('positions', null, InputOption::VALUE_NONE, 'Remove closed positions')
             ->addOption('statements', null, InputOption::VALUE_NONE, 'Remove old statements')
             ->addOption('options', null, InputOption::VALUE_NONE, 'Remove expired options contracts')
+            ->addOption('fix', null, InputOption::VALUE_NONE, 'Special hack to fix some contracts')
         ;
     }
 
@@ -90,6 +91,23 @@ class AppExpireCommand extends Command
             $this->em->flush();
             $io->progressFinish();
             $io->success('Options contracts expired.');
+        }
+
+        if ($input->getOption('fix')) {
+            $options = $this->em->getRepository('App:Option')->findByUnderlying(4614);
+            $io->progressStart(sizeof($options));
+            foreach ($options as $contract) {
+                $statements = $this->em->getRepository('App:OptionTradeStatement')->findByContract($contract);
+                if (!sizeof($statements)) {
+//                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
+                    $this->em->remove($contract);
+                }
+                $io->progressAdvance();
+            }
+            // save / write the changes to the database
+            $this->em->flush();
+            $io->progressFinish();
+            $io->success('Fix applied.');
         }
 
         return 0;

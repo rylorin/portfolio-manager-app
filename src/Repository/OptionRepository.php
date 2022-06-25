@@ -81,7 +81,18 @@ class OptionRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    // /**
+    /**
+      * @return Option[] Returns an array of Option objects
+      */
+      public function findByUnderlying($stock_id)
+      {
+        return $this->createQueryBuilder('o')
+            ->join('o.stock', 's')
+            ->Where('s.id = ?0')->setParameter(0, $stock_id)
+            ->getQuery()->getResult();
+      }
+
+      // /**
     //  * @return Option[] Returns an array of Option objects
     //  */
     /*
