@@ -110,9 +110,9 @@ class Stock extends Contract
     {
         $ticker = str_replace('-PR', '-P', $this->getSymbol());
         $exchange = $this->getExchange();
-        if (($exchange == 'SBF') or ($exchange == 'IBIS2')) {
+        if (($exchange == 'SBF') || ($exchange == 'IBIS2')) {
             $ticker = $ticker . '.PA';
-        } elseif (($exchange == 'LSE') or ($exchange == 'LSEETF')) {
+        } elseif (($exchange == 'LSE') || ($exchange == 'LSEETF')) {
             $ticker = $ticker . '.L';
         } elseif ($exchange == 'VSE') {
             $ticker = $ticker . '.VI';
