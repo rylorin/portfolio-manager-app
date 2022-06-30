@@ -36,10 +36,12 @@ class TradeUnit
     public const LONG_STRADDLE = 14;
     public const SHORT_STRADDLE = 15;
     public const FRONT_RATIO_SPREAD = 16;
+    public const BUY_WRITE = 17;
 
     public const stategyLabelMapping = [
       TradeUnit::LONG_STOCK => 'long stock',
       TradeUnit::SHORT_STOCK => 'short stock',
+      TradeUnit::BUY_WRITE => 'buy write',
       TradeUnit::LONG_CALL => 'long call',
       TradeUnit::SHORT_CALL => 'naked short call',
       TradeUnit::COVERED_CALL => 'covered short call',
@@ -60,6 +62,7 @@ class TradeUnit
       'undefined' => 0,
       'long stock' => TradeUnit::LONG_STOCK,
       'short stock' => TradeUnit::SHORT_STOCK,
+      'buy write' => TradeUnit::BUY_WRITE,
       'long call' => TradeUnit::LONG_CALL,
       'naked short call' => TradeUnit::SHORT_CALL,
       'covered short call' => TradeUnit::COVERED_CALL,

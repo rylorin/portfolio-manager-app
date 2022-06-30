@@ -531,18 +531,6 @@ class Portfolio
         return $this;
     }
 
-    // public function getCrawlerDays(): ?int
-    // {
-    //     return $this->crawlerDays;
-    // }
-
-    // public function setCrawlerDays(?int $crawlerDays): self
-    // {
-    //     $this->crawlerDays = $crawlerDays;
-
-    //     return $this;
-    // }
-
     public function getCashStrategy(): ?int
     {
         return $this->CashStrategy;

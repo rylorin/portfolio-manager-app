@@ -26,12 +26,14 @@ class TradeParameter
         'Off' => 0,
         'Defensive' => 1,
         'Agressive' => 2,
+        // 'More agressive' => 3,
     ];
     public const CCSTRATEGIES_REV = [
         null => 'Off',
         0 => 'Off',
         1 => 'Defensive',
         2 => 'Agressive',
+        // 3 => 'More agressive',
     ];
     public const CSPSTRATEGIES = [
         'Off' => 0,
