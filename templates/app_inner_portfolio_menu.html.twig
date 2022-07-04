@@ -11,6 +11,12 @@
     </a>
   </li>
   <li class="nav-item">
+    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_order' %}active{% endif %}" href="{{ path('portfolio_orders_index', { 'id': portfolio.id }) }}">
+      <span data-feather="bar-chart-2"></span>
+      Open orders
+    </a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link {% if app.request.attributes.get('_route') starts with 'portfolio_position' %}active{% endif %}" href="{{ path('portfolio_positions_index', { 'id': portfolio.id }) }}">
       <span data-feather="bar-chart-2"></span>
       Positions

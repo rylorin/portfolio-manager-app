@@ -53,10 +53,9 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('open_order_index') }}">back to list</a>
-
-    <a href="{{ path('open_order_edit', {'id': open_order.id}) }}">edit</a>
-
-    {{ include('open_order/_delete_form.html.twig') }}
+    <nav><ul class="pagination">
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_orders_index', {'id': open_order.account.id}) }}"><span data-feather="arrow-left"></span></a></li>
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_order_edit', {'id': open_order.id}) }}"><span data-feather="edit-2"></span></a></li>
+        <li class="page-item">{{ include('open_order/_delete_form.html.twig') }}</li>
+    </ul></nav>
 {% endblock %}

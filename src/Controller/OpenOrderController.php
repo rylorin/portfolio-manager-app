@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -9,24 +10,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Portfolio;
 
 /**
- * @Route("/open/order")
+ * @Route("/order")
  */
 class OpenOrderController extends AbstractController
 {
     /**
-     * @Route("/", name="open_order_index", methods={"GET"})
+     * @Route("/portfolio/{id}/index", name="portfolio_orders_index", methods={"GET"})
      */
-    public function index(OpenOrderRepository $openOrderRepository): Response
+    public function index(OpenOrderRepository $openOrderRepository, Portfolio $portfolio): Response
     {
+        $orders = $openOrderRepository->findBy([ 'Account' => $portfolio ]);
         return $this->render('open_order/index.html.twig', [
-            'open_orders' => $openOrderRepository->findAll(),
+            'portfolio' => $portfolio,
+            'open_orders' => $orders,
         ]);
     }
 
     /**
-     * @Route("/new", name="open_order_new", methods={"GET","POST"})
+     * @Route("/new", name="portfolio_order_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -49,17 +53,18 @@ class OpenOrderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="open_order_show", methods={"GET"})
+     * @Route("/{id}", name="portfolio_order_show", methods={"GET"})
      */
     public function show(OpenOrder $openOrder): Response
     {
         return $this->render('open_order/show.html.twig', [
+            'portfolio' => $openOrder->getAccount(),
             'open_order' => $openOrder,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="open_order_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="portfolio_order_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, OpenOrder $openOrder): Response
     {
@@ -79,7 +84,7 @@ class OpenOrderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="open_order_delete", methods={"POST"})
+     * @Route("/{id}", name="portfolio_order_delete", methods={"POST"})
      */
     public function delete(Request $request, OpenOrder $openOrder): Response
     {
