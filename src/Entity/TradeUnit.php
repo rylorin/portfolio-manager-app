@@ -337,7 +337,7 @@ class TradeUnit
     public function setStatus(int $status): self
     {
         $this->status = $status;
-
+        if ($this->status == TradeUnit::OPEN_STATUS) $this->closingDate = null;
         return $this;
     }
 

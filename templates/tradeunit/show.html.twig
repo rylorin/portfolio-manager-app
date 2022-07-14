@@ -64,6 +64,25 @@
     <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_tradeunit_edit', {'tradeunit': tradeunit.id}) }}"><span data-feather="edit-2"></span></a></li>
     <li class="page-item">{{ include('tradeunit/_delete_form.html.twig') }}</li>
   </ul></nav>
+
   {% set statements = tradeunit.openingTrades %}
+  <h2>Statements ({{ statements|length }})</h2>
   {% include('statement/_statements_table.html.twig') %}
+
+  <h2>Positions ({{ checksums|length }})</h2>
+  <table class="table table-striped table-sm">
+    <thead class="thead-dark">
+        <tr class="text-center">
+          <th>Symbol</th>
+          <th>Position</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for checksum in checksums %}
+        <tr>
+        <td>{{ checksum.symbol }}</td><td>{{ checksum.count }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

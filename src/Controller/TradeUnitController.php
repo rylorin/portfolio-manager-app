@@ -135,9 +135,19 @@ class TradeUnitController extends AbstractController
       foreach ($currencies as $currency) {
           $baserate[$currency->getCurrency()] = 1.0 / $currency->getRate();
       }
+      $checksums = [];
+      foreach ($tradeunit->getOpeningTrades() as $key => $statement) {
+        $symbol = $statement->getContract()->getSymbol();
+        if (!array_key_exists($symbol, $checksums)) {
+          $checksums[$symbol]['symbol'] = $symbol;
+          $checksums[$symbol]['count'] = 0;
+        }
+        $checksums[$symbol]['count'] += $statement->getQuantity();
+      }
       return $this->render('tradeunit/show.html.twig', [
           'portfolio' => $tradeunit->getPortfolio(),
           'tradeunit' => $tradeunit,
+          'checksums' => $checksums,
           'currencies' => $baserate,
       ]);
     }
