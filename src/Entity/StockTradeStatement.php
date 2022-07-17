@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TradeRepository;
+use App\Entity\Stock;
 
 /**
  * @ORM\Entity(repositoryClass=TradeRepository::class)
@@ -128,6 +129,11 @@ class StockTradeStatement extends Statement
         } else if ($this->status == Statement::EXERCISED_STATUS) {
           return 'Exercised';
         }
+    }
+
+    public function getContract(): ?Stock
+    {
+        return $this->getStock();
     }
 
 }

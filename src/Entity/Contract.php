@@ -247,7 +247,7 @@ abstract class Contract
 
     public function getChangePercent(): ?float
     {
-      return $this->previousClosePrice ? (($this->price / $this->previousClosePrice) - 1) : null;
+      return $this->previousClosePrice ? (($this->getPrice() / $this->previousClosePrice) - 1) : null;
     }
 
     public function getName(): ?string

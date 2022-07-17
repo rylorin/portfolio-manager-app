@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Entity\TradeUnit;
 use App\Entity\Portfolio;
+use App\Entity\Contract;
 use App\Repository\TradeUnitRepository;
 use App\Form\TradeUnitType;
 
@@ -137,12 +138,15 @@ class TradeUnitController extends AbstractController
       }
       $checksums = [];
       foreach ($tradeunit->getOpeningTrades() as $key => $statement) {
-        $symbol = $statement->getContract()->getSymbol();
-        if (!array_key_exists($symbol, $checksums)) {
-          $checksums[$symbol]['symbol'] = $symbol;
-          $checksums[$symbol]['count'] = 0;
+        $contract = $statement->getContract();
+        if ($contract) {
+          $symbol = $contract->getSymbol();
+          if (!array_key_exists($symbol, $checksums)) {
+            $checksums[$symbol]['symbol'] = $symbol;
+            $checksums[$symbol]['count'] = 0;
+          }
+          $checksums[$symbol]['count'] += $statement->getQuantity();
         }
-        $checksums[$symbol]['count'] += $statement->getQuantity();
       }
       return $this->render('tradeunit/show.html.twig', [
           'portfolio' => $tradeunit->getPortfolio(),
