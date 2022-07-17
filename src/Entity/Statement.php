@@ -219,4 +219,10 @@ abstract class Statement
 
         return $this;
     }
+
+    public function getContract(): ?Contract
+    {
+        return null;
+    }
+
 }
