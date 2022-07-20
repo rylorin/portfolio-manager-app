@@ -353,37 +353,6 @@ class ImporterXml
     $this->em->flush();
   }
 
-/*   public function processTransactionTax(\SimpleXMLElement $xml): void {
-      $portfolio = $this->findOrCreatePortfolio((string)$xml->attributes()->accountId);
-      $transactionID = (int)$xml->attributes()->transactionID;
-      $statement = $this->em->getRepository('App:TaxStatement')->findOneBy(
-        [ 'portfolio' => $portfolio, 'transactionID' => $transactionID ]);
-      if (!$statement) {
-        $stock = $this->findOrCreateStock($xml);
-        $date = new \DateTime((string)$xml->attributes()->settleDate);
-        $amount = (float)$xml->attributes()->amount;
-        $statement = $this->em->getRepository('App:TaxStatement')->findOneBy(
-          [ 'portfolio' => $portfolio, 'stock' => $stock->getId(), 'date' => $date, 'amount' => $amount, 'transactionID' => null ]);
-        if (!$statement) {
-          $currency = (string)$xml->attributes()->currency;
-          $description = (string)$xml->attributes()->taxDescription;
-          $statement = (new TaxStatement())
-              ->setPortfolio($portfolio)
-              ->setStock($stock)
-              ->setDate($date)
-              ->setDescription($description)
-              ->setAmount($amount)
-              ->setCurrency($currency)
-              ;
-          $this->em->persist($statement);
-        }
-      $statement->setTransactionId($transactionID);
-    }
-    if ($xml->attributes()->fxRateToBase && !$statement->getfxRateToBase())
-      $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
-    $this->em->flush();
-  }
- */
   public function processOtherFee(\SimpleXMLElement $xml): void {
       $portfolio = $this->findOrCreatePortfolio((string)$xml->attributes()->accountId);
       $transactionID = (int)$xml->attributes()->transactionID;
@@ -407,6 +376,7 @@ class ImporterXml
               ->setDate($date)
               ->setDescription($description)
               ->setAmount($amount)
+              ->setFees($amount)
               ->setCurrency($currency)
               ;
           $this->em->persist($statement);
