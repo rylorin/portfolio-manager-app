@@ -84,16 +84,17 @@ class OpenOrderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="portfolio_order_delete", methods={"POST"})
+     * @Route("/{id}", name="portfolio_order_delete", methods={"DELETE"})
      */
     public function delete(Request $request, OpenOrder $openOrder): Response
     {
+        $id = $openOrder->getAccount()->getId();
         if ($this->isCsrfTokenValid('delete'.$openOrder->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($openOrder);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('open_order_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('portfolio_orders_index', [ 'id' => $id ], Response::HTTP_SEE_OTHER);
     }
 }

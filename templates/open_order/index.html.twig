@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Open Orders{% endblock %}
+{% block title %}Portfolio {{ portfolio.name }} ({{ portfolio.account|masq }}-{{ portfolio.baseCurrency }}){% endblock %}
 
 {% block body %}
+    <h2>Open Orders ({{open_orders|length}})</h2>
     <table class="table table-striped table-sm">
         <thead class="thead-dark">
             <tr class="text-center">
@@ -17,18 +18,32 @@
         </thead>
         <tbody>
         {% for open_order in open_orders %}
-            {% if open_order.contract.secType != 'BAG' %}
-                <tr>
-                    <td><a href="{{ path('portfolio_order_show', {'id': open_order.id}) }}">{{ open_order.id }}</a></td>
-                    <td>{{ open_order.contract.symbol }}</td>
-                    <td>{{ open_order.ActionType }}</td>
-                    <td>{{ open_order.RemainingQty }}/{{ open_order.TotalQty }}</td>
-                    <td class="text-right">{{ open_order.LmtPrice|my_decimal_format_2d }}</td>
-                    <td>{{ open_order.Status }}</td>
-                    <td>
-                        <a href="{{ path('portfolio_order_show', {'id': open_order.id}) }}"><span data-feather="search"></span></a>
-                    </td>
-                </tr>
+            {% if (open_order.contract) %}
+                {% if (open_order.contract.secType != 'BAG') %}
+                    <tr>
+                        <td><a href="{{ path('portfolio_order_show', {'id': open_order.id}) }}">{{ open_order.id }}</a></td>
+                        <td>{{ open_order.contract.symbol }}</td>
+                        <td>{{ open_order.ActionType }}</td>
+                        <td>{{ open_order.RemainingQty }}/{{ open_order.TotalQty }}</td>
+                        <td class="text-right">{{ open_order.LmtPrice|my_decimal_format_2d }}</td>
+                        <td>{{ open_order.Status }}</td>
+                        <td>
+                            <a href="{{ path('portfolio_order_show', {'id': open_order.id}) }}"><span data-feather="search"></span></a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% else %}
+            <tr>
+                <td><a href="{{ path('portfolio_order_show', {'id': open_order.id}) }}">{{ open_order.id }}</a></td>
+                <td>undefined contract for order {{ open_order.id }}</td>
+                <td>{{ open_order.ActionType }}</td>
+                <td>{{ open_order.RemainingQty }}/{{ open_order.TotalQty }}</td>
+                <td class="text-right">{{ open_order.LmtPrice|my_decimal_format_2d }}</td>
+                <td>{{ open_order.Status }}</td>
+                <td>
+                    <a href="{{ path('portfolio_order_show', {'id': open_order.id}) }}"><span data-feather="search"></span></a>
+                </td>
+    </tr>
             {% endif %}
         {% else %}
             <tr>

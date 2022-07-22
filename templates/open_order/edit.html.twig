@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit OpenOrder{% endblock %}
+{% block title %}Edit OpenOrder {{ open_order.id }}{% endblock %}
 
 {% block body %}
-    <h1>Edit OpenOrder</h1>
-
-    {{ include('open_order/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('open_order_index') }}">back to list</a>
-
-    {{ include('open_order/_delete_form.html.twig') }}
+  <div class="row">
+    {% set item_size='col-12 col-sm-6' %}
+  	<div class="{{ item_size }}">
+        {{ include('open_order/_form.html.twig', {'button_label': 'Update'}) }}
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_order_show', {'id': open_order.portfolio.id}) }}"><span data-feather="arrow-left"></span></a></li>
+            <li class="page-item"><a class="page-link mb-3" href="#" onclick="click_button('save')"><span data-feather="save"></span></a></li>
+            <li class="page-item">{{ include('open_order/_delete_form.html.twig') }}</li>
+          </ul>
+    </div>
+  </div>
 {% endblock %}

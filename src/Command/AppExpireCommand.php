@@ -75,7 +75,8 @@ class AppExpireCommand extends Command
             foreach ($options as $contract) {
                 $positions = $contract->getPositions();
                 $statements = $this->em->getRepository('App:OptionTradeStatement')->findByContract($contract);
-                if (!sizeof($positions) && !sizeof($statements)) {
+                $orders = $this->em->getRepository('App:OpenOrder')->findByContract($contract);
+                if (!sizeof($positions) && !sizeof($statements) && !sizeof($orders)) {
 //                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
                     $this->em->remove($contract);
                 } else {
