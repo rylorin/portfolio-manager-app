@@ -17,4 +17,15 @@ class CorporateStatement extends Statement
     return Statement::TYPE_CORPORATE;
   }
 
+  public function getRealizedPNL(): ?float
+  {
+//      return $this->amount;
+      return 0; // ???
+  }
+
+  public function getFees(): ?float
+  {
+      return 0;
+  }
+
 }

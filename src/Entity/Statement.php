@@ -17,7 +17,7 @@ use App\Repository\StatementRepository;
  *     "Dividend"="DividendStatement",
  *     "Tax"="TaxStatement",
  *     "Interest"="InterestStatement",
- *     "TransactionFee"="FeeStatement",
+ *     "OtherFee"="FeeStatement",
  *     "CorporateStatement"="CorporateStatement",
  * })
  */
@@ -28,7 +28,7 @@ abstract class Statement
     const TYPE_DIVIDEND = 'Dividend';
     const TYPE_TAX = 'Tax';
     const TYPE_INTEREST = 'Interest';
-    const TYPE_FEE = 'TransactionFee';
+    const TYPE_FEE = 'OtherFee';
     const TYPE_CORPORATE = 'CorporateStatement';
 
     // trades statuses
@@ -101,9 +101,12 @@ abstract class Statement
 
     abstract public function getStatementType(): string;
 
-    public function getRealizedPNL(): ?float {
-      return $this->amount;
-    }
+    abstract public function getRealizedPNL(): ?float;
+    // public function getRealizedPNL(): ?float {
+    //   return $this->amount;
+    // }
+
+    abstract public function getFees(): ?float;
 
     public function getQuantity(): ?float {
       return null;

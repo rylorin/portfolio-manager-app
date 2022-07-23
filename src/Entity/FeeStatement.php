@@ -17,4 +17,14 @@ class FeeStatement extends Statement
     return Statement::TYPE_FEE;
   }
 
+  public function getRealizedPNL(): ?float
+  {
+      return 0;
+  }
+
+  public function getFees(): ?float
+  {
+      return $this->getAmount();
+  }
+
 }

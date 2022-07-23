@@ -21,6 +21,16 @@ class DividendStatement extends Statement
       return Statement::TYPE_DIVIDEND;
     }
 
+    public function getRealizedPNL(): ?float
+    {
+        return $this->getAmount();
+    }
+  
+    public function getFees(): ?float
+    {
+        return 0;
+    }
+
     public function getCountry(): ?string
     {
         return $this->country;

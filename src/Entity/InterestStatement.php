@@ -17,4 +17,14 @@ class InterestStatement extends Statement
       return Statement::TYPE_INTEREST;
     }
 
-}
+    public function getRealizedPNL(): ?float
+    {
+        return $this->getAmount();
+    }
+  
+    public function getFees(): ?float
+    {
+        return 0;
+    }
+
+  }

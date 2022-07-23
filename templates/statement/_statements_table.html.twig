@@ -42,13 +42,8 @@
           {{ statement.amount|my_decimal_format_2d }}
         </td>
         <td class="text-right">
-          {% if statement.statementType == 'Trade' or statement.statementType == 'TradeOption' %}
-            {% set total_pnl = total_pnl + statement.realizedPNL * fxRate %}
-            {{ statement.realizedPNL|my_decimal_format_2d }}
-          {% else %}
-            {% set total_pnl = total_pnl + statement.amount * fxRate %}
-            {{ statement.amount|my_decimal_format_2d }}
-          {% endif %}
+          {% set total_pnl = total_pnl + statement.realizedPNL * fxRate %}
+          {{ statement.realizedPNL|my_decimal_format_2d }}
         </td>
         <td class='text-right'>
           {% if statement.fees is defined %}

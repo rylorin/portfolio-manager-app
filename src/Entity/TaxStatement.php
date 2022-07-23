@@ -21,6 +21,16 @@ class TaxStatement extends Statement
       return Statement::TYPE_TAX;
     }
 
+    public function getRealizedPNL(): ?float
+    {
+        return $this->getAmount();
+    }
+  
+    public function getFees(): ?float
+    {
+        return 0;
+    }
+
     public function getCountry(): ?string
     {
         return $this->country;
