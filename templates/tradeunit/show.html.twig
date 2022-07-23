@@ -7,11 +7,19 @@
     <tbody>
       <tr>
           <th>Open Date</th>
-          <td class="text-left">{{ tradeunit.openingDate|date('d-m-Y H:i:s') }}</td>
-      </tr>
+          <td>
+            <a href="{{ path('portfolio_statements_history', {'portfolio': portfolio.id, 'year': tradeunit.openingDate|date('Y'), 'month': tradeunit.openingDate|date('m'), '_fragment': 'date' ~ tradeunit.openingDate|date('Ymd') }) }}">
+                {{ tradeunit.openingDate ? tradeunit.openingDate|date('d-m-Y H:i:s') : '' }}
+            </a>
+        </td>
+</tr>
       <tr>
           <th>Close Date</th>
-          <td class="text-left">{{ tradeunit.closingDate ? tradeunit.closingDate|date('d-m-Y H:i:s') : '' }}</td>
+          <td>
+            <a href="{{ path('portfolio_statements_history', {'portfolio': portfolio.id, 'year': tradeunit.closingDate|date('Y'), 'month': tradeunit.closingDate|date('m'), '_fragment': 'date' ~ tradeunit.closingDate|date('Ymd') }) }}">
+                {{ tradeunit.closingDate ? tradeunit.closingDate|date('d-m-Y H:i:s') : '' }}
+            </a>
+        </td>
       </tr>
       <tr>
           <th>Status</th>

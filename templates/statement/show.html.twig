@@ -36,19 +36,19 @@
                     <td>{{ statement.amount|my_decimal_format_2d }}</td>
                 </tr>
                 {% if statement.stock %}
-                <tr>
-                    <th>Stock</th>
-                    <td>
-                        {% if portfolio is defined %}
-                        <a
-                            href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id, '_fragment': 'stmt' ~ statement.id }) }}">
-                            {{ statement.stock }}
-                        </a>
-                        {% else %}
-                        {{ statement.stock }}
-                        {% endif %}
-                    </td>
-                </tr>
+                    <tr>
+                        <th>Stock</th>
+                        <td>
+                            {% if portfolio is defined %}
+                                <a
+                                    href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id, '_fragment': 'stmt' ~ statement.id }) }}">
+                                    {{ statement.stock }}
+                                </a>
+                            {% else %}
+                                {{ statement.stock }}
+                            {% endif %}
+                        </td>
+                    </tr>
                 {% endif %}
                 <tr>
                     <th>Trade Unit</th>
@@ -71,40 +71,40 @@
                     <td>{{ statement.fxRateToBase }}</td>
                 </tr>
                 {% if statement.country is defined %}
-                <tr>
-                    <th>Country</th>
-                    <td>{{ statement.country }}</td>
-                </tr>
+                    <tr>
+                        <th>Country</th>
+                        <td>{{ statement.country }}</td>
+                    </tr>
                 {% endif %}
                 {% if statement.StatusText is defined %}
-                <tr>
-                    <th>Status</th>
-                    <td>{{ statement.StatusText }}</td>
-                </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>{{ statement.StatusText }}</td>
+                    </tr>
                 {% endif %}
                 {% if statement.quantity %}
-                <tr>
-                    <th>Quantity</th>
-                    <td>{{ statement.quantity|my_integer_format }}</td>
-                </tr>
+                    <tr>
+                        <th>Quantity</th>
+                        <td>{{ statement.quantity|my_integer_format }}</td>
+                    </tr>
                 {% endif %}
                 {% if statement.price is defined %}
-                <tr>
-                    <th>Price</th>
-                    <td>{{ statement.price|my_decimal_format_2d }}</td>
-                </tr>
+                    <tr>
+                        <th>Price</th>
+                        <td>{{ statement.price|my_decimal_format_2d }}</td>
+                    </tr>
                 {% endif %}
                 {% if statement.proceeds is defined %}
-                <tr>
-                    <th>Proceeds</th>
-                    <td>{{ statement.proceeds|my_decimal_format_2d }}</td>
-                </tr>
+                    <tr>
+                        <th>Proceeds</th>
+                        <td>{{ statement.proceeds|my_decimal_format_2d }}</td>
+                    </tr>
                 {% endif %}
                 {% if statement.fees is defined %}
-                <tr>
-                    <th>Fees</th>
-                    <td>{{ statement.fees|my_decimal_format_2d }}</td>
-                </tr>
+                    <tr>
+                        <th>Fees</th>
+                        <td>{{ statement.fees|my_decimal_format_2d }}</td>
+                    </tr>
                 {% endif %}
                 <tr>
                     <th>Realized PNL</th>
