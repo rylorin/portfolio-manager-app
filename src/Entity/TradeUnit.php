@@ -39,6 +39,8 @@ class TradeUnit
     public const BUY_WRITE = 17;
 
     public const stategyLabelMapping = [
+      0 => 'undefined',
+      null => 'undefined',
       TradeUnit::LONG_STOCK => 'long stock',
       TradeUnit::SHORT_STOCK => 'short stock',
       TradeUnit::BUY_WRITE => 'buy write',
