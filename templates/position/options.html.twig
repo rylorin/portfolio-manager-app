@@ -89,7 +89,8 @@
           {% set position_engaged = -position.quantity * position.contract.strike * position.contract.multiplier %}
           {% set position_assignable = -position.quantity * position.contract.strike * position.contract.multiplier * position.contract.delta %}
           {% set maturity = position.contract.daysToMaturity %}
-          {% if position.contract.type == 'C' or position.quantity > 0 %}
+          {# {% if position.contract.type == 'C' or position.quantity > 0 %} #}
+          {% if position.contract.type == 'C' %}
             {% set position_engaged = 0 %}
             {% set position_assignable = 0 %}
           {# {% elseif (position.contract.type == 'P') and (position.quantity < 0) and (position_iv < 0) %}
