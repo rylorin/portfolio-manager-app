@@ -3,14 +3,12 @@
 {% block title %}OpenOrder{% endblock %}
 
 {% block body %}
-    <h1>OpenOrder</h1>
-
-    <table class="table">
+    {% set item_size='col-12 col-sm-6 col-lg-4' %}
+    <div class="row">
+    <div class="{{ item_size }}">
+        <h4>OpenOrder {{ open_order.id }}</h4>
+        <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ open_order.id }}</td>
-            </tr>
             <tr>
                 <th>PermId</th>
                 <td>{{ open_order.PermId }}</td>
@@ -62,4 +60,27 @@
         <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_order_edit', {'id': open_order.id}) }}"><span data-feather="edit-2"></span></a></li>
         <li class="page-item">{{ include('open_order/_delete_form.html.twig') }}</li>
     </ul></nav>
+    </div>
+    {% if open_order.contract.secType == 'OPT' %}
+      <div class="{{ item_size }}">
+        {% set option = open_order.contract %}
+        {% set stock = open_order.contract.stock %}
+  		{{ include('option/_option_contract.html.twig') }}
+
+        <nav><ul class="pagination">
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_option_show', {'id': option.id}) }}"><span data-feather="search"></span></a></li>
+        <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_option_edit', {'id': option.id}) }}"><span data-feather="edit-2"></span></a></li>
+        </ul></nav>
+      </div>
+    {% else %}
+        {% set stock = open_order.contract %}
+    {% endif %}
+    <div class="{{ item_size }}">
+		{{ include('stock/_stock_contract.html.twig') }}
+        <nav><ul class="pagination">
+            <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_stock_show', {'id': stock.id}) }}"><span data-feather="search"></span></a></li>
+            <li class="page-item"><a class="page-link mb-3" href="{{ path('repository_stock_edit', {'id': stock.id}) }}"><span data-feather="edit-2"></span></a></li>
+        </ul></nav>
+  	</div>
+    </div>
 {% endblock %}
