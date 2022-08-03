@@ -22,7 +22,15 @@
                 {% if (open_order.contract.secType != 'BAG') %}
                     <tr>
                         <td><a href="{{ path('portfolio_order_show', {'id': open_order.id}) }}">{{ open_order.id }}</a></td>
-                        <td>{{ open_order.contract.symbol }}</td>
+                        <td>
+                            {% if open_order.contract.secType == 'STK' %}
+                                <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': open_order.contract.id }) }}">
+                            {% endif %}
+                                {{ open_order.contract.symbol }}
+                            {% if (open_order.contract.secType == 'STK') or (open_order.contract.secType == 'OPT') %}
+                                </a>
+                            {% endif %}
+                        </td>
                         <td>{{ open_order.ActionType }}</td>
                         <td>{{ open_order.RemainingQty }}/{{ open_order.TotalQty }}</td>
                         <td class="text-right">{{ open_order.LmtPrice|my_decimal_format_2d }}</td>
