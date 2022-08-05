@@ -376,7 +376,7 @@ class ImporterXml
               ->setDate($date)
               ->setDescription($description)
               ->setAmount($amount)
-              ->setFees($amount)
+              // ->setFees($amount)
               ->setCurrency($currency)
               ;
           $this->em->persist($statement);
