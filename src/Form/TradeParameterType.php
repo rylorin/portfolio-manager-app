@@ -19,18 +19,18 @@ class TradeParameterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-          ->add('stock', EntityType::class, [
-            // looks for choices from this entity
-            'class' => Stock::class,
+            ->add('stock', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Stock::class,
 
-            // uses the User.username property as the visible option string
-            //'choice_label' => 'username',
+                // uses the User.username property as the visible option string
+                //'choice_label' => 'username',
 
-            // used to render a select box, check boxes or radios
-            // 'multiple' => true,
-            // 'expanded' => true,
-            'required' => true
-            ])
+                // used to render a select box, check boxes or radios
+                // 'multiple' => true,
+                // 'expanded' => true,
+                'required' => true
+                ])
             ->add('cspStrategy', ChoiceType::class, [
                 'choices' => TradeParameter::CSPSTRATEGIES,
                 'choice_label' => null,
@@ -40,12 +40,12 @@ class TradeParameterType extends AbstractType
                 'choices' => TradeParameter::ROLLSTRATEGIES,
                 'choice_label' => null,
                 ])
-            ->add('rollCallStrategy', ChoiceType::class, [
-                'choices' => TradeParameter::ROLLSTRATEGIES,
-                'choice_label' => null,
-                ])
             ->add('ccStrategy', ChoiceType::class, [
                 'choices' => TradeParameter::CCSTRATEGIES,
+                'choice_label' => null,
+                ])
+            ->add('rollCallStrategy', ChoiceType::class, [
+                'choices' => TradeParameter::ROLLSTRATEGIES,
                 'choice_label' => null,
                 ])
             ;

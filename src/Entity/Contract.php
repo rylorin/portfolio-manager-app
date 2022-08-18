@@ -133,10 +133,10 @@ abstract class Contract
     //  */
     // private $bidDate;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $tickPrice;
+    // /**
+    //  * @ORM\Column(type="float", nullable=true)
+    //  */
+    // private $tickPrice;
 
     public function __construct(?string $symbol = null)
     {
@@ -376,17 +376,17 @@ abstract class Contract
     //     return $this;
     // }
 
-    public function getTickPrice(): ?float
-    {
-        return $this->tickPrice;
-    }
+    // public function getTickPrice(): ?float
+    // {
+    //     return $this->tickPrice;
+    // }
 
-    public function setTickPrice(?float $tickPrice): self
-    {
-        $this->tickPrice = $tickPrice;
-        $this->updated = new \DateTime();
-        return $this;
-    }
+    // public function setTickPrice(?float $tickPrice): self
+    // {
+    //     $this->tickPrice = $tickPrice;
+    //     $this->updated = new \DateTime();
+    //     return $this;
+    // }
 
     public function getMultiplier(): int {
         return 1;
@@ -397,21 +397,9 @@ abstract class Contract
         return $this->createdAt;
     }
   
-    private function setCreatedAt(?\DateTimeInterface $updated): self
-    {
-        $this->createdAt = $updated;
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
-    }
-  
-    private function setUpdatedAt(?\DateTimeInterface $updated): self
-    {
-        $this->updatedAt = $updated;
-        return $this;
     }
   
 }

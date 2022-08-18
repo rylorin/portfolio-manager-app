@@ -65,6 +65,13 @@
         <th>Yield (annual)</th>
         <td class="text-right">{{ position.yield|my_percent_format }}</td>
     </tr>
-  </tr>
+    <tr>
+        <th>Updated</th>
+        <td>{{ position.updatedAt|date('d-m-Y H:i:s') }}</td>
+    </tr>
+    <tr>
+        <th>Created</th>
+        <td>{{ position.createdAt|date('d-m-Y H:i:s') }}</td>
+    </tr>
   </tbody>
 </table>

@@ -167,4 +167,15 @@ class Position
         return null;
       }
     }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->openDate;
+    }
+  
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
 }

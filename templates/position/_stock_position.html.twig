@@ -31,5 +31,13 @@
             <th>TTM Dividend</th>
             <td class="text-right">{{ (position.contract.dividendTTM * position.quantity)|my_decimal_format_2d }}</td>
         </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ position.updatedAt|date('d-m-Y H:i:s') }}</td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ position.createdAt|date('d-m-Y H:i:s') }}</td>
+        </tr>
     </tbody>
 </table>

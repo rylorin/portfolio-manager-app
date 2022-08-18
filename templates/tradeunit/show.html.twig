@@ -82,13 +82,16 @@
     <thead class="thead-dark">
         <tr class="text-center">
           <th>Symbol</th>
+          <th>Name</th>
           <th>Position</th>
         </tr>
     </thead>
     <tbody>
     {% for checksum in checksums %}
         <tr>
-        <td>{{ checksum.symbol }}</td><td>{{ checksum.count }}</td>
+        <td>{{ checksum.symbol }}</td>
+        <td>{{ checksum.name }}</td>
+        <td>{{ checksum.count }}</td>
         </tr>
     {% endfor %}
     </tbody>

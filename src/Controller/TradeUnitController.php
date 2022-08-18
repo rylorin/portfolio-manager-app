@@ -143,6 +143,7 @@ class TradeUnitController extends AbstractController
           $symbol = $contract->getSymbol();
           if (!array_key_exists($symbol, $checksums)) {
             $checksums[$symbol]['symbol'] = $symbol;
+            $checksums[$symbol]['name'] = $contract->getName();
             $checksums[$symbol]['count'] = 0;
           }
           $checksums[$symbol]['count'] += $statement->getQuantity();

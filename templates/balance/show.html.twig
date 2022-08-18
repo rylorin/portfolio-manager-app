@@ -16,12 +16,21 @@
                 <th>Quantity</th>
                 <td>{{ balance.quantity }}</td>
             </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ balance.updatedAt|date('d-m-Y H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ balance.createdAt|date('d-m-Y H:i:s') }}</td>
+            </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('portfolio_balances_index', {'id': balance.portfolio.id}) }}"><span data-feather="arrow-left"></span></a>
-    <a href="{{ path('portfolio_balance_edit', {'id': balance.id}) }}"><span data-feather="edit-2"></span></a>
-    {{ include('balance/_delete_form.html.twig') }}
+      <nav><ul class="pagination">
+          <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_balances_index', {'id': balance.portfolio.id}) }}"><span data-feather="arrow-left"></span></a></li>
+          <li class="page-item"><a class="page-link mb-3" href="{{ path('portfolio_balance_edit', {'id': balance.id}) }}"><span data-feather="edit-2"></span></a></li>
+          <li class="page-item">{{ include('balance/_delete_form.html.twig') }}</li>
+      </ul></nav>
   </div>
 </div>
 {% endblock body %}
