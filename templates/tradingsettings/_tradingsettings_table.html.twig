@@ -10,8 +10,8 @@
                 <th>Csp strat</th>
                 <th>NAV ratio</th>
                 <th>Roll Put strat</th>
-                <th>Roll Call strat</th>
                 <th>Cc strat</th>
+                <th>Roll Call strat</th>
                 <th>Volatility</th>
                 <th>Div. %</th>
                 <th>PER</th>
@@ -48,15 +48,15 @@
                         {% endif %}
                     </td>
                     <td class='text-center'>
-                        {% if setting.rollCallStrategy %}
-                            {{ setting.rollCallStrategyName }}
+                        {% if setting.ccStrategy %}
+                            {{ setting.ccStrategyName }}
                         {% else %}
                             -
                         {% endif %}
                     </td>
                     <td class='text-center'>
-                        {% if setting.ccStrategy %}
-                            {{ setting.ccStrategyName }}
+                        {% if setting.rollCallStrategy %}
+                            {{ setting.rollCallStrategyName }}
                         {% else %}
                             -
                         {% endif %}
@@ -70,8 +70,8 @@
                         {% endif %}
                     </td>
                     <td class='text-right'>
-                        {% if setting.stock.EpsTTM %}
-                            {{ (setting.stock.price / setting.stock.EpsTTM)|my_decimal_format_2d }}
+                        {% if setting.stock.EpsForward %}
+                            {{ (setting.stock.price / setting.stock.EpsForward)|my_decimal_format_2d }}
                         {% else %}
                             -
                         {% endif %}
