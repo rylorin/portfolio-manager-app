@@ -102,9 +102,6 @@ abstract class Statement
     abstract public function getStatementType(): string;
 
     abstract public function getRealizedPNL(): ?float;
-    // public function getRealizedPNL(): ?float {
-    //   return $this->amount;
-    // }
 
     abstract public function getFees(): ?float;
 
