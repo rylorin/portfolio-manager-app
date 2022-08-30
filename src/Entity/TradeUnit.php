@@ -189,11 +189,13 @@ class TradeUnit
       $openingDate = null;
       $closingDate = null;
       $qty = 0;
-      $this->PnL = 0;
       $this->risk = null;
       $risk = 0;
+      $realizedPnL = 0;
+      $proceedsPnL = 0;
       foreach ($this->openingTrades as $key => $statement) {
-        $this->PnL += $statement->getRealizedPNL();
+        $realizedPnL += $statement->getRealizedPNL();
+        $proceedsPnL += $statement->getAmount();
         $qty += $statement->getQuantity();
         if ((!$openingDate) || ($statement->getDate() < $openingDate)) $openingDate = $statement->getDate();
         if ($statement->getDate() > $closingDate) $closingDate = $statement->getDate();
@@ -211,9 +213,11 @@ class TradeUnit
       if ($qty) {
         $this->status = TradeUnit::OPEN_STATUS;
         $this->closingDate = null;
+        $this->PnL = $realizedPnL;
       } else {
         $this->status = TradeUnit::CLOSE_STATUS;
         $this->closingDate = $closingDate;
+        $this->PnL = $proceedsPnL;
       }
       if ($this->status == TradeUnit::OPEN_STATUS) $this->closingDate = null;
       return $this;
