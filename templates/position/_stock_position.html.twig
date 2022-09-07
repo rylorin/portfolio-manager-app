@@ -3,6 +3,21 @@
 {% set position_pnl = position_value - position.cost %}
 <table class="table">
     <tbody>
+        {% if position.contract %}
+            <tr>
+                <th>Stock</th>
+                <td>
+                    {% if portfolio is defined %}
+                        <a
+                            href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': position.contract.id, '_fragment': 'stmt' ~ position.id }) }}">
+                            {{ position.contract.symbol }}
+                        </a>
+                    {% else %}
+                        {{ position.contract.symbol }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
         <tr>
             <th>Open Date</th>
             <td class="text-right">{{ position.openDate|format_date('dd-MM-y') }}</td>
@@ -30,6 +45,22 @@
         <tr>
             <th>TTM Dividend</th>
             <td class="text-right">{{ (position.contract.dividendTTM * position.quantity)|my_decimal_format_2d }}</td>
+        </tr>
+        <tr>
+            <th>Trade</th>
+            <td>
+                {% if (position.TradeUnit is not null) and (position.TradeUnit.Id > 0) %}
+                <a href="{{ path('portfolio_tradeunit_show', {'tradeunit': position.TradeUnit.Id }) }}">{{
+                    position.TradeUnit.Id }}</a>
+                <a href="{{ path('portfolio_position_unlinktradeunit', {'id': position.id}) }}"><span
+                        data-feather='trash-2'></span></a>
+                {% else %}
+                <a href="{{ path('portfolio_position_createtradeunit', {'id': position.id}) }}"><span
+                        data-feather="plus-square"></span></a>
+                <a href="{{ path('portfolio_position_guesstradeunit', {'id': position.id}) }}"><span
+                        data-feather="help-circle"></span></a>
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>Updated</th>

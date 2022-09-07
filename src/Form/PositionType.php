@@ -18,7 +18,8 @@ class PositionType extends AbstractType
           ->add('contract')
           ->add('quantity')
           ->add('cost')
-        ;
+          ->add('tradeUnit')
+          ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

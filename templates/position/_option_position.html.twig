@@ -66,6 +66,22 @@
         <td class="text-right">{{ position.yield|my_percent_format }}</td>
     </tr>
     <tr>
+        <th>Trade</th>
+        <td>
+            {% if (position.TradeUnit is not null) and (position.TradeUnit.Id > 0) %}
+            <a href="{{ path('portfolio_tradeunit_show', {'tradeunit': position.TradeUnit.Id }) }}">{{
+                position.TradeUnit.Id }}</a>
+            <a href="{{ path('portfolio_position_unlinktradeunit', {'id': position.id}) }}"><span
+                    data-feather='trash-2'></span></a>
+            {% else %}
+            <a href="{{ path('portfolio_position_createtradeunit', {'id': position.id}) }}"><span
+                    data-feather="plus-square"></span></a>
+            <a href="{{ path('portfolio_position_guesstradeunit', {'id': position.id}) }}"><span
+                    data-feather="help-circle"></span></a>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
         <th>Updated</th>
         <td>{{ position.updatedAt|date('d-m-Y H:i:s') }}</td>
     </tr>

@@ -1,5 +1,6 @@
 {
     "scm.alwaysShowRepositories": true,
+    "editor.formatOnSave": true,
     "editor.quickSuggestions": {
         "other": true,
         "comments": true,

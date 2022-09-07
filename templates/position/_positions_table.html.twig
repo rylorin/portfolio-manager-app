@@ -9,6 +9,7 @@
             <th>Units</th>
             <th>Symbol</th>
             <th class="d-none d-lg-block">Name</th>
+            <th>Trade</th>
             <th>Curr.</th>
             <th>%</th>
             <th>Price</th>
@@ -43,6 +44,26 @@
                 {{ position.contract.name|u.truncate(35, '...') }}
               {% else %}
                 {{ position.contract.name|u.truncate(35, '...') }}
+              {% endif %}
+            </td>
+            <td class='text-right'>
+              {% if (position.TradeUnit is not null) and (position.TradeUnit.Id > 0) %}
+                <a href="{{ path('portfolio_tradeunit_show', {'tradeunit': position.TradeUnit.Id }) }}">{{
+                  position.TradeUnit.Id }}</a>
+              {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
+                <a href="{{ path('portfolio_position_unlinktradeunit', {'id': position.id}) }}"><span
+                  data-feather='trash-2'></span></a>
+              {% endif %}
+                {% set last_tu = position.TradeUnit.Id %}
+              {% elseif app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
+                <a href="{{ path('portfolio_position_createtradeunit', {'id': position.id}) }}"><span
+                  data-feather="plus-square"></span></a>
+                <a href="{{ path('portfolio_position_guesstradeunit', {'id': position.id}) }}"><span
+                  data-feather="help-circle"></span></a>
+                {% if last_tu is defined %}
+                  <a href="{{ path('portfolio_position_linktradeunit', {'id': position.id, 'tradeunit': last_tu}) }}"><span
+                    data-feather="arrow-up-circle"></span></a>
+                {% endif %}
               {% endif %}
             </td>
             <td>{{ position.contract.currency }}</td>

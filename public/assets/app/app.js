@@ -49,6 +49,7 @@ function click_button(id) {
     $("#menuToggler").attr('aria-controls', 'sidebarMenu')
   }
 
+  /* Configure select2 for form's select fields */
   if (window.document.getElementById('position_contract')) {
       $('#position_contract').select2();
   }
@@ -67,6 +68,9 @@ function click_button(id) {
   if (window.document.getElementById('option_trade_statement_tradeUnit')) {
       $('#option_trade_statement_tradeUnit').select2();
   }
+  if (window.document.getElementById('position_tradeUnit')) {
+    $('#position_tradeUnit').select2();
+}
 
   // Bootstrap Tooltip component setup
   $('[data-toggle="tooltip"]').tooltip()

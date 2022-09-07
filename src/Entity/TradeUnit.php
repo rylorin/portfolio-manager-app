@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Statement;
+use App\Entity\Position;
 
 /**
  * @ORM\Entity(repositoryClass=TradeUnitRepository::class)
@@ -144,10 +145,15 @@ class TradeUnit
      */
     private $comment;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Position::class, mappedBy="tradeUnit")
+     */
+    private $positions;
+
     public function __construct(Statement $statement = null)
     {
         $this->openingTrades = new ArrayCollection();
-        $this->closingTrades = new ArrayCollection();
+        $this->positions = new ArrayCollection();
 
         if ($statement) {
           $this->setPortfolio($statement->getPortfolio());
@@ -436,4 +442,42 @@ class TradeUnit
         return $this;
     }
 
-}
+    /**
+     * @return Collection|Position[]
+     */
+    public function getPositions(): Collection
+    {
+      $iterator = $this->positions->getIterator();
+      $iterator->uasort(function ($a, $b) {
+        if ($a->getDate() == $b->getDate()) {
+          return 0;
+        } elseif ($a->getDate() < $b->getDate()) return -1;
+        else return 1;
+      });
+      $this->positions = new ArrayCollection(iterator_to_array($iterator));
+      return $this->positions;
+    }
+
+    public function addPosition(Position $position): self
+    {
+        if (!$this->positions->contains($position)) {
+            $this->positions[] = $position;
+            $position->setTradeUnit($this);
+        }
+        $this->updateTradeUnit();
+        return $this;
+    }
+
+    public function removePosition(Position $position): self
+    {
+        if ($this->positions->removeElement($position)) {
+            // set the owning side to null (unless already changed)
+            if ($position->getTradeUnit() === $this) {
+                $position->setTradeUnit(null);
+            }
+        }
+        $this->updateTradeUnit();
+        return $this;
+    }
+
+  }

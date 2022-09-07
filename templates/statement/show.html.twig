@@ -51,7 +51,7 @@
                     </tr>
                 {% endif %}
                 <tr>
-                    <th>Trade Unit</th>
+                    <th>Trade</th>
                     <td>
                         {% if (statement.TradeUnit is not null) and (statement.TradeUnit.Id > 0) %}
                         <a href="{{ path('portfolio_tradeunit_show', {'tradeunit': statement.TradeUnit.Id }) }}">{{

@@ -48,6 +48,11 @@ class Position
     private $cost;
 
     /**
+     * @ORM\ManyToOne(targetEntity=TradeUnit::class, inversedBy="positions")
+     */
+    private $tradeUnit;
+
+    /**
      * @ORM\Column(type="datetime", name="updatedAt")
      */
     private $updatedAt;
@@ -166,6 +171,23 @@ class Position
       } else {
         return null;
       }
+    }
+
+    public function getTradeUnit(): ?TradeUnit
+    {
+        return $this->tradeUnit;
+    }
+
+    public function setTradeUnit(?TradeUnit $tradeUnit): self
+    {
+      if ($this->tradeUnit && ($this->tradeUnit != $tradeUnit)) {
+        $this->tradeUnit->removePosition($this);
+      }
+      $this->tradeUnit = $tradeUnit;
+      if ($this->tradeUnit) {
+        $this->tradeUnit->addPosition($this);
+      }
+      return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

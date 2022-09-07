@@ -13,6 +13,7 @@ use App\Entity\Option;
 use App\Entity\Position;
 use App\Entity\Portfolio;
 use App\Entity\Contract;
+use App\Entity\TradeUnit;
 use App\Form\PositionType;
 use App\Repository\PositionRepository;
 
@@ -190,4 +191,61 @@ class PositionController extends AbstractController
         }
         return $this->redirectToRoute('portfolio_positions_index', [ 'id' => $id ] );
     }
+
+    /**
+     * @Route("/{id}/createtradeunit", name="portfolio_position_createtradeunit", methods={"GET"})
+     */
+    public function createtradeunit(Position $position): Response
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      $tu = new TradeUnit($position);
+      $entityManager->persist($tu);
+      $entityManager->flush();
+      return $this->render('position/show.html.twig', [
+        'portfolio' => $position->getPortfolio(),
+        'position' => $position,
+      ]);
+    }
+
+    /**
+     * @Route("/{id}/unlinktradeunit", name="portfolio_position_unlinktradeunit", methods={"GET"})
+     */
+    public function unlinktradeunit(Position $position): Response
+    {
+      $position->setTradeUnit(null);
+      $this->getDoctrine()->getManager()->flush();
+      return $this->render('position/show.html.twig', [
+        'portfolio' => $position->getPortfolio(),
+        'position' => $position,
+      ]);
+    }
+
+    /**
+     * @Route("/{id}/linktradeunit/{tradeunit}", name="portfolio_position_linktradeunit", methods={"GET"})
+     */
+    public function linktradeunit(Position $position, TradeUnit $tradeunit): Response
+    {
+      $position->setTradeUnit($tradeunit);
+      $this->getDoctrine()->getManager()->flush();
+      return $this->render('position/show.html.twig', [
+        'portfolio' => $position->getPortfolio(),
+        'position' => $position,
+      ]);
+    }
+
+    /**
+     * @Route("/{id}/guesstradeunit", name="portfolio_position_guesstradeunit", methods={"GET"})
+     */
+    public function guesstradeunit(PositionRepository $positionRepository, Position $position): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $portfolio = $statepositionment->getPortfolio();
+        //   if ($x) $statement->setTradeUnit($x->getTradeUnit());
+        $entityManager->flush();
+        return $this->render('position/show.html.twig', [
+        'portfolio' => $position->getPortfolio(),
+        'position' => $position,
+      ]);
+    }
+
 }
