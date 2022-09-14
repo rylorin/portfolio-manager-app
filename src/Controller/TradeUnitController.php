@@ -149,6 +149,9 @@ class TradeUnitController extends AbstractController
           $checksums[$symbol]['count'] += $statement->getQuantity();
         }
       }
+      foreach ($checksums as $key => $value) {
+        if ($value['count'] == 0) unset($checksums[$key]);
+      }
       return $this->render('tradeunit/show.html.twig', [
           'portfolio' => $tradeunit->getPortfolio(),
           'tradeunit' => $tradeunit,
