@@ -35,12 +35,6 @@ class Balance
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="balances")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $portfolio;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true, name="createdAt")
      */
     private $createdAt;
@@ -49,6 +43,12 @@ class Balance
      * @ORM\Column(type="datetime", nullable=true, name="updatedAt")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="balances")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $portfolio;
 
     public function getId(): ?int
     {

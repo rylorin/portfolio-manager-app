@@ -49,49 +49,9 @@ class Portfolio
     private $baseCurrency;
 
     /**
-     * @ORM\OneToMany(targetEntity=Position::class, mappedBy="portfolio", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $positions;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Balance::class, mappedBy="portfolio", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $balances;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Statement::class, mappedBy="portfolio", orphanRemoval=true)
-     */
-    private $statements;
-
-    /**
      * @ORM\Column(type="string", length=32, nullable=true)
      */
     private $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity=TradeUnit::class, mappedBy="portfolio")
-     */
-    private $tradeUnits;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="portfolios")
-     */
-    private $owner;
-
-    /**
-     * @ORM\OneToMany(targetEntity=OpenOrder::class, mappedBy="Account", orphanRemoval=true)
-     */
-    private $openOrders;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Stock::class)
-     */
-    private $benchmark;
-
-    /**
-     * @ORM\OneToMany(targetEntity=TradeParameter::class, mappedBy="portfolio", orphanRemoval=true)
-     */
-    private $tradingParameters;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -147,6 +107,46 @@ class Portfolio
      * @ORM\Column(type="smallint", nullable=true)
      */
     private $CashStrategy;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Position::class, mappedBy="portfolio", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $positions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Balance::class, mappedBy="portfolio", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $balances;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Statement::class, mappedBy="portfolio", orphanRemoval=true)
+     */
+    private $statements;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TradeUnit::class, mappedBy="portfolio")
+     */
+    private $tradeUnits;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OpenOrder::class, mappedBy="Account", orphanRemoval=true)
+     */
+    private $openOrders;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TradeParameter::class, mappedBy="portfolio", orphanRemoval=true)
+     */
+    private $tradingParameters;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="portfolios")
+     */
+    private $owner;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Stock::class)
+     */
+    private $benchmark;
 
     public function __construct()
     {

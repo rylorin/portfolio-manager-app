@@ -20,22 +20,9 @@ class Position
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="positions", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     * should not be null but required to remove position
-     */
-    private $portfolio;
-
-    /**
      * @ORM\Column(type="datetime", name="createdAt")
      */
     private $openDate;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Contract::class, inversedBy="positions", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $contract;
 
     /**
      * @ORM\Column(type="float")
@@ -48,14 +35,27 @@ class Position
     private $cost;
 
     /**
+     * @ORM\Column(type="datetime", name="updatedAt")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="positions", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     * should not be null but required to remove position
+     */
+    private $portfolio;
+
+    /**
      * @ORM\ManyToOne(targetEntity=TradeUnit::class, inversedBy="positions")
      */
     private $tradeUnit;
 
     /**
-     * @ORM\Column(type="datetime", name="updatedAt")
+     * @ORM\ManyToOne(targetEntity=Contract::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $updatedAt;
+    private $contract;
 
     public function __construct()
     {
@@ -167,7 +167,12 @@ class Position
       if ($this->contract->getSecType() == Contract::TYPE_STOCK) {
         return $this->quantity ? $this->quantity / abs($this->quantity) * $this->contract->getDividendYield() : 0;
       } elseif ($this->contract->getSecType() == Contract::TYPE_OPTION) {
-        return $this->quantity ? -$this->quantity / abs($this->quantity) * $this->getPRU() / $this->contract->getStrike() / $this->getDaysToMaturity() * 365.25 : 0;
+        if ($this->contract->getStrike() && $this->getDaysToMaturity()) {
+            return $this->quantity ? -$this->quantity / abs($this->quantity) * $this->getPRU() / $this->contract->getStrike() / $this->getDaysToMaturity() * 365.25 : 0;
+        } else {
+            // TODO: should never happend: invalid data
+            return null;
+        }
       } else {
         return null;
       }

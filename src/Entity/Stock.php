@@ -15,11 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Stock extends Contract
 {
     /**
-     * @ORM\OneToMany(targetEntity=Option::class, mappedBy="stock", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $options;
-
-    /**
      * @ORM\Column(type="float", nullable=true)
      */
     private $dividendTTM;
@@ -38,11 +33,6 @@ class Stock extends Contract
      * @ORM\Column(type="string", length=31, nullable=true)
      */
     private $description;
-
-    /**
-     * @ORM\OneToMany(targetEntity=TradeUnit::class, mappedBy="symbol", orphanRemoval=true)
-     */
-    private $tradeUnits;
 
     /**
      * @ORM\Column(type="string", length=32, nullable=true)

@@ -46,12 +46,6 @@ abstract class Statement
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="statements")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $portfolio;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $date;
@@ -67,22 +61,9 @@ abstract class Statement
     private $amount;
 
     /**
-     * Not really correct regarding the model but useful to make the "Performance Report by Stock" easier
-     *
-     * @ORM\ManyToOne(targetEntity=Stock::class)
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $stock;
-
-    /**
      * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $description;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=TradeUnit::class, inversedBy="openingTrades")
-     */
-    private $tradeUnit;
 
     /**
      * @ORM\Column(type="integer", nullable=true, name="transaction_id")
@@ -93,6 +74,25 @@ abstract class Statement
      * @ORM\Column(type="float", nullable=true)
      */
     private $fxRateToBase;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="statements")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $portfolio;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TradeUnit::class, inversedBy="openingTrades")
+     */
+    private $tradeUnit;
+
+    /**
+     * Not really correct regarding the model but useful to make the "Performance Report by Stock" easier
+     *
+     * @ORM\ManyToOne(targetEntity=Contract::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $stock;
 
     public function getId(): ?int
     {
@@ -157,12 +157,12 @@ abstract class Statement
         return $this;
     }
 
-    public function getStock(): ?Stock
+    public function getStock(): ?Contract
     {
         return $this->stock;
     }
 
-    public function setStock(?Stock $stock): self
+    public function setStock(?Contract $stock): self
     {
         $this->stock = $stock;
 

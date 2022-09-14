@@ -105,11 +105,6 @@ class TradeUnit
     private $closingDate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Statement::class, mappedBy="tradeUnit")
-     */
-    private $openingTrades;
-
-    /**
      * @ORM\Column(type="smallint")
      */
     private $status;
@@ -118,17 +113,6 @@ class TradeUnit
      * @ORM\Column(type="float", nullable=true)
      */
     private $PnL;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Stock::class, inversedBy="tradeUnits")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $symbol;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="tradeUnits")
-     */
-    private $portfolio;
 
     /**
      * @ORM\Column(type="string", length=3, nullable=true)
@@ -149,6 +133,22 @@ class TradeUnit
      * @ORM\OneToMany(targetEntity=Position::class, mappedBy="tradeUnit")
      */
     private $positions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Statement::class, mappedBy="tradeUnit")
+     */
+    private $openingTrades;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Contract::class, inversedBy="tradeUnits")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $symbol;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Portfolio::class, inversedBy="tradeUnits")
+     */
+    private $portfolio;
 
     public function __construct(Statement $statement = null)
     {
@@ -361,7 +361,6 @@ class TradeUnit
     public function setPnL(?float $PnL): self
     {
         $this->PnL = $PnL;
-
         return $this;
     }
 
@@ -369,15 +368,14 @@ class TradeUnit
       return ($this->PnL > 0);
     }
 
-    public function getSymbol(): ?Stock
+    public function getSymbol(): ?Contract
     {
         return $this->symbol;
     }
 
-    public function setSymbol(?Stock $symbol): self
+    public function setSymbol(?Contract $symbol): self
     {
         $this->symbol = $symbol;
-
         return $this;
     }
 
@@ -389,7 +387,6 @@ class TradeUnit
     public function setPortfolio(?Portfolio $portfolio): self
     {
         $this->portfolio = $portfolio;
-
         return $this;
     }
 
@@ -401,7 +398,6 @@ class TradeUnit
     public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
-
         return $this;
     }
 
