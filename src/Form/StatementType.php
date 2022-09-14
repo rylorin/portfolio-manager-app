@@ -11,7 +11,11 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Statement;
+use App\Entity\Contract;
+use App\Entity\IndexContract;
 use App\Entity\Stock;
+use App\Repository\ContractRepository;
+use Doctrine\ORM\EntityRepository;
 
 class StatementType extends AbstractType
 {
@@ -30,8 +34,16 @@ class StatementType extends AbstractType
                     ])
             ->add('stock', EntityType::class, [
                 // looks for choices from this entity
-                'class' => Stock::class,
-
+                'class' => Contract::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('q')
+                    ->Join('App\Entity\Stock', 's', 'WITH', 'q.id = s.id')
+                    // ->leftJoin('App\Entity\IndexContract', 'i', 'WITH', 'i.id = q.id')
+                        // ->add('from', 'App\Entity\Contract q, App\Entity\Stock s, App\Entity\IndexContract i')
+                        // ->where("s.id = q.id OR i.id = q.id")
+                        ->orderBy('q.symbol', 'ASC');
+                },
+            
                 // uses the User.username property as the visible option string
                 //'choice_label' => 'username',
 

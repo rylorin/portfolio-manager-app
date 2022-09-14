@@ -4,23 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\OptionRepository;
+use App\Repository\FutureRepository;
 use App\Entity\Contract;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 
 /**
- * @ORM\Entity(repositoryClass=OptionRepository::class)
- * @ORM\Table(name="option")
- * @ORM\MappedSuperclass
+ * @ORM\Entity(repositoryClass=FutureRepository::class)
+ * @ORM\Table(name="future")
  */
-class Option extends Contract
+class Future extends Contract
 {
-    protected static $moneyLabelMapping = [
-      'ATM' => 'At-the-Money',
-      'OTM' => 'Out-of-the-Money',
-      'ITM' => 'In-the-Money'
-    ];
 
     /**
      * @ORM\Column(type="date", nullable=false)
@@ -28,60 +21,20 @@ class Option extends Contract
     private $lastTradeDate;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
-     */
-    private $strike;
-
-    /**
-     * @ORM\Column(type="string", length=1, nullable=false)
-     */
-    private $callOrPut;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $multiplier;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\ManyToOne(targetEntity=Contract::class, cascade={"persist"})
+     * @ORM\JoinColumn(name="underlying_id", referencedColumnName="id", nullable=false)
      */
-    private $ImpliedVolatility;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $Delta;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $pvDividend;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $Gamma;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $Vega;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $Theta;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Contract::class, inversedBy="options", cascade={"persist"})
-     * @ORM\JoinColumn(name="stock_id", referencedColumnName="id", nullable=false)
-     */
-    private $stock;
+    private $underlying;
 
     public function __construct()
     {
         parent::__construct();
-        $this->multiplier = 100;
+        $this->multiplier = 50;
         $this->createdAt = new \DateTime();
     }
 
@@ -91,16 +44,14 @@ class Option extends Contract
     }
 
     public function getSecType(): string {
-      return Contract::TYPE_OPTION;
+      return Contract::TYPE_FUTURE;
     }
 
     public static function formatSymbol(string $symbol, \DateTime $maturity, float $strike, string $type): string {
         return sprintf(
-            "%s %s %.1f %s",
+            "%s %s",
             str_replace('.T', '', str_replace(' ', '-', $symbol)),
             strtoupper($maturity->format("dMy")),
-            $strike,
-            $type
         );
     }
 
@@ -117,37 +68,35 @@ class Option extends Contract
 
     private function updateSymbol(): void
     {
-        if (/* 17-03-2021 !$this->getSymbol() && */ $this->stock && $this->lastTradeDate && $this->strike && $this->callOrPut) {
+        if (/* 17-03-2021 !$this->getSymbol() && */ $this->underlying && $this->lastTradeDate) {
             $this->setSymbol($this::formatSymbol(
                 $this->stock->getSymbol(),
                 $this->lastTradeDate,
-                $this->strike,
-                $this->callOrPut
             ));
         }
     }
 
-    public function getStrike(): ?float
+    // public function getStrike(): ?float
+    // {
+    //     return $this->strike;
+    // }
+
+    // public function setStrike(?float $strike): self
+    // {
+    //     $this->strike = $strike;
+    //     $this->updateSymbol();
+    //     $this->updatedAt = new \DateTime();
+    //     return $this;
+    // }
+
+    public function getUnderlying(): ?Stock
     {
-        return $this->strike;
+        return $this->underlying;
     }
 
-    public function setStrike(?float $strike): self
+    public function setUnderlying(?Contract $stock): self
     {
-        $this->strike = $strike;
-        $this->updateSymbol();
-        $this->updatedAt = new \DateTime();
-        return $this;
-    }
-
-    public function getStock(): ?Contract
-    {
-        return $this->stock;
-    }
-
-    public function setStock(?Contract $stock): self
-    {
-        $this->stock = $stock;
+        $this->underlying = $stock;
         $this->currency = $stock ? $stock->getCurrency() : null;
         $this->updateSymbol();
         $this->updatedAt = new \DateTime();
@@ -187,32 +136,6 @@ class Option extends Contract
         return $days;
     }
 
-    public function getCallOrPut(): ?string
-    {
-        return $this->callOrPut;
-    }
-
-    public function setCallOrPut(string $callOrPut): self
-    {
-        $this->callOrPut = $callOrPut;
-        $this->updateSymbol();
-        $this->updatedAt = new \DateTime();
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->callOrPut;
-    }
-
-    public function setType(string $callOrPut): self
-    {
-    	$this->callOrPut = $callOrPut;
-    	$this->updateSymbol();
-      $this->updatedAt = new \DateTime();
-    	return $this;
-    }
-
     public function getYahooTicker(): ?string
     {
         if ($this->getStock()) {
@@ -225,7 +148,7 @@ class Option extends Contract
 
     public function getMultiplier(): int
     {
-        return $this->multiplier ? $this->multiplier : 100;
+        return $this->multiplier ? $this->multiplier : 50;
     }
 
     public function setMultiplier(int $multiplier): self
@@ -257,7 +180,7 @@ class Option extends Contract
     }
 
     public function getMoneyShortLabel(): ?string {
-      if (!$this->stock || !$this->stock->getPrice()) {
+      if (!$this->stock->getPrice()) {
         return null;
       } elseif (($this->getMoneyDepth() / $this->stock->getPrice()) > 0.01) {
         return 'OTM';
@@ -277,11 +200,8 @@ class Option extends Contract
     }
 
     public function getBidYieldToMaturity(): ?float {
-      if ($this->strike && $this->getDaysToMaturity())
-          return $this->getBid() / $this->strike / $this->getDaysToMaturity() * 360;
-      else
-          return null;
-  }
+      return $this->getBid() / $this->strike / $this->getDaysToMaturity() * 360;
+    }
 
     public function getImpliedVolatility(): ?float
     {
@@ -293,71 +213,6 @@ class Option extends Contract
         $this->ImpliedVolatility = $ImpliedVolatility;
         $this->updatedAt = new \DateTime();
         return $this;
-    }
-
-    public function getDelta(): ?float
-    {
-        return $this->Delta;
-    }
-
-    public function setDelta(?float $Delta): self
-    {
-        $this->Delta = $Delta;
-        $this->updatedAt = new \DateTime();
-        return $this;
-    }
-
-    public function getPvDividend(): ?float
-    {
-        return $this->pvDividend;
-    }
-
-    public function setPvDividend(?float $pvDividend): self
-    {
-        $this->pvDividend = $pvDividend;
-        $this->updatedAt = new \DateTime();
-        return $this;
-    }
-
-    public function getGamma(): ?float
-    {
-        return $this->Gamma;
-    }
-
-    public function setGamma(?float $Gamma): self
-    {
-        $this->Gamma = $Gamma;
-        $this->updatedAt = new \DateTime();
-        return $this;
-    }
-
-    public function getVega(): ?float
-    {
-        return $this->Vega;
-    }
-
-    public function setVega(?float $Vega): self
-    {
-        $this->Vega = $Vega;
-        $this->updatedAt = new \DateTime();
-        return $this;
-    }
-
-    public function getTheta(): ?float
-    {
-        return $this->Theta;
-    }
-
-    public function setTheta(?float $Theta): self
-    {
-        $this->Theta = $Theta;
-        $this->updatedAt = new \DateTime();
-        return $this;
-    }
-
-    public function getPositions(): Collection
-    {
-      return parent::getPositions();
     }
 
   }

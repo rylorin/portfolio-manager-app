@@ -57,7 +57,7 @@
           {% set position_value = position.value %}
           {% set position_pnl = position.PNL %}
           {% set position_iv = position.contract.moneyDepth %}
-          {% if (position_iv / position.contract.strike) > 0.01 %}
+          {% if position.contract.strike and ((position_iv / position.contract.strike) > 0.01) %}
             {% set money_label = 'In-the-Money (ITM)' %}
             {% if position.quantity > 0 %}
               {% set row_style = 'background-color:Azure;' %}
@@ -68,7 +68,7 @@
               {% set row_class = 'table-danger' %}
               {% set strike_class = 'text-danger' %}
             {% endif %}
-          {% elseif (position_iv / position.contract.strike) < -0.01 %}
+          {% elseif position.contract.strike and ((position_iv / position.contract.strike) < -0.01) %}
             {% set money_label = 'Out-of-the-Money (OTM)' %}
             {% if position.quantity <= 0 %}
               {% set row_style = 'background-color:Azure;' %}
@@ -139,7 +139,13 @@
               </a>
             </td>
             <td class="text-right {{ strike_class }}" >{{ position.contract.strike |my_decimal_format_1d }}</td>
-            <td class="{{ date_style }}">{{ position.contract.lastTradeDate | format_date('dd-MM-y') }}</td>
+            <td class="{{ date_style }}">
+              {%if position.contract.lastTradeDate %}
+                {{ position.contract.lastTradeDate | format_date('dd-MM-y') }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
             <td>{% if position.contract.type == 'P' %}Put{% elseif position.contract.type == 'C' %}Call{%else %}N/A{% endif %}</td>
             <td>{{ position.contract.currency }}</td>
             <td class="text-right {{ strike_class }}">

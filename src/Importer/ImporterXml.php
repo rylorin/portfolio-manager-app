@@ -13,6 +13,7 @@ use App\Entity\Balance;
 use App\Entity\Portfolio;
 use App\Entity\Currency;
 use App\Entity\Statement;
+use App\Entity\Future;
 use App\Entity\StockTradeStatement;
 use App\Entity\OptionTradeStatement;
 use App\Entity\TaxStatement;
@@ -76,6 +77,56 @@ class ImporterXml
     return $stock;
   }
 
+  private function findOrCreateFuture(\SimpleXMLElement $xml): Future {
+    $contract = $this->em->getRepository('App:Future')
+      ->findOneBy([ 'conId' => (string)$xml->attributes()->conid ]);
+    if (!$contract) {
+      $stock = $this->em->getRepository('App:IndexContract')
+        ->findOneBy([ 'conId' => (string)$xml->attributes()->underlyingConid ]);
+      if (!$stock) {
+        $symbol = Contract::normalizeSymbol((string)$xml->attributes()->underlyingSymbol);
+        $stock = $this->em->getRepository('App:IndexContract')
+          ->findOneBy([ 'symbol' => $symbol ]);
+        if (!$stock) {
+          $stock = new Future($symbol);
+          $stock->setExchange((string)$xml->attributes()->underlyingListingExchange);
+          $stock->setCurrency((string)$xml->attributes()->currency);
+          $this->em->persist($stock);
+        }
+        $stock->setConId((int)$xml->attributes()->underlyingConid);
+      }
+
+      $contract = $this->em->getRepository('App:Future')
+        ->findOneBy([
+          'underlying' => $stock,
+          'lastTradeDate' => new \DateTime((string)$xml->attributes()->expiry),
+         ]);
+      if (!$contract) {
+        // option contract does not exist
+        $contract = (new Future((string)$xml->attributes()->description))
+          ->setUnderlying($stock)
+          ->setLastTradeDate(new \DateTime((string)$xml->attributes()->expiry))
+          ;
+
+        $this->em->persist($contract);
+      }
+      $contract->setConId((int)$xml->attributes()->conid);
+      // flush required therefore futurs lookup will succeed
+//      $this->em->flush();
+    }
+//    print_r($xml);
+    if ($xml->attributes()->listingExchange && ((string)$xml->attributes()->listingExchange != $contract->getExchange()))
+      $contract->setExchange((string)$xml->attributes()->listingExchange);
+    if ($xml->attributes()->currency && ((string)$xml->attributes()->currency != $contract->getCurrency()))
+      $contract->setCurrency((string)$xml->attributes()->currency);
+    if ($xml->attributes()->multiplier && ((int)$xml->attributes()->multiplier != $contract->getMultiplier())) {
+      $contract->setMultiplier((int)$xml->attributes()->multiplier);
+    }
+    if ($xml->attributes()->symbol && !$contract->getName())
+      $contract->setName((string)$xml->attributes()->symbol);
+    return $contract;
+  }
+
   private function findOrCreateOption(\SimpleXMLElement $xml): Option {
     $contract = $this->em->getRepository('App:Option')
       ->findOneBy([ 'conId' => (string)$xml->attributes()->conid ]);
@@ -122,8 +173,9 @@ class ImporterXml
       $contract->setExchange((string)$xml->attributes()->listingExchange);
     if ($xml->attributes()->currency && ((string)$xml->attributes()->currency != $contract->getCurrency()))
       $contract->setCurrency((string)$xml->attributes()->currency);
-    if ($xml->attributes()->multiplier && ((string)$xml->attributes()->multiplier != $contract->getMultiplier()))
-      $contract->setMultiplier((string)$xml->attributes()->multiplier);
+    if ($xml->attributes()->multiplier && ((int)$xml->attributes()->multiplier != $contract->getMultiplier())) {
+      $contract->setMultiplier((int)$xml->attributes()->multiplier);
+    }
     if ($xml->attributes()->symbol && !$contract->getName())
       $contract->setName((string)$xml->attributes()->symbol);
     return $contract;
@@ -145,6 +197,71 @@ class ImporterXml
       $amount = ((float)$xml->attributes()->netCash);
 
       $stock = $this->findOrCreateStock($xml);
+
+      // create trade statement if not exits
+      $statement = $this->em->getRepository('App:StockTradeStatement')->findOneBy(
+        [ 'stock' => $stock->getId(), 'portfolio' => $portfolio, 'date' => $date, 'transactionID' => null ]);
+      if (!$statement) {
+           $statement = (new StockTradeStatement())
+              ->setPortfolio($portfolio)
+              ->setStock($stock)
+              ->setDate($date)
+              ->setCurrency($currency)
+              ->setQuantity($quantity)
+              ->setPrice($price)
+              ->setProceeds($proceeds)
+              ->setFees($fees)
+              ->setAmount($amount)
+              ->setRealizedPNL($pnl)
+              ;
+
+          if ((string)($xml->attributes()->notes) == 'A') {
+            $statement->setStatus(Statement::ASSIGNED_STATUS);
+            $description = 'Assigned ';
+          } elseif ((string)($xml->attributes()->notes) == 'Ep') {
+            $statement->setStatus(Statement::EXPIRED_STATUS);
+            $description = 'Expired ';
+          } elseif ((string)($xml->attributes()->openCloseIndicator) == 'O') {
+            $statement->setStatus(Statement::OPEN_STATUS);
+            $description = 'Opening ';
+          } elseif ((string)$xml->attributes()->openCloseIndicator == 'C') {
+            $statement->setStatus(Statement::CLOSE_STATUS);
+            $description = 'Closing ';
+          } elseif ((string)($xml->attributes()->openCloseIndicator) == 'C;O') {
+            $statement->setStatus(Statement::OPEN_STATUS);
+            $description = 'Opening ';
+          } else {
+            print_r($xml);
+          }
+          $description = $description . $quantity . ' ' . $symbol . '@' . $price . $currency;
+          $statement->setDescription($description);
+
+          $this->em->persist($statement);
+      }
+      $statement->setTransactionId($transactionID);
+    }
+    if ($xml->attributes()->fxRateToBase && !$statement->getfxRateToBase())
+      $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
+    $this->em->flush();
+  }
+
+
+  private function processFutureTrade(Portfolio $portfolio, \SimpleXMLElement $xml): void {
+    $transactionID = intval((string)$xml->attributes()->transactionID);
+    $statement = $this->em->getRepository('App:StockTradeStatement')->findOneBy(
+      [ 'portfolio' => $portfolio, 'transactionID' => $transactionID ]);
+    if (!$statement) {
+      $currency = (string)$xml->attributes()->currency;
+      $symbol = (string)$xml->attributes()->symbol;
+      $date = new \DateTime((string)$xml->attributes()->dateTime);
+      $quantity = ((float)$xml->attributes()->quantity);
+      $price = ((float)$xml->attributes()->tradePrice);
+      $proceeds = ((float)$xml->attributes()->proceeds);
+      $fees = ((float)$xml->attributes()->ibCommission);
+      $pnl = ((float)$xml->attributes()->fifoPnlRealized);
+      $amount = ((float)$xml->attributes()->netCash);
+
+      $stock = $this->findOrCreateFuture($xml);
 
       // create trade statement if not exits
       $statement = $this->em->getRepository('App:StockTradeStatement')->findOneBy(
@@ -393,8 +510,10 @@ class ImporterXml
     $portfolio = $this->findOrCreatePortfolio((string)$xml->attributes()->accountId);
     if ($xml->attributes()->assetCategory == "STK") {
       $this->processStockTrade($portfolio, $xml);
-    } elseif ($xml->attributes()->assetCategory == "OPT") {
+    } elseif (($xml->attributes()->assetCategory == "OPT") || ($xml->attributes()->assetCategory == "FOP")) {
       $this->processOptionTrade($portfolio, $xml);
+    } elseif ($xml->attributes()->assetCategory == "FUT") {
+      $this->processFutureTrade($portfolio, $xml);
     } elseif ($xml->attributes()->assetCategory == "CASH") {
       // silently ignore for the moment
     } else {
@@ -425,8 +544,10 @@ class ImporterXml
   {
     if ($xml->attributes()->assetCategory == "STK") {
       $this->findOrCreateStock($xml);
-    } elseif ($xml->attributes()->assetCategory == "OPT") {
+    } elseif (($xml->attributes()->assetCategory == "OPT") || ($xml->attributes()->assetCategory == "FOP")) {
       $this->findOrCreateOption($xml);
+    } elseif ($xml->attributes()->assetCategory == "FUT") {
+      $this->findOrCreateFuture($xml);
     } else {
       print_r($xml);
     }

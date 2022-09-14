@@ -25,10 +25,18 @@
             <th>Currency</th>
             <td class="text-right">{{ stock.currency }}</td>
         </tr>
-        <tr>
-            <th>Historical volatility</th>
-            <td class="text-right">{{ stock.HistoricalVolatility|my_percent_format }}</td>
-        </tr>
+        {% if stock.lastTradeDate is defined %}
+            <tr>
+                <th>Last Trade Date</th>
+                <td class="text-right">{{ stock.lastTradeDate|date('d-m-Y H:i:s') }}</td>
+            </tr>
+        {% endif %}
+        {% if stock.HistoricalVolatility is defined %}
+            <tr>
+                <th>Historical volatility</th>
+                <td class="text-right">{{ stock.HistoricalVolatility|my_percent_format }}</td>
+            </tr>
+        {% endif %}
         <tr>
             <th>Ask</th>
             <td class="text-right">{{ stock.ask|my_decimal_format_2d }}</td>
@@ -57,26 +65,36 @@
             <th>52 week low</th>
             <td class="text-right">{{ stock.fiftyTwoWeekLow|my_decimal_format_2d }}</td>
         </tr>
-        <tr>
-            <th>TTM dividend</th>
-            <td class="text-right">{{ stock.dividendTTM }}</td>
-        </tr>
-        <tr>
-            <th>Dividend yield</th>
-            <td class="text-right">{{ stock.dividendYield|my_percent_format }}</td>
-        </tr>
-        <tr>
-            <th>TTM EPS</th>
-            <td class="text-right">{{ stock.epsTTM }}</td>
-        </tr>
-        <tr>
-            <th>Forward EPS</th>
-            <td class="text-right">{{ stock.epsForward }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ stock.description }}</td>
-        </tr>
+        {% if stock.dividendTTM is defined %}
+            <tr>
+                <th>TTM dividend</th>
+                <td class="text-right">{{ stock.dividendTTM }}</td>
+            </tr>
+        {% endif %}
+        {% if stock.dividendYield is defined %}
+            <tr>
+                <th>Dividend yield</th>
+                <td class="text-right">{{ stock.dividendYield|my_percent_format }}</td>
+            </tr>
+        {% endif %}
+        {% if stock.epsTTM is defined %}
+            <tr>
+                <th>TTM EPS</th>
+                <td class="text-right">{{ stock.epsTTM }}</td>
+            </tr>
+        {% endif %}
+        {% if stock.epsForward is defined %}
+            <tr>
+                <th>Forward EPS</th>
+                <td class="text-right">{{ stock.epsForward }}</td>
+            </tr>
+        {% endif %}
+        {% if stock.description is defined %}
+            <tr>
+                <th>Description</th>
+                <td>{{ stock.description }}</td>
+            </tr>
+        {% endif %}
         <tr>
             <th>Updated</th>
             <td class="text-right">

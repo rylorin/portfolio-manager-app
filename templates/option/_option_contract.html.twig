@@ -56,10 +56,12 @@
             <th>Previous Close Price</th>
             <td class="text-right font-weight-bold">{{ option.previousClosePrice|my_decimal_format_2d }}</td>
         </tr>
-        <tr>
-            <th>Last Trade Date</th>
-            <td class="text-right {{ date_style }}">{{ option.lastTradeDate|format_date('dd-MM-y') }}</td>
-        </tr>
+        {% if option.lastTradeDate %}
+            <tr>
+                <th>Last Trade Date</th>
+                <td class="text-right {{ date_style }}">{{ option.lastTradeDate|format_date('dd-MM-y') }}</td>
+            </tr>
+        {% endif %}
         <tr>
             <th>Days to expiration</th>
             <td class="text-right {{ date_style }}">{{ option.daysToMaturity|my_decimal_format_2d }}</td>
@@ -76,13 +78,15 @@
             <th>Multiplier</th>
             <td class="text-right">{{ option.multiplier|my_integer_format }}</td>
         </tr>
-        <tr>
-          <th>{{ option.moneyLongLabel }} ({{ option.moneyShortLabel }})</th>
-          <td class="text-right">
-            {{ option.moneyDepth|my_decimal_format_2d }}
-            ({{ (option.moneyDepth / option.strike)|my_percent_format }})
-          </td>
-        <tr>
+        {% if option.strike %}
+            <tr>
+            <th>{{ option.moneyLongLabel }} ({{ option.moneyShortLabel }})</th>
+            <td class="text-right">
+                {{ option.moneyDepth|my_decimal_format_2d }}
+                ({{ (option.moneyDepth / option.strike)|my_percent_format }})
+            </td>
+            <tr>
+        {% endif %}
         <tr>
             <th>Yield (bid) to maturity</th>
             <td class="text-right">{{ (option.bidYieldToMaturity)|my_percent_format }}</td>

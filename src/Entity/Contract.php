@@ -16,8 +16,10 @@ use App\Repository\ContractRepository;
  * @ORM\DiscriminatorMap({
  *     "STK"="Stock",
  *     "OPT"="Option",
+ *     "IND"="IndexContract",
+ *     "FUT"="Future",
  *     "CASH"="CashContract",
- *     "BAG"="BagContract"
+ *     "BAG"="BagContract",
  * })
  **/
 abstract class Contract
@@ -26,6 +28,8 @@ abstract class Contract
     public const TYPE_OPTION = 'OPT';
     public const TYPE_CASH = 'CASH';
     public const TYPE_BAG = 'BAG';
+    public const TYPE_FOP = 'FOP';
+    public const TYPE_FUTURE = 'FUT';
     public const EXCHANGES = [
         'NYSE' => 'NYSE', 'NASDAQ' => 'NASDAQ', 'ARCA' => 'ARCA', 'IBIS2' => 'IBIS2', 'AMEX' => 'AMEX', 'CBOE' => 'CBOE',
         'SBF' => 'SBF', 'AEB' => 'AEB', 'VSE' => 'VSE', 'BVME' => 'BVME', 'DTB' => 'DTB', 'IBIS' => 'IBIS',
@@ -74,11 +78,6 @@ abstract class Contract
     private $currency;
 
     /**
-     * @ORM\OneToMany(targetEntity=Position::class, mappedBy="contract", orphanRemoval=true)
-     */
-    private $positions;
-
-    /**
      * @ORM\Column(type="string", length=8, nullable=true)
      */
     private $exchange;
@@ -118,25 +117,20 @@ abstract class Contract
      */
     private $previousClosePrice;
 
-    // /**
-    //  * @ORM\Column(type="integer", nullable=true)
-    //  */
-    // private $ApiReqId;
+    /**
+     * @ORM\OneToMany(targetEntity=Option::class, mappedBy="stock", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $options;
 
-    // /**
-    //  * @ORM\Column(type="datetime", nullable=true)
-    //  */
-    // private $askDate;
+    /**
+     * @ORM\OneToMany(targetEntity=TradeUnit::class, mappedBy="symbol", orphanRemoval=true)
+     */
+    private $tradeUnits;
 
-    // /**
-    //  * @ORM\Column(type="datetime", nullable=true)
-    //  */
-    // private $bidDate;
-
-    // /**
-    //  * @ORM\Column(type="float", nullable=true)
-    //  */
-    // private $tickPrice;
+    /**
+     * @ORM\OneToMany(targetEntity=Position::class, mappedBy="contract", orphanRemoval=true)
+     */
+    private $positions;
 
     public function __construct(?string $symbol = null)
     {
