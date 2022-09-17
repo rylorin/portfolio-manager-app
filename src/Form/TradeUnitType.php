@@ -10,25 +10,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\TradeUnit;
+use App\Entity\Contract;
 use App\Entity\Stock;
+use App\Entity\Future;
+use App\Form\Type\UnderlyingType;
 
 class TradeUnitType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-          ->add('symbol', EntityType::class, [
-            // looks for choices from this entity
-            'class' => Stock::class,
-
-            // uses the User.username property as the visible option string
-            //'choice_label' => 'username',
-
-            // used to render a select box, check boxes or radios
-            // 'multiple' => true,
-            // 'expanded' => true,
-            ])
+          ->add('symbol', UnderlyingType::class, [ 'required' => true ])
           ->add('strategy', ChoiceType::class, [ 'choices' => TradeUnit::stategyMenuMapping ])
           ->add('openingDate', DateTimeType::class, [
             'html5' => true,

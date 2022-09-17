@@ -174,9 +174,9 @@ class PortfolioController extends AbstractController
     /**
      * @Route("/{portfolio}/stock/{stock}/dashboard", name="portfolio_symbol_dashboard", methods={"GET"}, requirements={"portfolio":"\d+", "stock":"\d+"})
      * @ParamConverter("portfolio", class="App\Entity\Portfolio", options={"id" = "portfolio"})
-     * @ParamConverter("stock", class="App\Entity\Stock", options={"id" = "stock"})
+     * @ParamConverter("stock", class="App\Entity\Contract", options={"id" = "stock"})
      */
-    public function stock(Portfolio $portfolio, Stock $stock): Response
+    public function stock(Portfolio $portfolio, Contract $stock): Response
     {
       $entityManager = $this->getDoctrine()->getManager();
       $currencies = $entityManager->getRepository('App:Currency')->findByBase($portfolio->getBaseCurrency());

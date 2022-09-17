@@ -14,8 +14,10 @@ use App\Entity\Statement;
 use App\Entity\Contract;
 use App\Entity\IndexContract;
 use App\Entity\Stock;
+use App\Entity\Future;
 use App\Repository\ContractRepository;
 use Doctrine\ORM\EntityRepository;
+use App\Form\Type\UnderlyingType;
 
 class StatementType extends AbstractType
 {
@@ -32,27 +34,8 @@ class StatementType extends AbstractType
             ->add('amount', NumberType::class, [
                     'scale' => 9
                     ])
-            ->add('stock', EntityType::class, [
-                // looks for choices from this entity
-                'class' => Contract::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('q')
-                    ->Join('App\Entity\Stock', 's', 'WITH', 'q.id = s.id')
-                    // ->leftJoin('App\Entity\IndexContract', 'i', 'WITH', 'i.id = q.id')
-                        // ->add('from', 'App\Entity\Contract q, App\Entity\Stock s, App\Entity\IndexContract i')
-                        // ->where("s.id = q.id OR i.id = q.id")
-                        ->orderBy('q.symbol', 'ASC');
-                },
-            
-                // uses the User.username property as the visible option string
-                //'choice_label' => 'username',
-
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,
-                'required' => false
-                ])
-                ->add('description')
+            ->add('stock', UnderlyingType::class, [ 'required' => false ])
+            ->add('description')
             ;
     }
 

@@ -53,7 +53,7 @@ class PositionRepository extends ServiceEntityRepository
     /*
      * Find all positions related to one stock.
      */
-    public function findByStock(Portfolio $portfolio, Stock $stock, $limit = null, $offset = null)
+    public function findByStock(Portfolio $portfolio, Contract $stock, $limit = null, $offset = null)
     {
         /* find options positions */
         $results =  $this->createQueryBuilder('p')

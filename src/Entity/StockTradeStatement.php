@@ -7,6 +7,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TradeRepository;
 use App\Entity\Stock;
+use App\Entity\Contract;
 
 /**
  * @ORM\Entity(repositoryClass=TradeRepository::class)
@@ -131,7 +132,7 @@ class StockTradeStatement extends Statement
         }
     }
 
-    public function getContract(): ?Stock
+    public function getContract(): ?Contract
     {
         return $this->getStock();
     }
