@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use \Doctrine\ORM\Query\Expr\Join;
 use App\Entity\Portfolio;
 use App\Entity\Statement;
+use App\Entity\Contract;
 use App\Entity\Stock;
 use App\Entity\StockTradeStatement;
 use App\Entity\OptionTradeStatement;
@@ -122,7 +123,7 @@ $query =  $this->createQueryBuilder('q')
       */
     }
 
-    public function findPreviousStatementForSymbol(Portfolio $portfolio, \DateTime $date, Stock $contract): ?Statement
+    public function findPreviousStatementForSymbol(Portfolio $portfolio, \DateTime $date, Contract $contract): ?Statement
     {
       $query =  $this->createQueryBuilder('q')
           ->addSelect('q')

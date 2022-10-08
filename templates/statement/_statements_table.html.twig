@@ -56,7 +56,7 @@
         <td>
           {%if statement.stock is not null %}
           <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': statement.stock.id}) }}">
-            {{ statement.stock|u.truncate(8, '...') }}
+            {{ statement.stock|u.truncate(10, '...') }}
           </a>
           {% else %}
             N/A

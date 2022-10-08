@@ -102,7 +102,7 @@ class ImporterXml
           'lastTradeDate' => new \DateTime((string)$xml->attributes()->expiry),
          ]);
       if (!$contract) {
-        // option contract does not exist
+        // future contract does not exist
         $contract = (new Future((string)$xml->attributes()->description))
           ->setUnderlying($stock)
           ->setLastTradeDate(new \DateTime((string)$xml->attributes()->expiry))
@@ -131,9 +131,10 @@ class ImporterXml
     $contract = $this->em->getRepository('App:Option')
       ->findOneBy([ 'conId' => (string)$xml->attributes()->conid ]);
     if (!$contract) {
-      $stock = $this->em->getRepository('App:Stock')
+      $stock = $this->em->getRepository('App:Contract')
         ->findOneBy([ 'conId' => (string)$xml->attributes()->underlyingConid ]);
       if (!$stock) {
+        // TODO: implement ($xml->attributes()->assetCategory == "FOP")
         $symbol = Contract::normalizeSymbol((string)$xml->attributes()->underlyingSymbol);
         $stock = $this->em->getRepository('App:Stock')
           ->findOneBy([ 'symbol' => $symbol ]);
@@ -155,7 +156,7 @@ class ImporterXml
          ]);
       if (!$contract) {
         // option contract does not exist
-        $contract = (new Option((string)$xml->attributes()->description))
+        $contract = (new Option((string)$xml->attributes()->localSymbol))
           ->setStock($stock)
           ->setLastTradeDate(new \DateTime((string)$xml->attributes()->expiry))
           ->setStrike((float)$xml->attributes()->strike)
@@ -244,7 +245,6 @@ class ImporterXml
       $statement->setfxRateToBase((float)$xml->attributes()->fxRateToBase);
     $this->em->flush();
   }
-
 
   private function processFutureTrade(Portfolio $portfolio, \SimpleXMLElement $xml): void {
     $transactionID = intval((string)$xml->attributes()->transactionID);

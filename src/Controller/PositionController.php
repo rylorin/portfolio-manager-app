@@ -239,13 +239,20 @@ class PositionController extends AbstractController
     public function guesstradeunit(PositionRepository $positionRepository, Position $position): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $portfolio = $statepositionment->getPortfolio();
-        //   if ($x) $statement->setTradeUnit($x->getTradeUnit());
+        $portfolio = $position->getPortfolio();
+        $statementRepository = $entityManager->getRepository('App:Statement');
+        $x = $statementRepository->findPreviousStatementForSymbol(
+          $portfolio,
+          new \DateTime(),
+          $position->getContract()
+        );
+        if ($x) $position->setTradeUnit($x->getTradeUnit());
         $entityManager->flush();
-        return $this->render('position/show.html.twig', [
-        'portfolio' => $position->getPortfolio(),
-        'position' => $position,
-      ]);
+        return $this->redirectToRoute('portfolio_position_show', [ 'id' => $position->getId() ] );
+      //   return $this->render('position/show.html.twig', [
+      //   'portfolio' => $portfolio,
+      //   'position' => $position,
+      // ]);
     }
 
 }
