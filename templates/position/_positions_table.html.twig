@@ -40,11 +40,7 @@
               </a>
             </td>
             <td class="d-none d-lg-block {% if position.contract.secType == 'OPT' %}font-italic{% endif %}">
-              {% if position.contract.secType == 'OPT' %}
-                {{ position.contract.name|u.truncate(35, '...') }}
-              {% else %}
-                {{ position.contract.name|u.truncate(35, '...') }}
-              {% endif %}
+              {{ position.contract.name|u.truncate(26, '...') }}
             </td>
             <td class='text-right'>
               {% if (position.TradeUnit is not null) and (position.TradeUnit.Id > 0) %}
