@@ -82,7 +82,7 @@
             {% endif %}
           {% endif %}
         </td>
-        <td class="text-nowrap">{{ statement.description|u.truncate(52, '...') }}</td>
+        <td class="text-nowrap">{{ statement.description|u.truncate(50, '...') }}</td>
         <td>
           <a href="{{ path('portfolio_statement_show', {'id': statement.id}) }}"><span data-feather="search"></span></a>
           {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
