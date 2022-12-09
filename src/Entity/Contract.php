@@ -20,6 +20,7 @@ use App\Repository\ContractRepository;
  *     "FUT"="Future",
  *     "CASH"="CashContract",
  *     "BAG"="BagContract",
+ *     "FOP"="FutureOption",
  * })
  **/
 abstract class Contract
