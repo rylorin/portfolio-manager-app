@@ -19,6 +19,7 @@ use Rylorin\FmtFinanceApi\ApiClientFactory;
 class ImportFmtCommand extends Command
 {
     protected static $defaultName = 'app:import:fmt';
+    private $em;
 
     /**
      * AppImportIbCommand constructor.
@@ -29,15 +30,15 @@ class ImportFmtCommand extends Command
      */
     public function __construct(EntityManagerInterface $em)
     {
-    	parent::__construct();
-    	$this->em = $em;
+        parent::__construct();
+        $this->em = $em;
     }
 
     protected function configure()
     {
         $this
-        	->setDescription('Update some financial information from Financial Modeling Prep')
-//        	->addArgument('apikey', InputArgument::REQUIRED, 'Your personal API key')
+            ->setDescription('Update some financial information from Financial Modeling Prep')
+                //        	->addArgument('apikey', InputArgument::REQUIRED, 'Your personal API key')
             ->addOption('apikey', null, InputOption::VALUE_REQUIRED, 'Your personal API key')
         ;
     }
@@ -57,16 +58,16 @@ class ImportFmtCommand extends Command
         $io->progressStart(sizeof($stocks));
 
         foreach ($stocks as $stock) {
-        	$ticker = $stock->getYahooTicker();
-        	$quote = $client->getQuote($ticker);
+            $ticker = $stock->getYahooTicker();
+            $quote = $client->getQuote($ticker);
             print_r($quote);
-        	if ($quote) {
-        		$stock->setPrice($quote->getPrice());
+            if ($quote) {
+                $stock->setPrice($quote->getPrice());
                 return 1;
-        	} else {
-        		$io->note(sprintf("Unknown quote: %s on %s\n", $ticker, $stock->getExchange()));
-        	}
-           	$io->progressAdvance();
+            } else {
+                $io->note(sprintf("Unknown quote: %s on %s\n", $ticker, $stock->getExchange()));
+            }
+            $io->progressAdvance();
         }
 
         // save / write the changes to the database

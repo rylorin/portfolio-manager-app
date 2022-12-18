@@ -267,7 +267,8 @@ class ImporterXml
       $statement = $this->em->getRepository('App:StockTradeStatement')->findOneBy(
         [ 'stock' => $stock->getId(), 'portfolio' => $portfolio, 'date' => $date, 'transactionID' => null ]);
       if (!$statement) {
-           $statement = (new StockTradeStatement())
+          // print_r($xml);
+          $statement = (new StockTradeStatement())
               ->setPortfolio($portfolio)
               ->setStock($stock)
               ->setDate($date)
@@ -346,12 +347,16 @@ class ImporterXml
               ->setRealizedPNL($pnl)
               ;
 
+          // print_r($xml);
           if ((string)($xml->attributes()->notes) == 'A') {
             $statement->setStatus(Statement::ASSIGNED_STATUS);
             $description = 'Assigned ';
           } elseif ((string)($xml->attributes()->notes) == 'Ep') {
             $statement->setStatus(Statement::EXPIRED_STATUS);
             $description = 'Expired ';
+          } elseif ((string)($xml->attributes()->notes) == 'Ex') {
+            $statement->setStatus(Statement::EXERCISED_STATUS);
+            $description = 'Exercised ';
           } elseif ((string)($xml->attributes()->openCloseIndicator) == 'O') {
             $statement->setStatus(Statement::OPEN_STATUS);
             $description = 'Opening ';

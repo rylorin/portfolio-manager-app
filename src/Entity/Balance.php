@@ -63,7 +63,7 @@ class Balance
     public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -75,19 +75,19 @@ class Balance
     public function setQuantity(?float $quantity): self
     {
         $this->quantity = $quantity;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
-    public function getPortfolio(): ?Portfolio
+    public function getPortfolio(): ? Portfolio
     {
         return $this->portfolio;
     }
 
-    public function setPortfolio(?Portfolio $portfolio): self
+    public function setPortfolio(? Portfolio $portfolio): self
     {
         $this->portfolio = $portfolio;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -95,7 +95,7 @@ class Balance
     {
         return $this->createdAt;
     }
-  
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;

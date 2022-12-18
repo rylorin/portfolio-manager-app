@@ -21,6 +21,7 @@ use GuzzleHttp\Client;
 class AppExpireCommand extends Command
 {
     protected static $defaultName = 'app:expire';
+    protected $em;
 
     /**
      * AppImportIbCommand constructor.
@@ -31,8 +32,8 @@ class AppExpireCommand extends Command
      */
     public function __construct(EntityManagerInterface $em)
     {
-    	parent::__construct();
-    	$this->em = $em;
+        parent::__construct();
+        $this->em = $em;
     }
 
     protected function configure()
@@ -52,8 +53,8 @@ class AppExpireCommand extends Command
 
         if ($input->getOption('positions')) {
             $data = $this->em->getRepository('App:Position')->findBySecType(
-                null,
-                [ 'p.quantity' => 0 ]
+            null,
+                ['p.quantity' => 0]
             );
             $io->progressStart(sizeof($data));
             foreach ($data as $position) {
@@ -77,10 +78,10 @@ class AppExpireCommand extends Command
                 $statements = $this->em->getRepository('App:OptionTradeStatement')->findByContract($contract);
                 $orders = $this->em->getRepository('App:OpenOrder')->findByContract($contract);
                 if (!sizeof($positions) && !sizeof($statements) && !sizeof($orders)) {
-//                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
+                    //                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
                     $this->em->remove($contract);
                 } else {
-//                    printf("%d positions, %d statements\n", sizeof($positions), sizeof($statements));
+                    //                    printf("%d positions, %d statements\n", sizeof($positions), sizeof($statements));
                     $contract->setPrice(null);
                     $contract->setBid(null);
                     $contract->setAsk(null);
@@ -100,7 +101,7 @@ class AppExpireCommand extends Command
             foreach ($options as $contract) {
                 $statements = $this->em->getRepository('App:OptionTradeStatement')->findByContract($contract);
                 if (!sizeof($statements)) {
-//                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
+                    //                  $io->note(sprintf("Expiring option %s\n", $contract->getSymbol()));
                     $this->em->remove($contract);
                 }
                 $io->progressAdvance();

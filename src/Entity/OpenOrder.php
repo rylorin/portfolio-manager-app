@@ -106,7 +106,7 @@ class OpenOrder
         return $this;
     }
 
-     public function getClientId(): ?int
+    public function getClientId(): ?int
     {
         return $this->ClientId;
     }
@@ -129,25 +129,25 @@ class OpenOrder
         $this->updatedAt = new \DateTime();
         return $this;
     }
- 
-    public function getAccount(): ?Portfolio
+
+    public function getAccount(): ? Portfolio
     {
         return $this->Account;
     }
 
-    public function setAccount(?Portfolio $Account): self
+    public function setAccount(? Portfolio $Account): self
     {
         $this->Account = $Account;
         $this->updatedAt = new \DateTime();
         return $this;
     }
 
-    public function getContract(): ?Contract
+    public function getContract(): ? Contract
     {
         return $this->contract;
     }
 
-    public function setContract(?Contract $contract): self
+    public function setContract(? Contract $contract): self
     {
         $this->contract = $contract;
         $this->updatedAt = new \DateTime();
@@ -237,15 +237,15 @@ class OpenOrder
         $this->updatedAt = new \DateTime();
         return $this;
     }
-    
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
-  
+
     private function setCreated(?\DateTimeInterface $updated): self
     {
-        $this->created = $updated;
+        $this->createdAt = $updated;
         return $this;
     }
 
@@ -253,10 +253,10 @@ class OpenOrder
     {
         return $this->updatedAt;
     }
-  
+
     private function setUpdated(?\DateTimeInterface $updated): self
     {
-        $this->updated = $updated;
+        $this->updatedAt = $updated;
         return $this;
     }
 

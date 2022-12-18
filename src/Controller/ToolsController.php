@@ -22,6 +22,8 @@ use App\Importer\ImporterOFX;
 class ToolsController extends AbstractController
 {
 
+    protected $em;
+
     /**
      * constructor.
      *
@@ -31,8 +33,8 @@ class ToolsController extends AbstractController
      */
     public function __construct(EntityManagerInterface $em)
     {
-//    	parent::__construct();
-    	$this->em = $em;
+        //    	parent::__construct();
+        $this->em = $em;
     }
 
     /**
@@ -42,7 +44,7 @@ class ToolsController extends AbstractController
      */
     public function upload(Request $request, Portfolio $portfolio): Response
     {
-        $upload     = new Tools();
+        $upload = new Tools();
         $formUpload = $this->createForm(ToolsType::class, $upload);
         $formUpload->handleRequest($request);
         if ($formUpload->isSubmitted() && $formUpload->isValid()) {
@@ -69,7 +71,7 @@ class ToolsController extends AbstractController
                 }
             }
             if ($csvFile || $ofxFile) {
-                return $this->redirectToRoute('portfolio_show', [ 'id' => $portfolio->getId() ]);
+                return $this->redirectToRoute('portfolio_show', ['id' => $portfolio->getId()]);
             }
         }
         return $this->render('tools/upload.html.twig', [

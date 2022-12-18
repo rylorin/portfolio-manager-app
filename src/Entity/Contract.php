@@ -20,7 +20,6 @@ use App\Repository\ContractRepository;
  *     "FUT"="Future",
  *     "CASH"="CashContract",
  *     "BAG"="BagContract",
- *     "FOP"="FutureOption",
  * })
  **/
 abstract class Contract
@@ -32,18 +31,36 @@ abstract class Contract
     public const TYPE_FOP = 'FOP';
     public const TYPE_FUTURE = 'FUT';
     public const EXCHANGES = [
-        'NYSE' => 'NYSE', 'NASDAQ' => 'NASDAQ', 'ARCA' => 'ARCA', 'IBIS2' => 'IBIS2', 'AMEX' => 'AMEX', 'CBOE' => 'CBOE',
-        'SBF' => 'SBF', 'AEB' => 'AEB', 'VSE' => 'VSE', 'BVME' => 'BVME', 'DTB' => 'DTB', 'IBIS' => 'IBIS',
-        'LSE' => 'LSE', 'ICEEU' => 'ICEEU',
-        'TSEJ' => 'TSEJ', 'TSE' => 'TSE',
+        'NYSE' => 'NYSE',
+        'NASDAQ' => 'NASDAQ',
+        'ARCA' => 'ARCA',
+        'IBIS2' => 'IBIS2',
+        'AMEX' => 'AMEX',
+        'CBOE' => 'CBOE',
+        'SBF' => 'SBF',
+        'AEB' => 'AEB',
+        'VSE' => 'VSE',
+        'BVME' => 'BVME',
+        'DTB' => 'DTB',
+        'IBIS' => 'IBIS',
+        'LSE' => 'LSE',
+        'ICEEU' => 'ICEEU',
+        'TSEJ' => 'TSEJ',
+        'TSE' => 'TSE',
         'EBS' => 'EBS'
     ];
 
     // Trading View mappings
     protected const marketPlaceMapping = [
-      'SBF' => 'EURONEXT', 'AEB' => 'EURONEXT', 'IBIS2' => 'EURONEXT', 'IBIS' => 'XETR',
-      'TSEJ' => 'TSE', 'TSE' => 'NEO', 'EBS' => 'SIX',
-      'ARCA' => 'AMEX', 'PINK' => 'OTC'
+        'SBF' => 'EURONEXT',
+        'AEB' => 'EURONEXT',
+        'IBIS2' => 'EURONEXT',
+        'IBIS' => 'XETR',
+        'TSEJ' => 'TSE',
+        'TSE' => 'NEO',
+        'EBS' => 'SIX',
+        'ARCA' => 'AMEX',
+        'PINK' => 'OTC'
     ];
 
     /**
@@ -160,7 +177,7 @@ abstract class Contract
     public function setConId(?int $contractIB): self
     {
         $this->conId = $contractIB;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -172,7 +189,7 @@ abstract class Contract
     public function setSymbol(?string $symbol): self
     {
         $this->symbol = $symbol;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -184,7 +201,7 @@ abstract class Contract
     public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -227,22 +244,22 @@ abstract class Contract
     public function setExchange(?string $exchange): self
     {
         $this->exchange = $exchange;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
     public function getMarketPlace(): ?string
     {
-        return $this->exchange ?
-          (array_key_exists($this->exchange, self::marketPlaceMapping) ? self::marketPlaceMapping[$this->exchange] : $this->exchange) :
-          null;
+        return $this->exchange ? 
+            (array_key_exists($this->exchange, self::marketPlaceMapping) ? self::marketPlaceMapping[$this->exchange] : $this->exchange) :
+        null;
     }
 
     abstract public function getYahooTicker(): ?string;
 
     public function getChangePercent(): ?float
     {
-      return $this->previousClosePrice ? (($this->getPrice() / $this->previousClosePrice) - 1) : null;
+        return $this->previousClosePrice ? (($this->getPrice() / $this->previousClosePrice) - 1) : null;
     }
 
     public function getName(): ?string
@@ -253,7 +270,7 @@ abstract class Contract
     public function setName(?string $name): self
     {
         $this->name = $name;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -265,7 +282,7 @@ abstract class Contract
     public function setFiftyTwoWeekLow(?float $fiftyTwoWeekLow): self
     {
         $this->fiftyTwoWeekLow = $fiftyTwoWeekLow;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -277,23 +294,26 @@ abstract class Contract
     public function setFiftyTwoWeekHigh(?float $fiftyTwoWeekHigh): self
     {
         $this->fiftyTwoWeekHigh = $fiftyTwoWeekHigh;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
     public function getPrice(): ?float
     {
         $result = null;
-        if ($this->ask && $this->bid) $result = ($this->ask + $this->bid) / 2;
-        elseif ($this->price) $result = $this->price;
-        else $result = $this->previousClosePrice;
+        if ($this->ask && $this->bid)
+            $result = ($this->ask + $this->bid) / 2;
+        elseif ($this->price)
+            $result = $this->price;
+        else
+            $result = $this->previousClosePrice;
         return $result;
     }
 
     public function setPrice(?float $price): self
     {
         $this->price = $price;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -305,7 +325,7 @@ abstract class Contract
     public function setBid(?float $bid): self
     {
         $this->bid = $bid;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -317,7 +337,7 @@ abstract class Contract
     public function setAsk(?float $ask): self
     {
         $this->ask = $ask;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
@@ -329,15 +349,16 @@ abstract class Contract
     public function setPreviousClosePrice(?float $previousClosePrice): self
     {
         $this->previousClosePrice = $previousClosePrice;
-        $this->updated = new \DateTime();
+        $this->updatedAt = new \DateTime();
         return $this;
     }
 
-    public static function normalizeSymbol(string $symbol): string {
+    public static function normalizeSymbol(string $symbol): string
+    {
         // print_r($symbol);
         $symbol = str_replace('.T', '', str_replace(' ', '-', trim($symbol)));
         if (strlen($symbol) > 0) {
-            if ($symbol[strlen($symbol)-1] == 'd') {
+            if ($symbol[strlen($symbol) - 1] == 'd') {
                 $symbol = substr($symbol, 0, -1);
             }
         }
@@ -385,18 +406,19 @@ abstract class Contract
     //     return $this;
     // }
 
-    public function getMultiplier(): int {
+    public function getMultiplier(): int
+    {
         return 1;
     }
-  
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
-  
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
-  
+
 }

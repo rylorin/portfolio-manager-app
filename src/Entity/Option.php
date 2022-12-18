@@ -78,11 +78,11 @@ class Option extends Contract
      */
     private $stock;
 
-    public function __construct()
+    public function __construct($symbol = null)
     {
-        parent::__construct();
-        $this->multiplier = 100;
-        $this->createdAt = new \DateTime();
+      parent::__construct($symbol);
+      $this->multiplier = 100;
+      $this->createdAt = new \DateTime();
     }
 
     public function __toString()
@@ -117,7 +117,7 @@ class Option extends Contract
 
     private function updateSymbol(): void
     {
-        if (/* 17-03-2021 !$this->getSymbol() && */ $this->stock && $this->lastTradeDate && $this->strike && $this->callOrPut) {
+        if (!$this->getSymbol() && $this->stock && $this->lastTradeDate && $this->strike && $this->callOrPut) {
             $this->setSymbol($this::formatSymbol(
                 $this->stock->getSymbol(),
                 $this->lastTradeDate,

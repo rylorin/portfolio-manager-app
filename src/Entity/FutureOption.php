@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OptionRepository::class)
- * @ORM\Table(name="option_alias")
  */
 class FutureOption extends Option
 {

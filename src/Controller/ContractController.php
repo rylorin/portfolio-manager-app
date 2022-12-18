@@ -28,29 +28,6 @@ class ContractController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="contract_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $contract = new Contract();
-        $form = $this->createForm(ContractType::class, $contract);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($contract);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('contract_index');
-        }
-
-        return $this->render('contract/new.html.twig', [
-            'contract' => $contract,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/{id}", name="contract_show", methods={"GET"})
      */
     public function show(Contract $contract): Response
@@ -85,7 +62,7 @@ class ContractController extends AbstractController
      */
     public function delete(Request $request, Contract $contract): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$contract->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $contract->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($contract);
             $entityManager->flush();
