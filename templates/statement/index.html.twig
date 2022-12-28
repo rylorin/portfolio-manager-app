@@ -5,7 +5,4 @@
 {% block body %}
     <h2>Statements ({{ statements|length }})</h2>
     {% include('statement/_statements_table.html.twig') %}
-    {% if app.user and (app.user.isOwner(portfolio) or is_granted('ROLE_SUPER_ADMIN')) %}
-      <a href="{{ path('statement_new') }}">Create new</a>
-    {% endif %}
 {% endblock %}

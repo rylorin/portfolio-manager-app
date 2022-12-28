@@ -54,7 +54,7 @@ class ImporterXml
   }
 
   private function findOrCreateStock(\SimpleXMLElement $xml): Stock {
-    $stock = $this->em->getRepository('App:Stock')
+    $stock = $this->em->getRepository('App:Contract')
       ->findOneBy([ 'conId' => (string)$xml->attributes()->conid ]);
     if (!$stock) {
       $symbol = Contract::normalizeSymbol((string)$xml->attributes()->symbol);
@@ -78,7 +78,7 @@ class ImporterXml
   }
 
   private function findOrCreateFuture(\SimpleXMLElement $xml): Future {
-    $contract = $this->em->getRepository('App:Future')
+    $contract = $this->em->getRepository('App:Contract')
       ->findOneBy([ 'conId' => (string)$xml->attributes()->conid ]);
     if (!$contract) {
       $stock = $this->em->getRepository('App:IndexContract')
@@ -128,7 +128,7 @@ class ImporterXml
   }
 
   private function findOrCreateOption(\SimpleXMLElement $xml): Option {
-    $contract = $this->em->getRepository('App:Option')
+    $contract = $this->em->getRepository('App:Contract')
       ->findOneBy([ 'conId' => (string)$xml->attributes()->conid ]);
     if (!$contract) {
       $stock = $this->em->getRepository('App:Contract')
