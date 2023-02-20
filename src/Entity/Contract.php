@@ -31,12 +31,15 @@ abstract class Contract
     public const TYPE_FOP = 'FOP';
     public const TYPE_FUTURE = 'FUT';
     public const EXCHANGES = [
+        // USA & North America
         'NYSE' => 'NYSE',
         'NASDAQ' => 'NASDAQ',
         'ARCA' => 'ARCA',
         'IBIS2' => 'IBIS2',
         'AMEX' => 'AMEX',
         'CBOE' => 'CBOE',
+        'TSE' => 'TSE',
+        // Europe
         'SBF' => 'SBF',
         'AEB' => 'AEB',
         'VSE' => 'VSE',
@@ -45,9 +48,10 @@ abstract class Contract
         'IBIS' => 'IBIS',
         'LSE' => 'LSE',
         'ICEEU' => 'ICEEU',
+        'EBS' => 'EBS',
+        'EUREX' => 'EUREX',
+        // Other
         'TSEJ' => 'TSEJ',
-        'TSE' => 'TSE',
-        'EBS' => 'EBS'
     ];
 
     // Trading View mappings
@@ -252,7 +256,7 @@ abstract class Contract
     {
         return $this->exchange ? 
             (array_key_exists($this->exchange, self::marketPlaceMapping) ? self::marketPlaceMapping[$this->exchange] : $this->exchange) :
-        null;
+            null;
     }
 
     abstract public function getYahooTicker(): ?string;
