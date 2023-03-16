@@ -8,9 +8,13 @@
         <tr>
             <th>Symbol</th>
             <td class="text-right">
+                {% if portfolio is defined %}
                 <a href="{{ path('portfolio_symbol_dashboard', {'portfolio': portfolio.id, 'stock': stock.id}) }}">
                      {{ stock.symbol }}
                 </a>
+                {% else %}
+                     {{ stock.symbol }}
+                {% endif %}
             </td>
         </tr>
         <tr>

@@ -19,34 +19,40 @@ use App\Form\Type\UnderlyingType;
 
 class TradeUnitType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-          ->add('symbol', UnderlyingType::class, [ 'required' => true ])
-          ->add('strategy', ChoiceType::class, [ 'choices' => TradeUnit::stategyMenuMapping ])
-          ->add('openingDate', DateTimeType::class, [
-            'html5' => true,
-            'date_widget' => 'single_text',
-            'time_widget' => 'single_text', 'with_seconds' => true
-            ])
-          ->add('closingDate', DateTimeType::class, [
-            'required' => false,
-            'html5' => true,
-            'date_widget' => 'single_text',
-            'time_widget' => 'single_text', 'with_seconds' => true
-            ])
-          ->add('status', ChoiceType::class, [ 'choices' => [
-            'Open' => TradeUnit::OPEN_STATUS, 'Closed' => TradeUnit::CLOSE_STATUS ]])
-          ->add('PnL')
-          ->add('risk')
-          ->add('comment')
-          ;
-    }
+  public function buildForm(FormBuilderInterface $builder, array $options)
+  {
+    $builder
+      ->add('symbol', UnderlyingType::class, ['required' => true])
+      ->add('strategy', ChoiceType::class, ['choices' => TradeUnit::stategyMenuMapping])
+      ->add('openingDate', DateTimeType::class, [
+        'html5' => true,
+        'date_widget' => 'single_text',
+        'time_widget' => 'single_text',
+        'with_seconds' => true
+      ])
+      ->add('closingDate', DateTimeType::class, [
+        'required' => false,
+        'html5' => true,
+        'date_widget' => 'single_text',
+        'time_widget' => 'single_text',
+        'with_seconds' => true
+      ])
+      ->add('status', ChoiceType::class, [
+        'choices' => [
+          'Open' => TradeUnit::OPEN_STATUS,
+          'Closed' => TradeUnit::CLOSE_STATUS
+        ]
+      ])
+      ->add('PnL')
+      ->add('risk')
+      ->add('comment')
+    ;
+  }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => TradeUnit::class,
-        ]);
-    }
+  public function configureOptions(OptionsResolver $resolver)
+  {
+    $resolver->setDefaults([
+      'data_class' => TradeUnit::class,
+    ]);
+  }
 }
