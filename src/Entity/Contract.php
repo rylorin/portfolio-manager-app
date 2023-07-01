@@ -254,7 +254,7 @@ abstract class Contract
 
     public function getMarketPlace(): ?string
     {
-        return $this->exchange ? 
+        return $this->exchange ?
             (array_key_exists($this->exchange, self::marketPlaceMapping) ? self::marketPlaceMapping[$this->exchange] : $this->exchange) :
             null;
     }
@@ -413,6 +413,10 @@ abstract class Contract
     public function getMultiplier(): int
     {
         return 1;
+    }
+
+    public function setMultiplier(int $ignore)
+    {
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

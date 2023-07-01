@@ -56,6 +56,8 @@ class ImporterXml
 
   private function findOrCreateStock(\SimpleXMLElement $xml): Stock
   {
+    // print('findOrCreateStock');
+    // print_r($xml);
     $stock = $this->em->getRepository('App:Contract')
       ->findOneBy(['conId' => (string) $xml->attributes()->conid]);
     if (!$stock) {
@@ -117,7 +119,7 @@ class ImporterXml
       // flush required therefore futurs lookup will succeed
 //      $this->em->flush();
     }
-    //    print_r($xml);
+    // print_r($xml);
     if ($xml->attributes()->listingExchange && ((string) $xml->attributes()->listingExchange != $contract->getExchange()))
       $contract->setExchange((string) $xml->attributes()->listingExchange);
     if ($xml->attributes()->currency && ((string) $xml->attributes()->currency != $contract->getCurrency()))
@@ -160,7 +162,7 @@ class ImporterXml
         ]);
       if (!$contract) {
         // option contract does not exist
-        $contract = (new Option((string) $xml->attributes()->localSymbol))
+        $contract = (new Option((string) $xml->attributes()->symbol))
           ->setStock($stock)
           ->setLastTradeDate(new \DateTime((string) $xml->attributes()->expiry))
           ->setStrike((float) $xml->attributes()->strike)
@@ -181,13 +183,22 @@ class ImporterXml
     if ($xml->attributes()->multiplier && ((int) $xml->attributes()->multiplier != $contract->getMultiplier())) {
       $contract->setMultiplier((int) $xml->attributes()->multiplier);
     }
-    if ($xml->attributes()->symbol && !$contract->getName())
-      $contract->setName((string) $xml->attributes()->symbol);
+    // print($xml->attributes()->symbol);
+    // print($xml->attributes()->localSymbol);
+    // print("setting option name");
+    // print($xml->attributes()->name);
+    if ($xml->attributes()->localSymbol && !$contract->getName()) {
+      $contract->setName((string) $xml->attributes()->localSymbol);
+    } else if ($xml->attributes()->description && !$contract->getName()) {
+      $contract->setName((string) $xml->attributes()->description);
+    }
     return $contract;
   }
 
   private function processStockTrade(Portfolio $portfolio, \SimpleXMLElement $xml): void
   {
+    // print('processStockTrade');
+    // print_r($xml);
     $transactionID = intval((string) $xml->attributes()->transactionID);
     $statement = $this->em->getRepository('App:StockTradeStatement')->findOneBy(
       ['portfolio' => $portfolio, 'transactionID' => $transactionID]
@@ -360,7 +371,6 @@ class ImporterXml
           ->setRealizedPNL($pnl)
         ;
 
-        // print_r($xml);
         if ((string) ($xml->attributes()->notes) == 'A') {
           $statement->setStatus(Statement::ASSIGNED_STATUS);
           $description = 'Assigned ';
@@ -397,6 +407,8 @@ class ImporterXml
 
   private function processDividends(\SimpleXMLElement $xml): void
   {
+    // print('processDividends');
+    // print_r($xml);
     $portfolio = $this->findOrCreatePortfolio((string) $xml->attributes()->accountId);
     $transactionID = (int) $xml->attributes()->transactionID;
     $statement = $this->em->getRepository('App:DividendStatement')->findOneBy(
@@ -434,6 +446,8 @@ class ImporterXml
 
   private function processWithholdingTax(\SimpleXMLElement $xml): void
   {
+    // print('processWithholdingTax');
+    // print_r($xml);
     $portfolio = $this->findOrCreatePortfolio((string) $xml->attributes()->accountId);
     $transactionID = (int) $xml->attributes()->transactionID;
     $statement = $this->em->getRepository('App:TaxStatement')->findOneBy(
@@ -503,6 +517,8 @@ class ImporterXml
 
   public function processOtherFee(\SimpleXMLElement $xml): void
   {
+    // print('processOtherFee');
+    // print_r($xml);
     $portfolio = $this->findOrCreatePortfolio((string) $xml->attributes()->accountId);
     $transactionID = (int) $xml->attributes()->transactionID;
     $statement = $this->em->getRepository('App:FeeStatement')->findOneBy(
@@ -541,6 +557,8 @@ class ImporterXml
 
   public function processTrade(\SimpleXMLElement $xml): void
   {
+    // print('processTrade');
+    // print_r($xml);
     $portfolio = $this->findOrCreatePortfolio((string) $xml->attributes()->accountId);
     if ($xml->attributes()->assetCategory == "STK") {
       $this->processStockTrade($portfolio, $xml);
@@ -590,6 +608,8 @@ class ImporterXml
 
   public function processCorporateAction(\SimpleXMLElement $xml): void
   {
+    print('processCorporateAction');
+    print_r($xml);
     $portfolio = $this->findOrCreatePortfolio((string) $xml->attributes()->accountId);
     $transactionID = intval((string) $xml->attributes()->transactionID);
     $statement = $this->em->getRepository('App:CorporateStatement')->findOneBy(
