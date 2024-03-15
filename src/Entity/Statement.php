@@ -19,6 +19,7 @@ use App\Repository\StatementRepository;
  *     "Interest"="InterestStatement",
  *     "OtherFee"="FeeStatement",
  *     "CorporateStatement"="CorporateStatement",
+ *     "Cash"="CashStatement",
  * })
  */
 abstract class Statement
@@ -30,6 +31,7 @@ abstract class Statement
     const TYPE_INTEREST = 'Interest';
     const TYPE_FEE = 'OtherFee';
     const TYPE_CORPORATE = 'CorporateStatement';
+    const TYPE_CASH = 'Cash';
 
     // trades statuses
     public const OPEN_STATUS = 1;
@@ -105,8 +107,9 @@ abstract class Statement
 
     abstract public function getFees(): ?float;
 
-    public function getQuantity(): ?float {
-      return null;
+    public function getQuantity(): ?float
+    {
+        return null;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -187,14 +190,14 @@ abstract class Statement
 
     public function setTradeUnit(?TradeUnit $tradeUnit): self
     {
-      if ($this->tradeUnit && ($this->tradeUnit != $tradeUnit)) {
-        $this->tradeUnit->removeOpeningTrade($this);
-      }
-      $this->tradeUnit = $tradeUnit;
-      if ($this->tradeUnit) {
-        $this->tradeUnit->addOpeningTrade($this);
-      }
-      return $this;
+        if ($this->tradeUnit && ($this->tradeUnit != $tradeUnit)) {
+            $this->tradeUnit->removeOpeningTrade($this);
+        }
+        $this->tradeUnit = $tradeUnit;
+        if ($this->tradeUnit) {
+            $this->tradeUnit->addOpeningTrade($this);
+        }
+        return $this;
     }
 
     public function getTransactionId(): ?int
